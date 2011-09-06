@@ -1,0 +1,120 @@
+	p {font-family: georgia, serif; font-size: x-small;}	
+	h1.css-section { color:#000099 }
+	
+	
+#base
+{
+	background: url("siteBackground.jpg") no-repeat;
+	width:1600px;
+	height:1000px;
+	
+}
+	
+#wrapper {
+	margin: 0 auto;
+	width: 800px;
+	padding: 0;
+	text-align: left;
+}
+
+/**************************************************/
+/*             Top Piece                          */
+/**************************************************/
+
+#top{
+	width: 800px;
+	height: 165px;
+	position:relative;
+}
+#transBlackbox{
+	background-color:#6f6f6f;
+	width: 800px;
+	height: 165px;
+	opacity:0.1;
+	filter:alpha(opacity=10);
+
+}
+#logoHeading{
+	font:Arial, Helvetica, sans-serif;
+	font-size:50px;
+	height: 50px;
+	width:500px;
+	margin-top: 110px;
+	margin-left: 225px;
+	position:absolute;
+	z-index: 2;
+	}
+
+#logo {
+	width: 203px;
+	height: 165px;
+	padding: 1px;
+	background-image: url(images/logo.png);
+	float:left;
+	margin-left:5px;
+	margin-top:5px;
+
+z-index: 2;
+
+}
+
+
+/**************************************************/
+/*           Middle              				   */
+/**************************************************/
+#middle{
+		width: 800px;
+		margin-top: 12px;
+}
+
+/**************************************************/
+/*           Content - left menu                  */
+/**************************************************/
+#menu_label{
+		background: url(blueLable1pix.png);
+		width: 205px;
+		height: 22px;
+		font:Arial, Helvetica, sans-serif;
+		color:#FFF;
+
+}
+#menu{
+		background-color:#C0C0C0;
+		width:205px;
+		height:600px;
+		float:left;	
+}
+
+#mymenu{list-style: none; }
+	.mH {color:#60c; cursor:pointer;  font-weight:bold; background:url(greenLabel1pix.png); margin-bottom: 1px; padding-left:3px;} 
+	.mL {display:none; margin-bottom:10px;}
+	.mO {margin-left:10px; display:block;}	
+
+/**************************************************/
+/*            Content - middle    			       */
+/**************************************************/
+
+#content {
+	background: url(content1pix.png) center repeat-y;
+	width: 581px;
+	height: 600px;
+	margin-left: 217px;
+
+}
+
+#content_label {
+	background: url(blueLable1pix.png);
+	width: 578px;
+	height: 22px;
+	font:Arial, Helvetica, sans-serif;
+	color:#FFF;
+	padding-left:3px;
+	text-align: left;
+}
+#all_content {
+	background: url(content1pix.png) center repeat-y;
+	width: 581px;
+	height: 558px;
+	margin-top: 22px;
+}
+
