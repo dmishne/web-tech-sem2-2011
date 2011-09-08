@@ -60,7 +60,7 @@ padding:0px;
      &nbsp;&nbsp;<input type="image" style="position:relative; top:3px;"  src="login2.png" alt="login_img" width="44" height="16" /> 
      <font style="font-size:10px;" face="arial" color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
      UserName:&nbsp;<input type="text" style="font-size:11px; position:relative; top:-2px;" size="15" maxlength="15" />&nbsp;&nbsp;&nbsp;&nbsp;
-     Password:&nbsp;<input type="password" style="font-size:11px; position:relative; top:-2px;" size="15" maxlength="15" margin-top:0px; margin-buttom:0px; margin-right:10px; margin-left:0px;/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     Password:&nbsp;<input type="password" style="font-size:11px; position:relative; top:-2px;" size="15" maxlength="15" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
      <input type="image" style="position:relative; top:3px;"  src="submit.png" alt="Submit" width="18" height="18" /><br />
      
      </form>
