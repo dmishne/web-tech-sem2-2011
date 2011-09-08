@@ -57,7 +57,7 @@ padding:0px;
 <div class="center-right">
    <div class="head">   
      <form style="font-size:11px; position:relative; top:0px;" method="get" action="form_action.asp" method="get" accept-charset="UTF-8" >
-     &nbsp;&nbsp;<input type="image" style="position:relative; top:3px;"  src="login2.png" alt="login_img" width="44" height="16" /> 
+     &nbsp;&nbsp;<input type="image" style="position:relative; top:1px;"  src="login2.png" width="44" height="16" /> 
      <font style="font-size:10px;" face="arial" color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
      UserName:&nbsp;<input type="text" style="font-size:11px; position:relative; top:-2px;" size="15" maxlength="15" />&nbsp;&nbsp;&nbsp;&nbsp;
      Password:&nbsp;<input type="password" style="font-size:11px; position:relative; top:-2px;" size="15" maxlength="15" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
