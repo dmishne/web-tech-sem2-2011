@@ -1,0 +1,54 @@
+/*
+	CSS for left menu
+	mainMenu - The main class of the left menu.
+	topCenter - Id for the top label "Menu".
+	noBullet - If for design of <li> without a bullet.
+	menu - The class of inner menus.
+*/
+
+ul.mainMenu {
+	margin:0;
+	padding:0;
+	list-style-position:inside;
+	background: rgba(255,255,255,0.60);
+}
+
+#topCenter {
+	background-image:url('../images/blueLabel1pix.png');
+	background-repeat:repeat-x;
+	list-style-type:none;
+	list-style-image:none;
+}
+
+#noBullet{
+	list-style-type:none;
+	list-style-image:none;
+	list-style-position:inside;
+}
+
+
+ul.mainMenu li{
+	list-style-image: url('../images/rightArrow.png');
+	background-image:url('../images/greenLabel1pix.png');
+	background-repeat:repeat-x;
+}
+
+ul a{
+	text-decoration: none;
+}
+
+ul a:link, a:visited
+{
+	color:#000000;
+}
+
+ul.menu{
+	display: none;
+}
+
+ul.menu li{
+	list-style-type:none;
+	list-style-image:none;
+	background-image:none;
+	background-repeat:none;
+}
