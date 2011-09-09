@@ -1,3 +1,7 @@
 body.main{
 	background-image:url('../images/siteBackground.jpg');
 }
+
+#menu{
+	background: rgba(255,255,255,0.60);
+}
