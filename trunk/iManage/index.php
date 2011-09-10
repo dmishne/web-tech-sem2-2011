@@ -1,20 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
 <html>
 <head>
-<Title> iManage </Title>
+<title> iManage </title>
+<meta http-equiv="X-UA-Compatible" content="IE=9" />
 
-<link rel="stylesheet" href="Styles/main.css" type="text/css" />
-<link rel="stylesheet" href="Styles/menu.css" type="text/css" />
-<link rel="stylesheet" href="Styles/header.css" type="text/css" />
-<link rel="stylesheet" href="Styles/footer.css" type="text/css" />
+<?php include "include.php" ?>
 
-<script src="menu.js" type="text/javascript"></script>
 </head>
 
-<body class="main">
+<body>
 <?php include "header.php" ?>
-<table width="90%" cellpadding="1" cellspacing="10" align="center" height="65%">
-	<tr valign="TOP">
-		<td NOWRAP id="menu" valign="TOP" align="LEFT" width="17%">
+
+<table class="mainTable">
+	<tr valign="top">
+		<td nowrap="nowrap" id="menu" valign="top" align="left" width="17%">
 			<?php include "menu.php"; ?>
 		</td>
 		<td valign="middle" align="center" bgcolor="CCCCCC">
@@ -28,6 +27,9 @@
 		</td>
 	</tr>
 </table>
+
 <?php include "footer.php"; ?>
+
 </body>
+
 </html>

@@ -1,7 +1,21 @@
-body.main{
+html, body {
+height: 95%;
+
+}
+ 
+body{
 	background-image:url('../images/siteBackground.jpg');
 }
 
 #menu{
 	background: rgba(255,255,255,0.60);
+}
+
+.mainTable {
+	padding:1;
+	border-spacing:10pt 0pt;
+	margin-left: auto;
+    margin-right: auto; 
+	width:90%;
+	height:65%;
 }
