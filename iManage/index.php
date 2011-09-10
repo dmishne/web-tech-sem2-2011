@@ -14,7 +14,7 @@
 <?php include "header.php" ?>
 <table width="90%" cellpadding="1" cellspacing="10" align="center" height="65%">
 	<tr valign="TOP">
-		<td id="menu" valign="TOP" align="LEFT" width="17%">
+		<td NOWRAP id="menu" valign="TOP" align="LEFT" width="17%">
 			<?php include "menu.php"; ?>
 		</td>
 		<td valign="middle" align="center" bgcolor="CCCCCC">
