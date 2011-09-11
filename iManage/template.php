@@ -17,7 +17,7 @@
 		<td nowrap="nowrap" id="menu" valign="top" align="left" width="17%">
 			<?php include "menu.php"; ?>
 		</td>
-		<td  valign="middle" align="center" style="background-image: url('../images/content1pix.png'); background-repeat: repeat-y;">
+		<td  valign="middle" align="center" bgcolor="#ccccc">
 		Bla Bla
 		
 		
