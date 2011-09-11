@@ -17,13 +17,10 @@
 		<td nowrap="nowrap" id="menu" valign="top" align="left" width="17%">
 			<?php include "menu.php"; ?>
 		</td>
-		<td  valign="middle" align="center" bgcolor="#ccccc">
-		Bla Bla
-		
-		
-		
-		
-		
+		<td class="rmiddle" valign="top" align="middle" width="83%" bgcolor="CCCCCC">
+           <div class="bluHeadPane">Content Head</div>
+           <div class="middleContentPane">Content Here</div>
+
 		
 		</td>
 	</tr>
