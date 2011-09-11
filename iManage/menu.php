@@ -22,10 +22,10 @@
 	</li>
 	<li onclick="toggleMenu(this)"> Reports 
 		<ul class="menu">
-			<li> Generate incomes reports </li>
-			<li> Generate payouts reports </li>
-			<li> Balance forecast reports </li>
-			<li> Investments reports </li>
+			<li> Generate incomes report </li>
+			<li> Generate payouts report </li>
+			<li> Balance forecast report </li>
+			<li> Investments report </li>
 		</ul>
 	</li>
 	<li onclick="toggleMenu(this)"> User Management
