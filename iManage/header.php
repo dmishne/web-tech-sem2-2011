@@ -4,7 +4,10 @@
 		<p> <img src="images/logo.png"></p>
 	</td>
 	<td align="Center">
-		<p> iManage </p>
+		<h1> iManage </h1>
+	</td>
+	<td nowrap="nowrap" id="login" valign="top" align="right" >
+			<?php include "login.php"; ?>
 	</td>
 </tr>
 </table>
