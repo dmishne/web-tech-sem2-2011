@@ -2,6 +2,8 @@
 		<div id="logo"></div>
 		<div id="logoHeading">Some sentence </div>
 		<div id="loginBox">
-				<?php include "login.php"; ?>
+			<a class="blue button medium" href="loginpage.php"> Login </a>
+			<br />
+			<a class="blue button medium" href="signuppage.php"> Sign Up </a> 
 		</div>
 </div>

@@ -1,26 +1,31 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
 <html>
+
 <head>
-<title> iManage </title>
-<meta http-equiv="X-UA-Compatible" content="IE=9" />
-
-<?php include "include.php" ?>
-
+	<title> iManage </title>
+	<meta http-equiv="X-UA-Compatible" content="IE=9" />
+	
+	<?php include "include.php" ?>
 </head>
 
 <body>
+<div id="wrapper">
 
-<?php include "header.php" ?>
-
-<table class="mainTable">
-	<tr valign="top">
-		<td nowrap="nowrap" id="menu" valign="top" align="left" width="17%">
+	<div id="top">
+		<?php include "header.php" ?>
+	</div>
+	
+	<div id="middle">
+		<div id="menu">
 			<?php include "menu.php"; ?>
-		</td>
-		<td class="rmiddle" valign="center" align="center" width="83%" bgcolor="CCCCCC">
-            <div class="bluHeadPane">LOGIN:</div>
-            <div class="middleContentPane" align="center" valign="center">
-                 <br/><br/><br/>
+		</div>
+				
+		<div id="content">
+			<div id="content-head">
+				Login
+			</div>
+            
+            <div id="content-middle">     
                  <font style="font-size:13px; position:relative;" face="arial" color="black">
                       UserName:&nbsp;<input type="text" style="font-size:13px; position:relative; top:0px;" size="14" maxlength="20" id="usrnmfield" />
                       <br/>
@@ -32,14 +37,19 @@
                       <br/>
                       <br/>
                       <br/>
-                      <p>Bla Bla Bla..&nbsp;.&nbsp;.&nbsp;&nbsp;&nbsp;.&nbsp;Bla Bla .&nbsp;&nbsp;.&nbsp;&nbsp;.&nbsp;&nbsp;.&nbsp;Blaaaaa!</p> 
-           </div>  
-           </div>
-		</td>
-	</tr>
-</table>
-
-<?php include "footer.php"; ?>
-
+                      <p>Bla Bla Bla..&nbsp;.&nbsp;.&nbsp;&nbsp;&nbsp;.&nbsp;Bla Bla .&nbsp;&nbsp;.&nbsp;&nbsp;.&nbsp;&nbsp;.&nbsp;Blaaaaa!</p>
+                      </font>         
+			</div>
+		</div>
+	</div>
+	
+	
+	<div id="footer">
+		<?php include "footer.php"; ?>
+	</div>
+</div> <!-- wrapper -->
 </body>
 </html>
+
+            
+          

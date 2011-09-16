@@ -25,12 +25,11 @@
 		           Content Head
 			</div>
 			<div id="content-middle">
-		           Content Here </br>
-		           more content </br>
+		           Content Here <br />
+		           more content <br />
 		           even more content
 			</div>
 		</div>
-	
 	</div>
 	
 	

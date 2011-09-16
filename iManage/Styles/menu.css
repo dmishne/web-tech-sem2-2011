@@ -10,6 +10,7 @@ ul.mainMenu {
 	margin:0;
 	padding:0;
 	list-style-position:inside;
+	height:100%;
 }
 
 #topCenter {
@@ -27,7 +28,6 @@ ul.mainMenu {
 	list-style-type:none;
 	list-style-image:none;
 	list-style-position:inside;
-
 }
 
 
@@ -49,6 +49,8 @@ ul a:link, a:visited
 }
 
 ul.menu{
+	margin-left:0px;
+	padding-left:0px;
 	display: none;
 }
 
@@ -57,7 +59,4 @@ ul.menu li{
 	list-style-image:none;
 	background-image:none;
 	background-repeat:none;
-	margin-bottom: 2px;
-	margin-top: 2px;
-	margin-left: -10px;
 }
