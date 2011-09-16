@@ -1,25 +1,31 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
 <html>
+
 <head>
-<title> iManage </title>
-<meta http-equiv="X-UA-Compatible" content="IE=9" />
-
-<?php include "include.php" ?>
-
+	<title> iManage </title>
+	<meta http-equiv="X-UA-Compatible" content="IE=9" />
+	
+	<?php include "include.php" ?>
 </head>
 
 <body>
+<div id="wrapper">
 
-<?php include "header.php" ?>
-
-<table class="mainTable">
-	<tr valign="top">
-		<td nowrap="nowrap" id="menu" valign="top" align="left" width="17%">
+	<div id="top">
+		<?php include "header.php" ?>
+	</div>
+	
+	<div id="middle">
+		<div id="menu">
 			<?php include "menu.php"; ?>
-		</td>
-		<td class="rmiddle" valign="top" align="center" width="83%" bgcolor="CCCCCC">
-            <div class="bluHeadPane">SIGN UP:</div>
-            <div class="middleContentPane" align="left" valign="top">
+		</div>
+				
+		<div id="content">
+			<div id="content-head">
+			Sign Up
+			</div>
+			
+            <div id="content-middle">  
             <table class="shead" border="0" width="98%">
               <tr height="30">
                <td align="left" valign="center"><font style="font-size:13px; position:relative;font-weight:bold; text-decoration:none; text-decoration:none;
@@ -75,14 +81,15 @@
                                  width="75" height="18" onclick="document.getElementById('usrnmfield').value" value="Submit"/> </td>                
                       </tr>
                 </table>
-             
+            </table> 
            </div>  
-           </div>
-		</td>
-	</tr>
-</table>
-
-<?php include "footer.php"; ?>
-
+          </div>
+	</div>
+	
+	
+	<div id="footer">
+		<?php include "footer.php"; ?>
+	</div>
+</div> <!-- wrapper -->
 </body>
 </html>
