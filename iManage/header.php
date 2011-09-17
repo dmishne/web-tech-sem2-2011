@@ -20,7 +20,6 @@
 				echo "Hey {$_SESSION['username']},
 					  <br />
 					  <a class=\"blue button medium\" href=\"index.php?logout=1\"> Logout </a>";
-				
 			}
 		?>
 			
