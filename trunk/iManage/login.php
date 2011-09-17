@@ -34,11 +34,13 @@
 				<div id="login">
 					<form method="post" action="" id="login_form">
 						<div id="loginText"> 
-							Username: 
+							Username
+							<br /> 
 							<input name="username" type="text" id="username" value="" maxlength="20" />
 						</div>
 						<div id="loginText"> 
-							Password: 
+							Password
+							<br /> 
 							<input name="password" type="password" id="password" value="" maxlength="20" />
 						</div>
 		  				<br />

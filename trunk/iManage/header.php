@@ -3,7 +3,6 @@
 		<div id="logoHeading">Some sentence </div>
 		<div id="loginBox">
 		<?PHP
-			$logout = 1;
 			if (isset($_GET['logout']) && $_GET['logout'] == 1) {
 				session_start();
 				session_unset();
