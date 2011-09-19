@@ -7,7 +7,7 @@
 	<?php include "include.php" ?>
 	
 	<script type="text/javascript">
-		$(document).ready(function(){init();});
+		$(document).ready(function(){setLogin();});
 	</script>
 	
 </head>

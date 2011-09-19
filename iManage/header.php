@@ -13,7 +13,7 @@
 			if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 				echo "<a class=\"blue button medium\" href=\"login.php\"> Login </a>
 				      <br />
-					  <a class=\"blue button medium\" href=\"signuppage.php\"> Sign Up </a>";
+					  <a class=\"blue button medium\" href=\"signuppage.php\" style=\"margin-top:5px\"> Sign Up </a>";
 			}
 			else {
 				echo "Hey {$_SESSION['username']},
