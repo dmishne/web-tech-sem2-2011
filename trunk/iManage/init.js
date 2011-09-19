@@ -1,8 +1,3 @@
-function init()
-{
-	setLogin();
-}
-
 function setLogin()
 {
 	$("#login_form").submit(function()
