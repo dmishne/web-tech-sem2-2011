@@ -28,7 +28,6 @@ function setMenu()
 				$(this).show();
 				$(this).parent().removeClass("menuInactive");
 				$(this).parent().addClass("menuActive");
-				/*$(this).parent().trigger('click');*/
 			}
 		}
 	});
