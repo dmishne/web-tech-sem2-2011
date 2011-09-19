@@ -1,5 +1,5 @@
 <div id="transBlackbox">
-		<div id="logo"></div>
+		<div id="logo"> <img id="underConstruction" src="images/under-construction.png" /> </div>
 		<div id="logoHeading">Some sentence </div>
 		<div id="loginBox">
 		<?PHP
