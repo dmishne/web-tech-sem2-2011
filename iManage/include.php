@@ -6,4 +6,5 @@
 <script src="jquery.cookie.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript" src="init.js"></script>
+<script type="text/javascript" src="slidetgl.js"></script>
 		     

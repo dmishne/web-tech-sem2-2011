@@ -114,3 +114,254 @@ body{
 	color:#CC0000;
 }
 
+/*###################### AddIncome (start) ###########################*/
+
+#contentaddincome{
+	width:100%;
+	height:auto;
+	float:left;
+}
+
+#incomechoser{
+	float:left;
+	margin:0px auto 0px auto;
+	display:block;
+	overflow:hidden;
+	width:69%;
+	min-height: 250px;
+	margin:10px;
+	padding: 0px;
+}
+
+
+#calendar{
+	margin:0px auto 0px auto;
+	display:block;
+	overflow:hidden;
+	width:27%;
+	margin:10px;
+	padding: 0px;
+}
+
+
+#daysum{
+	float:left;
+	margin:0px auto 0px auto;
+	display:block;
+	overflow:hidden;
+	width:69%;
+	min-height: 100px;
+	border-style:solid;
+	margin:10px;
+	padding: 0px;
+}
+
+
+#monthsum{
+	display:block;
+	overflow:hidden;
+	width:25%;
+	min-height: 175px;
+	border-style:solid;
+	margin:10px;
+	padding: 0px;
+}
+
+/******************************green panel flip*************************************/
+
+p.flip{
+	background-image:url('../images/greenLabel1pix.png');
+	background-repeat:repeat-x;
+	font-family: sans-serif;
+	padding:0px;
+	width:96%;
+	margin-bottom:0px;
+	margin-top:0px;
+    margin-right:10px;
+    margin-left:10px;
+    position:relative;
+    z-index:10;
+}
+
+/******************************content panels*************************************/
+
+div.panel1{
+    margin-bottom:5px;
+	margin-top:0px;
+    margin-right:10px;
+    margin-left:15px;
+    top:-15px;
+    position:relative;
+    display:none;
+	width:89.5%;
+	padding:10px;
+	background-color:rgb(228,228,228);
+	-webkit-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+	-moz-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+	box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+}
+div.panel2{
+	margin-bottom:5px;
+	margin-top:0px;
+    margin-right:10px;
+    margin-left:15px;
+    top:-15px;
+    position:relative;
+	width:89.5%;
+	display:none;
+	padding:10px;
+	background-color:rgb(228,228,228);
+	-webkit-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+	-moz-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+	box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+}
+div.panel3{
+    margin-bottom:5px;
+	margin-top:0px;
+    margin-right:10px;
+    margin-left:15px;
+    top:-15px;
+    position:relative;
+	width:89.5%;
+	display:none;
+	padding:10px;
+	background-color:rgb(228,228,228);
+	-webkit-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+	-moz-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+	box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+}
+div.panel4{
+    margin-bottom:5px;
+	margin-top:0px;
+    margin-right:10px;
+    margin-left:15px;
+    top:-15px;
+    position:relative;
+	width:89.5%;
+	display:none;
+	padding:10px;
+	background-color:rgb(228,228,228);
+	-webkit-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+	-moz-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+	box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+}
+
+/******************************gray line*************************************/
+
+p.line1{
+	background-color:rgb(228,228,228);
+	margin-bottom:0px;
+	margin-top:0px;
+    margin-right:10px;
+    margin-left:16px;
+	width:93%;
+	height:15px;
+	position:relative;
+	top:-18px;	
+	-webkit-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+	-moz-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+	box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+}
+p.line2{
+	background-color:rgb(228,228,228);
+	margin-bottom:0px;
+	margin-top:0px;
+    margin-right:10px;
+    margin-left:16px;
+	width:93%;
+	height:15px;
+	position:relative;
+	top:-18px;	
+	-webkit-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+	-moz-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+	box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+}
+p.line3{
+	background-color:rgb(228,228,228);
+	margin-bottom:0px;
+	margin-top:0px;
+    margin-right:10px;
+    margin-left:16px;
+	width:93%;
+	height:15px;
+	position:relative;
+	top:-18px;	
+	-webkit-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+	-moz-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+	box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+}
+p.line4{
+	background-color:rgb(228,228,228);
+	margin-bottom:0px;
+	margin-top:0px;
+    margin-right:10px;
+    margin-left:16px;
+	width:93%;
+	height:15px;
+	position:relative;
+	top:-18px;
+	-webkit-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+	-moz-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+	box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+}
+
+/******************************green tab*************************************/
+
+.button {
+	cursor: pointer;
+	display: inline-block;
+	zoom: 1; /* zoom and *display = ie7 hack for display:inline-block */
+	*display: inline;
+	vertical-align: baseline;
+	outline: none;
+	text-align: center;
+	text-decoration: none;
+	text-shadow: 0 1px 1px rgba(0,0,0,.3);
+	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	box-shadow: 0 1px 2px rgba(0,0,0,.2);
+}
+.button:hover {
+	text-decoration: none;
+}
+
+.green {
+	color: #a3c653;
+	border: solid 1px #538312;
+	background: #a3c653;
+	background: -webkit-gradient(linear, left top, left bottom, from(#b1da7e), to(#93be4c));
+	background: -moz-linear-gradient(top,  #b1da7e,  #93be4c);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#b1da7e', endColorstr='#93be4c');
+}
+
+.green:hover {
+	background: #538018;
+	background: -webkit-gradient(linear, left top, left bottom, from(#97c72b), to(#6a8e1b));
+	background: -moz-linear-gradient(top,  #97c72b,  #6a8e1b);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c72b', endColorstr='#6a8e1b');
+}
+
+.rounded{
+cursor: pointer;
+-webkit-border-bottom-left-radius: 0.6em;
+-webkit-border-bottom-right-radius: 0.6em;
+-moz-border-radius-bottomright: 0.6em;
+-moz-border-radius-bottomleft: 0.6em;
+border-bottom-left-radius: 0.6em;
+border-bottom-right-radius: 0.6em;
+font-size: 14px;
+position:relative; 
+left:10px;
+top:-3px;
+z-index:9;
+}
+
+#cal{
+position:relative;
+left:25px;	
+}
+
+
+/*###################### AddIncome (end) ###########################*/
+
+
