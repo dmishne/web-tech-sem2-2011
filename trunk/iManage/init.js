@@ -34,3 +34,21 @@ function setLogin()
  		return false; //not to post the  form physically
 	});
 }
+
+
+function initCalendar()
+{
+	$("#CalLeft").click(function()
+	{
+		$.mon_year.month = $.mon_year.month - 1;
+		if($.mon_year.month == 0) { $.mon_year.month = 12; $.mon_year.year--;}
+		document.location='addincome.php' + '?year=' + $.mon_year.year + '&month=' + $.mon_year.month;
+	});
+	
+	$("#CalRight").click(function()
+	{
+		$.mon_year.month = $.mon_year.month + 1;
+		if($.mon_year.month == 13) {$.mon_year.month = 1; $.mon_year.year++;}
+		document.location='addincome.php' + '?year=' + $.mon_year.year + '&month=' + $.mon_year.month;
+	});
+}

@@ -4,14 +4,14 @@
 		<div id="loginBox">
 		<?php
 			if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
-				echo "<a class=\"blue button medium\" href=\"login.php\"> Login </a>
+				echo "<a class=\"blue buttonStyle medium\" href=\"login.php\"> Login </a>
 				      <br />
-					  <a class=\"blue button medium\" href=\"signuppage.php\" style=\"margin-top:5px\"> Sign Up </a>";
+					  <a class=\"blue buttonStyle medium\" href=\"signuppage.php\" style=\"margin-top:5px\"> Sign Up </a>";
 			}
 			else {
 				echo "Hey {$_SESSION['username']},
 					  <br />
-					  <a class=\"blue button medium\" href=\"index.php?logout=1\"> Logout </a>";
+					  <a class=\"blue buttonStyle medium\" href=\"index.php?logout=1\"> Logout </a>";
 			}
 		?>
 			
