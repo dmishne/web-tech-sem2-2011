@@ -9,7 +9,7 @@
   if(isset($_REQUEST['year'])) $year = $_REQUEST['year'];
   if(isset($_REQUEST['month'])) $month = $_REQUEST['month'];
   if(isset($_REQUEST['offset'])) $offset = $_REQUEST['offset'];
-
+  
   // set PHP_SELF:
   if(isset($_SERVER['PHP_SELF'])) $PHP_SELF = $_SERVER['PHP_SELF'];
 ?>
@@ -24,13 +24,29 @@
 	<link rel="apple-touch-icon" href="images/icon_apple.png" />
 	<?php include "include.php" ?>
 	
-	
+	<?php
+	echo "<script type=\"text/javascript\">
+		  $.mon_year = {};";
+	if(isset($_REQUEST['year']) && isset($_REQUEST['month']))
+	{
+		echo "$.mon_year.year = {$_REQUEST[year]} ;" . "
+		   	  $.mon_year.month =  {$_REQUEST[month]} ;";
+	}
+	else
+	{
+		echo "$.mon_year.year = " . date("Y") . ";
+			  $.mon_year.month = " . date("m") . ";
+		";
+	}
+	echo "</script>";
+	?>
 	
 	<script type="text/javascript"> 
          $(document).ready(function(){
            slidetgl();
+           initCalendar();
        });
-</script>
+	</script>
 </head>
 
 <body>
@@ -124,8 +140,8 @@
 		         
 		         <div id="calendar">
 		              <!-- Form POST for calendar.php -->
-		              <form action="<? echo $PHP_SELF; ?>" method="post">
-							<?
+		              <form action="<? echo $PHP_SELF; ?>" method="get">
+							<?php
 							  // if year is empty, set year to current year:
 							  if($year == '') $year = date('Y');
 							  // if month is empty, set month to current month:
@@ -138,7 +154,7 @@
 							<input type="text" id="cal" name="year"  size="4" maxlength="4" value="<? echo $year; ?>">
 			
 							<select  name="month" onchange="this.form.submit();" style="position:relative; left:25px;">
-							<?
+							<?php
 							  // build selection (months):
 							  $months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
 							  for($i = 1; $i <= 12; $i++) {

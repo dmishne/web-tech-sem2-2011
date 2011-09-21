@@ -196,6 +196,7 @@
 				}
 				if($link) {
 					$link .= strstr($link, '?') ? "&date=$date" : "?date=$date";
+					$link .= "&year=" . $this->year . "&month=" . $this->month;
 					$html .= ' onMouseOver="this.className=\'cssHilight' . $cal_ID . '\'"';
 					$html .= ' onMouseOut="this.className=\'' . $class . '\'"';
 					$html .= ' onClick="' . $this->linkTarget . '.location.href=\'' . $link . '\'"';
@@ -269,7 +270,9 @@
 				$html .= '<table border=0 cellspacing=0 cellpadding=0><tr>';
 				$html .= '<td' . ($this->borderColor ? ' bgcolor=' . $this->borderColor	: '') . '>';
 				$html .= '<table border=0 cellspacing=1 cellpadding=3>';
-				$title = htmlentities($this->months[$this->month-1]) . ' ' . $this->year;
+				$title = '<button id=\'CalLeft\' class=\'button\' small> < </button>';
+				$title .= htmlentities($this->months[$this->month-1]) . ' ' . $this->year;
+				$title .= '<button id=\'CalRight\' class=\'button\' small> > </button>';
 				$html .= $this->table_head($title);
 				$daycount = 1;
 
