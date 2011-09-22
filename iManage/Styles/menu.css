@@ -36,6 +36,7 @@ ul.mainMenu li{
 	background-repeat:repeat-x;
 	font-family: sans-serif;
 	padding-right: 5px;
+	cursor: pointer;
 }
 
 .menuInactive{
