@@ -1,6 +1,8 @@
 <link rel="stylesheet" href="Styles/main.css" type="text/css" />
 <link rel="stylesheet" href="Styles/menu.css" type="text/css" />
 <link rel="stylesheet" href="Styles/header.css" type="text/css" />
+<link rel="stylesheet" href="Styles/bar.css" type="text/css" />
+
 
 <script type="text/javascript" src="jquery-1.6.4.min.js"></script>
 <script src="jquery.cookie.js"></script>
