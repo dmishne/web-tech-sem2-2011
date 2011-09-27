@@ -33,3 +33,21 @@ function slidetgl()
             $("#4a").attr("src", src);
          });
 }
+
+
+function rDayWageTotal(){
+	var rh=document.getElementById("rhpd").value;
+	var rm=document.getElementById("rmpd").value;
+	var rw=document.getElementById("rwpd").value;
+	rm=(rm*100)/6000;
+	           document.getElementById("rwt").value= ((rh*rw)+(rm*rw)).toFixed(2);
+}
+
+function oDayWageTotal(){
+	var h=document.getElementById("ohpd").value;
+	var m=document.getElementById("ompd").value;
+	var w=document.getElementById("owpd").value;
+	m=(m*100)/6000;
+	           document.getElementById("owt").value= ((h*w)+(m*w)).toFixed(2);
+}
+

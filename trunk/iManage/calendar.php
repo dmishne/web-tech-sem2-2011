@@ -38,7 +38,7 @@
 //========================================================================================================
 		var $tFontFace = 'Arial, Helvetica';	// title: font family (CSS-spec, e.g. "Arial, Helvetica")
 		var $tFontSize = 14;					// title: font size (pixels)
-		var $tFontColor = '#FFFFFF';			// title: font color
+		var $tFontColor = '#000000';			// title: font color
 		var $tBGColor = '#8DB600';				// title: background color
 
 		var $hFontFace = 'Arial, Helvetica'; 	// heading: font family (CSS-spec, e.g. "Arial, Helvetica")
@@ -62,9 +62,11 @@
 		var $suFontColor = '#000000';			// Sundays: font color
 		var $suBGColor = '#FFFFFF';				// Sundays: background color
 
+		var $pBGColor = '#a2c91c';				// picked day: background color
+		
 		var $tdBorderColor = '#FF0000';			// today: border color
 
-		var $borderColor = "black";			    // border color
+		var $borderColor = '#5e7900';			    // border color
 		var $hilightColor = '#FFFF00';			// hilight color (works only in combination with link)
 
 		var $link = '';							// page to link to when day is clicked
@@ -145,6 +147,11 @@
 			if($this->dFontSize) $html .= 'font-size: ' . $this->dFontSize . 'px; ';
 			if($this->dFontColor) $html .= 'color: ' . $this->dFontColor . '; ';
 			if($this->hilightColor) $html .= 'background-color: ' . $this->hilightColor . '; ';
+			$html .= '} .cssPicked' . $cal_ID . ' { ';
+			if($this->dFontFace) $html .= 'font-family: ' . $this->dFontFace . '; ';
+			if($this->dFontSize) $html .= 'font-size: ' . $this->dFontSize . 'px; ';
+			if($this->dFontColor) $html .= 'color: ' . $this->dFontColor . '; ';
+			if($this->pBGColor) $html .= 'background-color: ' . $this->pBGColor . '; ';
 			$html .= 'cursor: default; ';
 			$html .= '} </style>';
 
@@ -196,10 +203,11 @@
 				}
 				if($link) {
 					$link .= strstr($link, '?') ? "&date=$date" : "?date=$date";
-					$link .= "&year=" . $this->year . "&month=" . $this->month;
+					$link .= "&month=" . $this->month . "&year=" . $this->year;
 					$html .= ' onMouseOver="this.className=\'cssHilight' . $cal_ID . '\'"';
 					$html .= ' onMouseOut="this.className=\'' . $class . '\'"';
 					$html .= ' onClick="' . $this->linkTarget . '.location.href=\'' . $link . '\'"';
+					
 				}
 			}
 			if($style) $html .= ' style="' . $style . '"';
@@ -211,9 +219,11 @@
 		function table_head($content) {
 			global $cal_ID;
 
-			$cols = $this->weekNumbers ? 8 : 7;
-			$html = '<tr><td colspan=' . $cols . ' class="cssTitle' . $cal_ID . '" align=center><b>' .
-					$content . '</b></td></tr><tr>';
+			$cols = $this->weekNumbers ? 6 : 5;
+			$html = '<tr><td style="padding:0; background-color:#8DB600;" align="center"><button id="CalLeft" class="button small calgreen bround"> << </button></td>';
+			$html .= '<td colspan=' . $cols .' class="cssTitle' . $cal_ID .'" border="0" align=center><b>' .$content . '</b></td>';
+			$html .= '<td style="padding:0; background-color:#8DB600;" align="center"><button id="CalRight" class="button small calgreen bround"> >> </button></td>
+			</tr><tr>';
 			for($i = 0; $i < count($this->weekdays); $i++) {
 				$ind = ($i + $this->offset) % 7;
 				$wDay = $this->weekdays[$ind];
@@ -255,7 +265,7 @@
 			$this->size = ($this->hFontSize > $this->dFontSize) ? $this->hFontSize : $this->dFontSize;
 			if($this->wFontSize > $this->size) $this->size = $this->wFontSize;
 
-			list($curYear, $curMonth, $curDay) = explode('-', date('Y-m-d'));
+			list($curDay, $curMonth, $curYear) = explode('-', date('d-m-Y'));
 
 			if($this->year < 1 || $this->year > 3999) $html = '<b>' . $this->error[0] . '</b>';
 			else if($this->month < 1 || $this->month > 12) $html = '<b>' . $this->error[1] . '</b>';
@@ -267,12 +277,10 @@
 				$stop = $this->mDays[$this->month-1];
 
 				$html = $this->set_styles();
-				$html .= '<table border=0 cellspacing=0 cellpadding=0><tr>';
+				$html .= '<table border=0.5 cellspacing=0 cellpadding=0><tr>';
 				$html .= '<td' . ($this->borderColor ? ' bgcolor=' . $this->borderColor	: '') . '>';
-				$html .= '<table border=0 cellspacing=1 cellpadding=3>';
-				$title = '<button id=\'CalLeft\' class=\'button\' small> < </button>';
+				$html .= '<table border=0.5 cellspacing=1 cellpadding=3>';
 				$title .= htmlentities($this->months[$this->month-1]) . ' ' . $this->year;
-				$title .= '<button id=\'CalRight\' class=\'button\' small> > </button>';
 				$html .= $this->table_head($title);
 				$daycount = 1;
 
@@ -296,8 +304,7 @@
 						else $class = 'cssDays';
 
 						$style = '';
-						$date = sprintf('%4d-%02d-%02d', $this->year, $this->month, $daycount);
-
+						$date = sprintf('%02d.%02d.%4d', $daycount, $this->month, $this->year);
 						if(($daycount == 1 && $i < $start) || $daycount > $stop) $content = '&nbsp;';
 						else {
 							$content = $daycount;
