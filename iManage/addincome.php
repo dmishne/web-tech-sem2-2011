@@ -71,41 +71,43 @@
 			         
 		         <div id="incomechoser" >
 		           <!---------------------------------------------------------------> 
-		           <!--------------------------------------------------------------->        
+		           <!--------------------------------------------------------------->   
+		           <?php  if(isset($date))
+							                     list($curDay, $curMonth, $curYear)= explode('.', $date,3);
+							                else
+							                     list($curDay, $curMonth, $curYear) = explode('-', date('d-m-Y'),3); ?>     
 		             <p class="flip"  style="text-align:center;"> One Time Income</p>
 					 <button class="green rounded" id="frst"><img id="1a" src="images/arrows_down.png" /></button>					 
 		             <div class="panel1">
-							<table>
-							   <tr>
-							     <td width="40%" align="center"> ADD:<input name="oti" type="text" id="oti"  maxlength="20" />$</div></td>
-							     <td  width="60%" align="center">day    month      year</td>
-							   </tr>
-							   <tr>
-							     <td width="40%" align="center"> blah </td>
-							        <td width="60%" align="center">  
-							            <form action="">
-										<select name="day">
-										<option value="1">13</option>
-										<option value="2">14</option>
-										<option value="3" selected="selected">15</option>
-										<option value="4">16</option>
-										</select>
-										<select name="month">
-										<option value="1">7</option>
-										<option value="2">8</option>
-										<option value="3" selected="selected">9</option>
-										<option value="4">10</option>
-										</select>
-										<select name="year">
-										<option value="1">2009</option>
-										<option value="2">2010</option>
-										<option value="3" selected="selected">2011</option>
-										<option value="4">2012</option>
-										</select>
-										</form>
-								   </td>
-							   </tr>
-							</table>
+		             <form method="post" action="" id="panel1_form">
+					    <table width="100%">
+					        <td width="63%">
+					          <table>
+							       <tr>
+							         <td width="45%" class="pfont">Name: </td>
+							         <td width="55%"><input type="text" class="inpt" size="20" maxlength="30"/></td>
+							       </tr>
+							       <tr>
+							         <td width="45%" class="pfont">Amount: </td>
+							         <td width="55%"><input type="text" class="inpt" style="color:green" size="20" maxlength="30"/></td>
+							       </tr>
+							       <tr>
+							         <td width="45%" class="pfont">Income Date (dd/mm/yyyy): </td>
+							         <td width="55%"><input type="text" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
+							          <b>/</b><input type="text" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
+							          <b>/</b><input type="text" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
+							       </tr>
+							     </table>  
+						     </td>
+						     <td width="35%">
+						         <table>
+							         <thead><td nowrap="nowrap" class="pfont" style="font-size:16px">Income description:</td></thead>
+							         <tbody><td><textarea rows="8" cols="28" class="inpt"></textarea></td></tbody>
+							         <tfoot><td align="right"><input type="submit" value="Update" class="blue button small bround"></input></td></tfoot>
+						         </table> 
+						     </td>  
+					    </table>
+					    </form>
 					 </div>	
 					 <p class="line1"></p>
 					 <!---------------------------------------------------------------> 
@@ -113,7 +115,41 @@
 					 <p class="flip"  style="text-align:center;"> Recurring Income</p>
 					 <button class="green rounded" id="scnd"><img id="2a" src="images/arrows_down.png" /></button>	
 					 <div class="panel2">
-							Because time is valuable, we deliver quick and easy learning.
+						<form method="post" action="" id="panel2_form">	
+                          <table width="100%">
+					        <td width="63%">
+					          <table>
+							       <tr>
+							         <td width="45%" class="pfont">Name: </td>
+							         <td width="55%"><input type="text" class="inpt" size="20" maxlength="30"/></td>
+							       </tr>
+							       <tr>
+							         <td width="45%" class="pfont">Amount: </td>
+							         <td width="55%"><input type="text" class="inpt" style="color:green" size="20" maxlength="30"/></td>
+							       </tr>
+							       <tr>
+							         <td width="50%" class="pfont">From (dd/mm/yyyy): </td>
+							         <td width="50%"><input type="text" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
+							          <b>/</b><input type="text" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
+							          <b>/</b><input type="text" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
+							       </tr>
+							       <tr>
+							          <td width="50%" class="pfont">To (dd/mm/yyyy): </td>
+							          <td width="50%"><input type="text" size="1" maxlength="2" class="inpt"/>
+							          <b>/</b><input type="text" size="1" maxlength="2" class="inpt"/>
+							          <b>/</b><input type="text" size="2" maxlength="4" class="inpt"/></td>
+							       </tr>
+							     </table>  
+						     </td>
+						     <td width="35%">
+						         <table>
+							         <thead><td nowrap="nowrap" class="pfont" style="font-size:16px">Income description:</td></thead>
+							         <tbody><td><textarea rows="8" cols="28" class="inpt"></textarea></td></tbody>
+							         <tfoot><td align="right"><input type="submit" value="Update" class="blue button small bround"></input></td></tfoot>
+						         </table> 
+						     </td>  
+					    </table>
+                       </form>
 					 </div>
 					 <p class="line2"></p>
 					 <!---------------------------------------------------------------> 
@@ -121,7 +157,50 @@
 					 <p class="flip"  style="text-align:center;"> Recurring Generated Income</p>
 				     <button class="green rounded" id="thrd"><img  id="3a" src="images/arrows_down.png" /></button>		
 					 <div class="panel3">
-							Because time is valuable, we deliver quick and easy learning.
+						<form method="post" action="" id="panel3_form">	
+							<table width="100%">
+					        <td width="63%">
+					          <table>
+							       <tr>
+							         <td width="45%" class="pfont">Name: </td>
+							         <td width="55%"><input type="text" class="inpt" size="20" maxlength="30"/></td>
+							       </tr>
+							       <tr>
+							         <td width="45%" class="pfont">Hours per Day (hh:mm): </td>
+							         <td width="55%"><input type="text" class="inpt" size="6" maxlength="2" id="rhpd" value="0" onchange="rDayWageTotal()"/>
+							                 <b>:</b><input type="text" class="inpt" size="6" maxlength="2" id="rmpd" value="0" onchange="rDayWageTotal()"/></td>
+							       </tr>
+							       <tr>
+							         <td width="45%" class="pfont">Wage per Hour: </td>
+							         <td width="55%"><input type="text" class="inpt" size="20" maxlength="30" id="rwpd" value="0" onchange="rDayWageTotal()"/></td>
+							       </tr>
+							       <tr>
+							         <td width="45%" class="pfont">Total per Day: </td>
+							         <td width="55%"><input type="text" class="inpt" style="color:green" size="20" maxlength="30" readonly="readonly" id="rwt"/></td>
+							       </tr>
+							       <tr>
+							         <td width="45%" class="pfont">From (dd/mm/yyyy): </td>
+							         <td width="55%"><input type="text" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
+							          <b>/</b><input type="text" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
+							          <b>/</b><input type="text" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
+							       </tr>
+							       <tr>
+							          <td width="45%" class="pfont">To (dd/mm/yyyy): </td>
+							          <td width="55%"><input type="text" size="1" maxlength="2" class="inpt"/>
+							          <b>/</b><input type="text" size="1" maxlength="2" class="inpt"/>
+							          <b>/</b><input type="text" size="2" maxlength="4" class="inpt"/></td>
+							       </tr>
+							     </table>  
+						     </td>
+						     <td width="35%">
+						         <table>
+							         <thead><td nowrap="nowrap" class="pfont" style="font-size:16px">Income description:</td></thead>
+							         <tbody><td><textarea rows="8" cols="28" class="inpt"></textarea></td></tbody>
+							         <tfoot><td align="right"><input type="submit" value="Update" class="blue button small bround" ></input></td></tfoot>
+						         </table> 
+						     </td>  
+					    </table>
+						</form>	
 					 </div>		
 					 <p class="line3"></p>
 					 <!---------------------------------------------------------------> 
@@ -129,7 +208,44 @@
 					 <p class="flip"  style="text-align:center;"> One Time Generated Income</p>	 
 					 <button class="green rounded" id="frth"><img id="4a" src="images/arrows_down.png" /></button>
 					 <div class="panel4">
-							Because time is valuable, we deliver quick and easy learning.
+						  <form method="post" action="" id="panel4_form">	
+							<table width="100%">
+					        <td width="63%">
+					          <table>
+							       <tr>
+							         <td width="45%" class="pfont">Name: </td>
+							         <td width="55%"><input type="text" class="inpt" size="20" maxlength="30"/></td>
+							       </tr>
+							       <tr>
+							         <td width="45%" class="pfont">Hours per Day (hh:mm): </td>
+							         <td width="55%"><input type="text" class="inpt" size="6" maxlength="2" id="ohpd" value="0" onchange="oDayWageTotal()"/>
+							                 <b>:</b><input type="text" class="inpt" size="6" maxlength="2" id="ompd" value="0" onchange="oDayWageTotal()"/></td>
+							       </tr>
+							       <tr>
+							         <td width="45%" class="pfont">Wage per Hour: </td>
+							         <td width="55%"><input type="text" class="inpt" size="20" maxlength="30" id="owpd" value="0" onchange="oDayWageTotal()"/></td>
+							       </tr>
+							       <tr>
+							         <td width="45%" class="pfont">Total per Day: </td>
+							         <td width="55%"><input type="text" class="inpt" style="color:green" size="20" maxlength="30" readonly="readonly" id="owt"/></td>
+							       </tr>
+							       <tr>
+							         <td width="45%" class="pfont">Income Date (dd/mm/yyyy): </td>
+							         <td width="55%"><input type="text" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
+							          <b>/</b><input type="text" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
+							          <b>/</b><input type="text" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
+							       </tr>
+							     </table>  
+						     </td>
+						     <td width="35%">
+						         <table>
+							         <thead><td nowrap="nowrap" class="pfont" style="font-size:16px">Income description:</td></thead>
+							         <tbody><td><textarea rows="8" cols="28" class="inpt"></textarea></td></tbody>
+							         <tfoot><td align="right"><input type="submit" value="Update" class="blue button small bround"></input></td></tfoot>
+						         </table> 
+						     </td>  
+					    </table>
+					   </form>	
 					 </div>		
 					 <p class="line4"></p>					 
 												
@@ -150,20 +266,6 @@
 							  // if offset is empty, set offset to 1 (start with Sunday):
 							  if($offset == '') $offset = 1;
 							?>
-							   <!-- input year value: --> 
-							<input type="text" id="cal" name="year"  size="4" maxlength="4" value="<? echo $year; ?>">
-			
-							<select  name="month" onchange="this.form.submit();" style="position:relative; left:25px;">
-							<?php
-							  // build selection (months):
-							  $months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-							  for($i = 1; $i <= 12; $i++) {
-							    echo '<option value="' . $i . '"';
-							    if($i == $month) echo ' selected';
-							    echo '>' . $months[$i-1] . "</option>\n";
-							  }
-							?>
-							</select>
 					 </form>
 							
 					<!--  Calendar declaration & creation  -->		
@@ -186,7 +288,8 @@
 		         </div>
 		         <div id="monthsum">
 		             <?php // current month
-						  if(isset($month)) echo  $months[$month-1] ;
+		                  $months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+						  if(isset($month) && isset($year)) echo  $months[$month-1] . ' ' . $year ;
 						  ?>
 		         </div>
 			</div>
