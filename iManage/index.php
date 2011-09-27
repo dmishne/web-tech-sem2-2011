@@ -41,7 +41,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
 	<div id="footer">
 		<?php include "footer.php"; ?>
 	</div>
-	<?php include "bar.php"; ?>
+	<?php /* include "bar.php"; */?> 
 </div> <!-- wrapper -->
 
 </body>

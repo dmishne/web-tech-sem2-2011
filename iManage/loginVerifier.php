@@ -8,11 +8,8 @@ if (mysqli_connect_errno()) {
 
 $connection->select_db('webtech');
 
-/* $username=htmlspecialchars($_POST['username'],ENT_QUOTES);
-$password=md5($_POST['password']); */
-
-$username='test';
-$password=md5('test');
+$username=htmlspecialchars($_POST['username'],ENT_QUOTES);
+$password=md5($_POST['password']);
 
 //now validating the username and password
 $res = $connection->query("CALL doLogin('$username', '$password')") or die(mysqli_error());
