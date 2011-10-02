@@ -1,6 +1,6 @@
 <div id="transBlackbox">
-		<div id="logo"> <img id="underConstruction" src="images/under-construction.png" /> </div>
-		<div id="logoHeading">Some sentence </div>
+		<div id="logo">  <!-- <img id="underConstruction" src="images/under-construction.png" /> --> </div> 
+		<div id="logoHeading">Imanage </div>
 		<div id="loginBox">
 		<?php
 			if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
