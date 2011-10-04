@@ -11,7 +11,9 @@
 			else {
 				echo "Hey {$_SESSION['username']},
 					  <br />
-					  <a class=\"blue buttonStyle medium\" href=\"index.php?logout=1\"> Logout </a>";
+					  <a class=\"blue buttonStyle medium\" href=\"index.php?logout=1\"> Logout </a>
+						<br /> Your balance is: {$_SESSION['balance']}" ;
+				
 			}
 		?>
 			
