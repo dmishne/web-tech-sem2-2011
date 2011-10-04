@@ -19,6 +19,25 @@ if($res->num_rows > 0){
 	$_SESSION['login']    = "1";
 	$_SESSION['username'] = $username;
 	$_SESSION['firstname'] = $userDetails[0];
+	$_SESSION['lastname'] = $userDetails[1];
+	$_SESSION['DOB'] = $userDetails[2];
+	$_SESSION['email'] = $userDetails[5];
+	$res->free();
+	//Impossible to submit any quesry after a SP, cause of some mysql glitch - known issue, 
+	//this frees each row in the result of the SP
+	while ($connection->next_result()) {
+		//free each result.
+		$result = $connection->use_result();
+		if ($result instanceof mysqli_result) {
+			$result->free();
+		}
+	}
+	
+	
+	$newres = $connection->query("CALL getBalance('$username')") or die(mysqli_error());
+	$bal = $newres->fetch_array(MYSQLI_NUM);
+	if($newres->num_rows > 0)
+		$_SESSION['balance'] = $bal[0];
 	echo "yes";
 }
 else{
