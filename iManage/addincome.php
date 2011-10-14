@@ -134,10 +134,15 @@
 							          <b>/</b><input type="text" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
 							       </tr>
 							       <tr>
-							          <td width="50%" class="pfont">To (dd/mm/yyyy): </td>
-							          <td width="50%"><input type="text" size="1" maxlength="2" class="inpt"/>
-							          <b>/</b><input type="text" size="1" maxlength="2" class="inpt"/>
-							          <b>/</b><input type="text" size="2" maxlength="4" class="inpt"/></td>
+							          <td width="50%" class="pfont">Recurring Period: </td>
+							          <td width="50%">
+							             <select name="r_period" class="inpt" style="width:136px">
+											<option value="daily">Daily</option>
+											<option value="weekly">Weekly</option>
+											<option value="2weeks">Fortnightly</option>
+											<option value="monthly">Monthly</option>
+										 </select>
+							          </td>
 							       </tr>
 							     </table>  
 						     </td>
@@ -185,10 +190,15 @@
 							          <b>/</b><input type="text" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
 							       </tr>
 							       <tr>
-							          <td width="45%" class="pfont">To (dd/mm/yyyy): </td>
-							          <td width="55%"><input type="text" size="1" maxlength="2" class="inpt"/>
-							          <b>/</b><input type="text" size="1" maxlength="2" class="inpt"/>
-							          <b>/</b><input type="text" size="2" maxlength="4" class="inpt"/></td>
+							          <td width="50%" class="pfont">Recurring Period: </td>
+							          <td width="50%">
+							             <select name="r_period" class="inpt" style="width:136px">
+											<option value="daily">Daily</option>
+											<option value="weekly">Weekly</option>
+											<option value="2weeks">Fortnightly</option>
+											<option value="monthly">Monthly</option>
+										 </select>
+							          </td>
 							       </tr>
 							     </table>  
 						     </td>
