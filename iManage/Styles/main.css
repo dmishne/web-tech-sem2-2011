@@ -116,6 +116,31 @@ body{
 	color:#CC0000;
 }
 
+#signup_personal{
+	float:left;
+	width: 350px;
+	margin-left:25px;
+	margin-top:25px;
+}
+
+#signup_login{
+	float:right;
+	width: 350px;
+	margin-right:25px;
+	margin-top:25px;
+	
+}
+
+.error{
+	color:red;
+}
+
+.errorGrey
+{
+	background-color:rgb(80,80,80);
+	color:red;
+}
+
 /*###################### AddIncome (start) ###########################*/
 
 #contentaddincome{
