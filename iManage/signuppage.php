@@ -120,9 +120,10 @@
 		        </div>
 		        <br />
 		        <br />
-		        <br />
-		        <input style="position:absolute; margin: 200px 0px 0px 0px;" name="signup" id="signup" type="submit" value="Sign Up" class="blue button medium" style="min-width:100px;" />
-		         
+		        <br />		        
+		        <div style="clear:both; width:100%; margin: 100px 0px 0px 0px; text-align:center;">
+		        	<input name="signup" id="signup" type="submit" value="Sign Up" class="blue button medium" style="min-width:100px;" />
+		        </div>
 	            </form>
 	
         	</div>  
@@ -131,8 +132,6 @@
 			unset($_SESSION['signupError']);
         ?>
 	</div>
-	
-	
 	<div id="footer">
 		<?php include "footer.php"; ?>
 	</div>
