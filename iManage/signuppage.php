@@ -53,7 +53,7 @@
 		            	</tr>
 		            	<?php 
 		            		if(isset($error['firstname']) && $error['firstname'] = 1){
-		            			echo "<tr> <td COLSPAN=2> <div class=\"error\"> Aleast 2 letters required. </div> </td> </tr>";
+		            			echo "<tr> <td COLSPAN=2> <div class=\"error\"> At least 2 letters required. </div> </td> </tr>";
 		            		}
 		            	?>
 		            	<tr>
@@ -62,7 +62,7 @@
 		            	</tr>
 		               	<?php 
 		            		if(isset($error['lastname']) && $error['lastname'] = 1){
-		            			echo "<tr COLSPAN=2> <td COLSPAN=2> <div class=\"error\"> Aleast 2 letters required. </div> </td> </tr>";
+		            			echo "<tr COLSPAN=2> <td COLSPAN=2> <div class=\"error\"> At least 2 letters required. </div> </td> </tr>";
 		            		}
 		            	?>
 		            	<tr>
@@ -95,7 +95,7 @@
 			         	</tr>
 			         	<?php 
 		            		if(isset($error['username']) && $error['username'] = 1){
-		            			echo "<tr COLSPAN=2> <td COLSPAN=2> <div class=\"error\"> Aleast 3 letters required. </div> </td> </tr>";
+		            			echo "<tr COLSPAN=2> <td COLSPAN=2> <div class=\"error\"> At least 3 letters required. </div> </td> </tr>";
 		            		}
 		            	?>
 			         	<tr>
