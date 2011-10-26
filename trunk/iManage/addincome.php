@@ -73,65 +73,79 @@
 		           <!---------------------------------------------------------------> 
 		           <!--------------------------------------------------------------->   
 		           <?php  if(isset($date))
-							                     list($curDay, $curMonth, $curYear)= explode('.', $date,3);
-							                else
-							                     list($curDay, $curMonth, $curYear) = explode('-', date('d-m-Y'),3); ?>     
+							        list($curDay, $curMonth, $curYear)= explode('.', $date,3);
+							else
+							        list($curDay, $curMonth, $curYear) = explode('-', date('d-m-Y'),3); 
+				    ?>
+	            	<?php 
+			             if((isset($_SESSION['addincome'])))
+			             {
+			             	$usrinpt = $_SESSION['addincome'];
+			             	echo "<div class=\"error\"> Input error! Please check values </div>";
+			             }
+		             ?>	     
 		             <p class="flip"  style="text-align:center;"> One Time Income</p>
-					 <button class="green rounded" id="frst"><img id="1a" src="images/arrows_down.png" /></button>					 
-		             <div class="panel1">
-		             <form method="post" action="" id="panel1_form">
+					 <button class="green rounded" id="frst"><img id="1a" src="<?php  if(isset($usrinpt['err1']) && $usrinpt['err1'] == 1) echo "images/arrows_up.png"; else echo "images/arrows_down.png";?>"/></button>					 
+		             <div class="panel1"  style="<?php  if(isset($usrinpt['err1']) && $usrinpt['err1'] == 1) echo "display:block;"; ?>">
+		             <form method="post" action="addincomeTransaction.php" id="panel1_form">
 					    <table width="100%">
 					        <td width="63%">
+					        <input type="hidden" name="panel" value="1" />
 					          <table>
 							       <tr>
 							         <td width="45%" class="pfont">Name: </td>
-							         <td width="55%"><input type="text" class="inpt" size="20" maxlength="30"/></td>
+							         <td width="55%"><input type="text" name="inname" class="inpt" size="20" maxlength="30"/></td>
 							       </tr>
 							       <tr>
 							         <td width="45%" class="pfont">Amount: </td>
-							         <td width="55%"><input type="text" class="inpt" style="color:green" size="20" maxlength="30"/></td>
+							         <td width="55%"><input type="text"  name="amount" id="amount" class="inpt" style="color:green" size="20" maxlength="30" onblur="chkdig()"/></td>
 							       </tr>
+							       <?php if(isset($usrinpt['amount']) && $usrinpt['amount'] == "error"){
+		            			            echo "<tr COLSPAN=2> <td COLSPAN=2> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}?>
 							       <tr>
 							         <td width="45%" class="pfont">Income Date (dd/mm/yyyy): </td>
-							         <td width="55%"><input type="text" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
-							          <b>/</b><input type="text" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
-							          <b>/</b><input type="text" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
+							         <td width="55%"><input type="text" name="day" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
+							          <b>/</b><input type="text" name="month" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
+							          <b>/</b><input type="text" name="year" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
 							       </tr>
+							       <?php if(isset($usrinpt['date']) && $usrinpt['date'] == "error"){
+		            			            echo "<tr COLSPAN=2> <td COLSPAN=2> <div class=\"error\"> Invalid date input </div> </td> </tr>";}?>
 							     </table>  
 						     </td>
 						     <td width="35%">
 						         <table>
 							         <thead><td nowrap="nowrap" class="pfont" style="font-size:16px">Income description:</td></thead>
-							         <tbody><td><textarea rows="8" cols="28" class="inpt"></textarea></td></tbody>
+							         <tbody><td><textarea name="desc" rows="8" cols="28" class="inpt"></textarea></td></tbody>
 							         <tfoot><td align="right"><input type="submit" value="Update" class="blue button small bround"></input></td></tfoot>
 						         </table> 
 						     </td>  
 					    </table>
 					    </form>
 					 </div>	
-					 <p class="line1"></p>
+					 <p class="line1" style="<?php  if(isset($usrinpt['err1']) && $usrinpt['err1'] == 1) echo "visibility:hidden;"; ?>"></p>
 					 <!---------------------------------------------------------------> 
 		             <!--------------------------------------------------------------->					 						 
 					 <p class="flip"  style="text-align:center;"> Recurring Income</p>
-					 <button class="green rounded" id="scnd"><img id="2a" src="images/arrows_down.png" /></button>	
-					 <div class="panel2">
-						<form method="post" action="" id="panel2_form">	
+					 <button class="green rounded" id="scnd"><img id="2a" src="<?php  if(isset($usrinpt['err2']) && $usrinpt['err2'] == 1) echo "images/arrows_up.png"; else echo "images/arrows_down.png";?>" /></button>	
+					 <div class="panel2" style="<?php if(isset($usrinpt['err2']) && $usrinpt['err2'] == 1) echo "display:block;"; ?>">
+						<form method="post" action="addincomeTransaction.php" id="panel2_form">	
                           <table width="100%">
 					        <td width="63%">
+					        <input type="hidden" name="panel" value="2" />
 					          <table>
 							       <tr>
 							         <td width="45%" class="pfont">Name: </td>
-							         <td width="55%"><input type="text" class="inpt" size="20" maxlength="30"/></td>
+							         <td width="55%"><input type="text" name="inname" class="inpt" size="20" maxlength="30"/></td>
 							       </tr>
 							       <tr>
 							         <td width="45%" class="pfont">Amount: </td>
-							         <td width="55%"><input type="text" class="inpt" style="color:green" size="20" maxlength="30"/></td>
+							         <td width="55%"><input type="text" name="amount" id="amount" class="inpt" style="color:green" size="20" maxlength="30" onblur="chkdig()"/></td>
 							       </tr>
 							       <tr>
 							         <td width="50%" class="pfont">From (dd/mm/yyyy): </td>
-							         <td width="50%"><input type="text" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
-							          <b>/</b><input type="text" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
-							          <b>/</b><input type="text" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
+							         <td width="50%"><input type="text" name="day" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
+							          <b>/</b><input type="text" name="month" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
+							          <b>/</b><input type="text" name="year" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
 							       </tr>
 							       <tr>
 							          <td width="50%" class="pfont">Recurring Period: </td>
@@ -149,35 +163,42 @@
 						     <td width="35%">
 						         <table>
 							         <thead><td nowrap="nowrap" class="pfont" style="font-size:16px">Income description:</td></thead>
-							         <tbody><td><textarea rows="8" cols="28" class="inpt"></textarea></td></tbody>
+							         <tbody><td><textarea name="desc" rows="8" cols="28" class="inpt"></textarea></td></tbody>
 							         <tfoot><td align="right"><input type="submit" value="Update" class="blue button small bround"></input></td></tfoot>
 						         </table> 
 						     </td>  
 					    </table>
                        </form>
 					 </div>
-					 <p class="line2"></p>
+					  <p class="line2" style="<?php  if(isset($usrinpt['err2']) && $usrinpt['err2'] == 1) echo "visibility:hidden;"; ?>"></p>
+					 
 					 <!---------------------------------------------------------------> 
 		             <!--------------------------------------------------------------->							 
 					 <p class="flip"  style="text-align:center;"> Recurring Generated Income</p>
-				     <button class="green rounded" id="thrd"><img  id="3a" src="images/arrows_down.png" /></button>		
-					 <div class="panel3">
-						<form method="post" action="" id="panel3_form">	
+				     <button class="green rounded" id="thrd"><img  id="3a" src="<?php  if(isset($usrinpt['err3']) && $usrinpt['err3'] == 1) echo "images/arrows_up.png"; else echo "images/arrows_down.png";?>" /></button>		
+					 <div class="panel3" style="<?php if(isset($usrinpt['err3']) && $usrinpt['err3'] == 1) echo "display:block;"; ?>">
+						<form method="post" action="addincomeTransaction.php" id="panel3_form">	
 							<table width="100%">
 					        <td width="63%">
+					        <input type="hidden" name="panel" value="3" />
 					          <table>
 							       <tr>
 							         <td width="45%" class="pfont">Name: </td>
-							         <td width="55%"><input type="text" class="inpt" size="20" maxlength="30"/></td>
+							         <td width="55%"><input type="text" name="inname" class="inpt" size="20" maxlength="30"/></td>
 							       </tr>
 							       <tr>
-							         <td width="45%" class="pfont">Hours per Day (hh:mm): </td>
-							         <td width="55%"><input type="text" class="inpt" size="6" maxlength="2" id="rhpd" value="0" onchange="rDayWageTotal()"/>
-							                 <b>:</b><input type="text" class="inpt" size="6" maxlength="2" id="rmpd" value="0" onchange="rDayWageTotal()"/></td>
+							         <td width="45%" class="pfont">Start Hour(hh:mm): </td>
+							         <td width="55%"><input type="text" name="starth" class="inpt" size="6" maxlength="2" id="rsh" onchange="chktimeHour(this.id)"/>
+							                 <b>:</b><input type="text" name="startm" class="inpt" size="6" maxlength="2" id="rsm" onchange="chktimeMinut(this.id)"/></td>
+							       </tr>
+							       <tr>
+							         <td width="45%" class="pfont">End Hour(hh:mm): </td>
+							         <td width="55%"><input type="text" name="endh" class="inpt" size="6" maxlength="2" id="reh" onchange="chktimeHour(this.id)"/>
+							                 <b>:</b><input type="text" name="endm" class="inpt" size="6" maxlength="2" id="rem" onchange="chktimeMinut(this.id)"/></td>
 							       </tr>
 							       <tr>
 							         <td width="45%" class="pfont">Wage per Hour: </td>
-							         <td width="55%"><input type="text" class="inpt" size="20" maxlength="30" id="rwpd" value="0" onchange="rDayWageTotal()"/></td>
+							         <td width="55%"><input type="text" name="wage" class="inpt" size="20" maxlength="30" id="rwpd"  onchange="rDayWageTotal()"/></td>
 							       </tr>
 							       <tr>
 							         <td width="45%" class="pfont">Total per Day: </td>
@@ -185,9 +206,9 @@
 							       </tr>
 							       <tr>
 							         <td width="45%" class="pfont">From (dd/mm/yyyy): </td>
-							         <td width="55%"><input type="text" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
-							          <b>/</b><input type="text" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
-							          <b>/</b><input type="text" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
+							         <td width="55%"><input type="text" name="day" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
+							          <b>/</b><input type="text" name="month" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
+							          <b>/</b><input type="text" name="year" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
 							       </tr>
 							       <tr>
 							          <td width="50%" class="pfont">Recurring Period: </td>
@@ -205,35 +226,47 @@
 						     <td width="35%">
 						         <table>
 							         <thead><td nowrap="nowrap" class="pfont" style="font-size:16px">Income description:</td></thead>
-							         <tbody><td><textarea rows="8" cols="28" class="inpt"></textarea></td></tbody>
+							         <tbody><td><textarea name="desc" rows="8" cols="28" class="inpt"></textarea></td></tbody>
 							         <tfoot><td align="right"><input type="submit" value="Update" class="blue button small bround" ></input></td></tfoot>
 						         </table> 
 						     </td>  
 					    </table>
 						</form>	
 					 </div>		
-					 <p class="line3"></p>
+					 <p class="line3" style="<?php  if(isset($usrinpt['err3']) && $usrinpt['err3'] == 1) echo "visibility:hidden;"; ?>"></p>
 					 <!---------------------------------------------------------------> 
 		             <!--------------------------------------------------------------->					 
 					 <p class="flip"  style="text-align:center;"> One Time Generated Income</p>	 
-					 <button class="green rounded" id="frth"><img id="4a" src="images/arrows_down.png" /></button>
-					 <div class="panel4">
-						  <form method="post" action="" id="panel4_form">	
+					 <button class="green rounded" id="frth"><img id="4a" src="<?php  if(isset($usrinpt['err4']) && $usrinpt['err4'] == 1) echo "images/arrows_up.png"; else echo "images/arrows_down.png";?>" /></button>
+					 <div class="panel4" style="<?php if(isset($usrinpt['err4']) && $usrinpt['err4'] == 1) echo "display:block;"; ?>">
+						  <form method="post" action="addincomeTransaction.php" id="panel4_form">	
 							<table width="100%">
 					        <td width="63%">
+					        <input type="hidden" name="panel" value="4" />
 					          <table>
 							       <tr>
 							         <td width="45%" class="pfont">Name: </td>
-							         <td width="55%"><input type="text" class="inpt" size="20" maxlength="30"/></td>
+							         <td width="55%"><input type="text" name="inname" class="inpt" size="20" maxlength="30"/></td>
 							       </tr>
 							       <tr>
-							         <td width="45%" class="pfont">Hours per Day (hh:mm): </td>
-							         <td width="55%"><input type="text" class="inpt" size="6" maxlength="2" id="ohpd" value="0" onchange="oDayWageTotal()"/>
-							                 <b>:</b><input type="text" class="inpt" size="6" maxlength="2" id="ompd" value="0" onchange="oDayWageTotal()"/></td>
+							          <td width="45%" class="pfont">Work Date (dd/mm/yyyy): </td>
+							          <td width="55%"><input type="text" name="wday" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
+							          <b>/</b><input type="text" name="wmonth" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
+							          <b>/</b><input type="text" name="wyear" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
+							       </tr>
+							       <tr>
+							         <td width="45%" class="pfont">Start Hour(hh:mm): </td>
+							         <td width="55%"><input type="text" name="starth" class="inpt" size="6" maxlength="2" id="osh" onchange="chktimeHour(this.id)"/>
+							                 <b>:</b><input type="text" name="startm" class="inpt" size="6" maxlength="2" id="osm" onchange="chktimeMinut(this.id)"/></td>
+							       </tr>
+							       <tr>
+							         <td width="45%" class="pfont">End Hour(hh:mm): </td>
+							         <td width="55%"><input type="text" name="endh" class="inpt" size="6" maxlength="2" id="oeh" onchange="chktimeHour(this.id)"/>
+							                 <b>:</b><input type="text" name="endm" class="inpt" size="6" maxlength="2" id="oem" onchange="chktimeMinut(this.id)"/></td>
 							       </tr>
 							       <tr>
 							         <td width="45%" class="pfont">Wage per Hour: </td>
-							         <td width="55%"><input type="text" class="inpt" size="20" maxlength="30" id="owpd" value="0" onchange="oDayWageTotal()"/></td>
+							         <td width="55%"><input type="text" name="wage" class="inpt" size="20" maxlength="30" id="owpd" onchange="oDayWageTotal()"/></td>
 							       </tr>
 							       <tr>
 							         <td width="45%" class="pfont">Total per Day: </td>
@@ -241,24 +274,24 @@
 							       </tr>
 							       <tr>
 							         <td width="45%" class="pfont">Income Date (dd/mm/yyyy): </td>
-							         <td width="55%"><input type="text" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
-							          <b>/</b><input type="text" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
-							          <b>/</b><input type="text" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
+							         <td width="55%"><input type="text" name="day" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
+							          <b>/</b><input type="text" name="month" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
+							          <b>/</b><input type="text" name="year" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
 							       </tr>
 							     </table>  
 						     </td>
 						     <td width="35%">
 						         <table>
 							         <thead><td nowrap="nowrap" class="pfont" style="font-size:16px">Income description:</td></thead>
-							         <tbody><td><textarea rows="8" cols="28" class="inpt"></textarea></td></tbody>
-							         <tfoot><td align="right"><input type="submit" value="Update" class="blue button small bround"></input></td></tfoot>
+							         <tbody><td><textarea name="desc" rows="8" cols="28" class="inpt"></textarea></td></tbody>
+							         <tfoot><td align="right"><input type="submit" value="Update" class="blue button small bround" onclick="test()"></input></td></tfoot>
 						         </table> 
 						     </td>  
 					    </table>
 					   </form>	
 					 </div>		
-					 <p class="line4"></p>					 
-												
+					 <p class="line4" style="<?php  if(isset($usrinpt['err4']) && $usrinpt['err4'] == 1) echo "visibility:hidden;"; ?>"></p>					 
+					  <?php unset($_SESSION['addincome']);?>							
 		         </div>
 		         
 		         
