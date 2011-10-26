@@ -36,18 +36,35 @@ function slidetgl()
 
 
 function rDayWageTotal(){
-	var rh=document.getElementById("rhpd").value;
-	var rm=document.getElementById("rmpd").value;
+	var rh=(document.getElementById("reh").value - document.getElementById("rsh").value);
+	var rm=(document.getElementById("rem").value - document.getElementById("rsm").value);
 	var rw=document.getElementById("rwpd").value;
+	if(rh < 0)
+		rh=24+rh;
+	else if(rh == 0 && rm < 0)
+		rh=24;
+	if(!chknum(rw)){
+		alert("Invalid wage value!");	
+		document.getElementById("rwpd").value= 0;
+	}
 	rm=(rm*100)/6000;
 	           document.getElementById("rwt").value= ((rh*rw)+(rm*rw)).toFixed(2);
 }
 
 function oDayWageTotal(){
-	var h=document.getElementById("ohpd").value;
-	var m=document.getElementById("ompd").value;
+	var h=(document.getElementById("oeh").value - document.getElementById("osh").value);
+	var m=(document.getElementById("oem").value - document.getElementById("osm").value);
 	var w=document.getElementById("owpd").value;
+	if(h < 0)
+		h=24+h;
+	else if(h == 0 && m < 0)
+		h=24;
+	if(!chknum(w)){
+		alert("Invalid wage value!");
+		document.getElementById("owpd").value= 0;
+	}
 	m=(m*100)/6000;
 	           document.getElementById("owt").value= ((h*w)+(m*w)).toFixed(2);
 }
+
 
