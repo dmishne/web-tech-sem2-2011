@@ -55,7 +55,7 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 	 	            			    </td>
 				           		</tr>
 				           		<tr>
-				           			<td> Notes/Description: </td>
+				           			<td style="vertical-align: text-top "> Notes/Description: </td>
 				           			<td><textarea name="creatework_desc" rows="8" cols="32" class="inpt"> </textarea></td>
 				           		</tr>
 				           </table>
