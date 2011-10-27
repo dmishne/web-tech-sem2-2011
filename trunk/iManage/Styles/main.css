@@ -2,6 +2,10 @@ body{
 	background-image:url('../images/siteBackground.jpg');
 }
 
+textarea {
+    resize: none;
+} 
+
 #wrapper{
 	margin:0px auto 0px auto;
 	width:1000px;
@@ -201,6 +205,23 @@ body{
 	box-shadow: 2px 5px 5px rgba(0,0,0,.2);
 }
 
+.greyCube{
+	background-color:rgb(228,228,228);
+	-webkit-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+	-moz-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+	box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+}
+
+#createWork{
+	display:block;
+	position:relative;
+	top:30px;
+	width: 500px;
+	height: 250px;
+	margin-left: auto;
+  	margin-right: auto;
+  	text-align: center;
+}
 /******************************green panel flip*************************************/
 
 p.flip{
