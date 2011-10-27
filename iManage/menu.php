@@ -5,16 +5,16 @@
 <ul class="mainMenu">
 	<li id="noBullet"> <a href="index.php"> Home Page </a> </li>
 	<li class="toggleable"> Incomes
-		<ul id="incomesMenu">
-			<li> Update working hours </li>
-			<li> <a href="addincome.php"> Add income </a> </li>
-			<li> Delete income </li>
+		<ul id="incomesMenu">			
+			<li> <a href="addincome.php"> Add/Update Income </a> </li>
+			<li> <a href="delincome.php"> Delete Income </a> </li>
+			<li> <a href="createWork.php"> Create Work Information </a> </li>
 		</ul>
 	</li>
 	<li class="toggleable"> Payouts
 		<ul id="payoutsMenu">
-			<li> Add payout </li>
-			<li> Delete payout </li>
+			<li> <a href="addpayout.php"> Add/Update Payout </a> </li>
+			<li> <a href="delpayout.php"> Delete Payout </a> </li>
 		</ul>
 	</li>
 	<li class="toggleable"> Investments
