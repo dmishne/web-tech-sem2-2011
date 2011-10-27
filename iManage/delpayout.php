@@ -1,4 +1,8 @@
 <?php session_start();
+// Verifies that user has logged in. Redirect to login page in case not logged in.
+if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
+	header("location:login.php");
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
 <html>
@@ -25,7 +29,7 @@
 				
 		<div id="content">
 			<div id="content-head">
-		           Del Payouts
+		           Delete Payouts
 			</div>
 			<div id="content-middle">
 		           Content Here <br />
