@@ -47,12 +47,20 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 				           			<td> <input type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="16" id="creatework_wagehour" name="creatework_wagehour" /> </td>
 				           		</tr>
 				           		<tr>
+				           			<td> Payment Date: </td>
+				           			<td style="text-align: justify;">
+			                   			<input type="text" size="3" maxlength="2" class="inpt" id="creatework_pDay"   name="signUpDay" />
+			 	                    	<input type="text" size="3" maxlength="2" class="inpt" id="creatework_pMonth" name="signUpMonth"/>
+					 	                <input type="text" size="5" maxlength="4" class="inpt" id="creatework_pYear"  name="signUpYear"/>
+	 	            			    </td>
+				           		</tr>
+				           		<tr>
 				           			<td> Notes/Description: </td>
 				           			<td><textarea name="creatework_desc" rows="8" cols="32" class="inpt"> </textarea></td>
 				           		</tr>
 				           </table>
 			           </div>
-			           <div style="clear:both; width:100%; margin: 60px 0px 0px 0px; text-align:center;">
+			           <div style="clear:both; width:100%; margin: 40px 0px 0px 0px; text-align:center;">
 			           	   <input name="Submit" id="submit" type="submit" value="Create Work" class="blue button medium" style="min-width:100px;" />
 			           </div>
 		           </form>
