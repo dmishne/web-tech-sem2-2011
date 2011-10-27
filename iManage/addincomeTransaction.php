@@ -18,7 +18,7 @@ if($formN == 1)
 	$pass = 1;
 	$transtypeid = 1;
 	$amount = htmlspecialchars($_POST['amount'],ENT_QUOTES);
-	if(!is_numeric($amount)){
+	if(!is_numeric($amount) || (is_numeric($amount) && $amount < 0)){
 	    $usrinpt['amount']="error";
 	    $usrinpt['err1'] = 1;
 	    $pass =0;}
@@ -47,7 +47,7 @@ else if($formN == 2)
 	$pass = 1;
 	$transtypeid = 2;
 	$amount = htmlspecialchars($_POST['amount'],ENT_QUOTES);
-	if(!is_numeric($amount)){
+	if(!is_numeric($amount) || (is_numeric($amount) && $amount < 0)){
 		$usrinpt['amount']="error";
 		$usrinpt['err2'] = 1;
 		$pass =0;
@@ -79,7 +79,7 @@ else if($formN == 3)
 	$pass = 1;
 	$transtypeid = 3;
     $amount = htmlspecialchars($_POST['wage'],ENT_QUOTES);
-    if(!is_numeric($amount)){
+    if(!is_numeric($amount) || (is_numeric($amount) && $amount < 0)){
     	$usrinpt['amount']="error";
     	$usrinpt['err3'] = 1;
     	$pass =0;
@@ -129,7 +129,7 @@ else if($formN == 4)
 	$pass = 1;
 	$transtypeid = 4;
     $amount = htmlspecialchars($_POST['wage'],ENT_QUOTES);
-    if(!is_numeric($amount)){
+    if(!is_numeric($amount) || (is_numeric($amount) && $amount < 0)){
     	$usrinpt['amount']="error";
     	$usrinpt['err4'] = 1;
     	$pass =0;
