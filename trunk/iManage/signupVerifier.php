@@ -35,7 +35,7 @@ if(strlen($username) < 3 || $username != $_POST['username'])
 $day=htmlspecialchars($_POST['signUpDay'],ENT_QUOTES);
 $month=htmlspecialchars($_POST['signUpMonth'],ENT_QUOTES);
 $year=htmlspecialchars($_POST['signUpYear'],ENT_QUOTES);
-if(!checkdate(intval($month),intval($day),intval($year)))
+if(!(is_numeric($day) && is_numeric($month) && is_numeric($year)) || (!checkdate(intval($month),intval($day),intval($year))))
 {
 	$error['date'] = 1;
 	$REG = 0;
