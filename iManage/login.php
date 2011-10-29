@@ -38,7 +38,7 @@
 				
 				<div id="login">
 					<form method="post" action="" id="login_form">
-						<div id="loginText"> 
+						<div> 
 							Username
 							<br /> 
 							<input name="username" type="text" id="username" value="" maxlength="20" />
