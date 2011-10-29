@@ -33,7 +33,7 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 		           Create Work Information
 			</div>
 			<div id="content-middle">
-				   <form  method="post" action="" id="createWork_form">
+				   <form  method="post" action="createWorkVerifier.php" id="createWork_form">
 			           <div id="createWork" class="greyCube">
 				           <table style="margin-left:auto; margin-right:auto; text-align:left;">
 				           		<tr style="text-align:center;"> 
@@ -50,9 +50,9 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 				           		<tr>
 				           			<td> Payment Date: </td>
 				           			<td style="text-align: justify;">
-			                   			<input type="text" size="3" maxlength="2" class="inpt" id="creatework_pDay"   name="signUpDay" />
-			 	                    	<input type="text" size="3" maxlength="2" class="inpt" id="creatework_pMonth" name="signUpMonth"/>
-					 	                <input type="text" size="5" maxlength="4" class="inpt" id="creatework_pYear"  name="signUpYear"/>
+			                   			<input type="text" size="3" maxlength="2" class="inpt" id="creatework_pDay"   name="creatework_pDay" />
+			 	                    	<input type="text" size="3" maxlength="2" class="inpt" id="creatework_pMonth" name="creatework_pMonth"/>
+					 	                <input type="text" size="5" maxlength="4" class="inpt" id="creatework_pYear"  name="creatework_pYear"/>
 	 	            			    </td>
 				           		</tr>
 				           		<tr>
