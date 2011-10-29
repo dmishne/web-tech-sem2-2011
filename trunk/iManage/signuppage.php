@@ -1,7 +1,7 @@
 <?php session_start();
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
 	<title> iManage </title>
@@ -53,7 +53,7 @@
 		            	</tr>
 		            	<?php 
 		            		if(isset($error['firstname']) && $error['firstname'] = 1){
-		            			echo "<tr> <td COLSPAN=2> <div class=\"error\"> At least 2 letters required. </div> </td> </tr>";
+		            			echo "<tr> <td colspan=2> <div class=\"error\"> At least 2 letters required. </div> </td> </tr>";
 		            		}
 		            	?>
 		            	<tr>
@@ -62,7 +62,7 @@
 		            	</tr>
 		               	<?php 
 		            		if(isset($error['lastname']) && $error['lastname'] = 1){
-		            			echo "<tr COLSPAN=2> <td COLSPAN=2> <div class=\"error\"> At least 2 letters required. </div> </td> </tr>";
+		            			echo "<tr> <td colspan=2> <div class=\"error\"> At least 2 letters required. </div> </td> </tr>";
 		            		}
 		            	?>
 		            	<tr>
@@ -75,7 +75,7 @@
 		            	</tr>
 		            	<?php 
 		            		if(isset($error['date']) && $error['date'] = 1){
-		            			echo "<tr> <td COLSPAN=2> <div class=\"error\"> Date incorrect! Example: 31 12 2011 </div> </td> </tr>";
+		            			echo "<tr> <td colspan=2> <div class=\"error\"> Date incorrect! Example: 31 12 2011 </div> </td> </tr>";
 		            		}
 		            	?>
 		            	<tr>
@@ -95,7 +95,7 @@
 			         	</tr>
 			         	<?php 
 		            		if(isset($error['username']) && $error['username'] = 1){
-		            			echo "<tr COLSPAN=2> <td COLSPAN=2> <div class=\"error\"> At least 3 letters required. </div> </td> </tr>";
+		            			echo "<tr> <td colspan=2> <div class=\"error\"> At least 3 letters required. </div> </td> </tr>";
 		            		}
 		            	?>
 			         	<tr>
@@ -104,7 +104,7 @@
 			         	</tr>
 			         	<?php 
 		            		if(isset($error['password']) && $error['password'] = 1){
-		            			echo "<tr COLSPAN=2> <td COLSPAN=2> <div class=\"error\"> Passwords are incorrect or doesn't match </div> </td> </tr>";
+		            			echo "<tr> <td colspan=2> <div class=\"error\"> Passwords are incorrect or doesn't match </div> </td> </tr>";
 		            		}
 		            	?>
 			         	<tr>
@@ -113,7 +113,7 @@
 			         	</tr>
 			         	<?php 
 		            		if(isset($error['password']) && $error['password'] = 1){
-		            			echo "<tr COLSPAN=2> <td COLSPAN=2> <div class=\"error\"> Passwords are incorrect or doesn't match </div> </td> </tr>";
+		            			echo "<tr> <td colspan=2> <div class=\"error\"> Passwords are incorrect or doesn't match </div> </td> </tr>";
 		            		}
 		            	?>
 			       	</table>
