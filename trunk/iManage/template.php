@@ -9,14 +9,14 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=9" />
 	<link rel="icon" href="images/logo.ico" />
 	<link rel="apple-touch-icon" href="images/icon_apple.png" />
-	<?php include "include.php" ?>
+	<?php include "include.php"; ?>
 </head>
 
 <body>
 <div id="wrapper">
 
 	<div id="top">
-		<?php include "header.php" ?>
+		<?php include "header.php"; ?>
 	</div>
 	
 	<div id="middle">
