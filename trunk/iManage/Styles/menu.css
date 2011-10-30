@@ -37,6 +37,8 @@ ul.mainMenu li{
 	font-family: sans-serif;
 	padding-right: 5px;
 	cursor: pointer;
+	margin-right:0px;
+	padding-right:0px;
 }
 
 .menuInactive{
@@ -67,4 +69,15 @@ ul.mainMenu li ul li{
 	list-style-image:none;
 	background-image:none;
 	background-repeat:none;
+}
+
+li.toggleable ul li a{
+	margin: 0px; 
+	display: block; 
+	width: 100%; 
+	height: 100%;
+}
+
+li.toggleable ul li a:hover{
+	background-color: #C6E4EE;
 }
