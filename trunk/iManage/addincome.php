@@ -92,28 +92,25 @@
 				     <button class="green rounded" id="frst"><img  id="1a" src="<?php  if(isset($usrinpt['err1']) && $usrinpt['err1'] == 1) echo "images/arrows_up.png"; else echo "images/arrows_down.png";?>" /></button>		
 					 <div class="panel1" style="<?php if(isset($usrinpt['err1']) && $usrinpt['err1'] == 1) echo "display:block;"; ?>">
 						<form method="post" action="addincomeTransaction.php" id="panel1_form">	
-							<table width="100%">
-					        <td width="63%">
-					        <input type="hidden" name="panel" value="1" />
-					          <table>
-					             <tr>
-					                <td width="45%" class="pfont">Work date:</td>
-					                <td width="55%" class="pfont"><?php echo $curDay.'/'.$curMonth.'/'.$curYear ?></td>
-					             </tr>
-					             <tr>
-					               <td width="50%" class="pfont">Work:</td>
-					               <td width="50%">
-					                 <select name="workname" class="inpt" style="width:131px">
-					                   <option>bla bla</option>
-					                   <option>bla bla bla</option>
-					                   <option>lalala</option>
-					                 </select>
-					                </td> 
-					             </tr>
-							      <!-- <tr>
-							         <td width="45%" class="pfont">Name: </td>
-							         <td width="55%"><input type="text" name="inname" class="inpt" size="20" maxlength="30"/></td>
-							       </tr>-->
+						   <table width="100%">
+							 <tr>
+					          <td width="63%">
+					            <input type="hidden" name="panel" value="1" />
+					            <table>
+					               <tr>
+					                  <td width="45%" class="pfont">Work date:</td>
+					                  <td width="55%" class="pfont"><?php echo $curDay.'/'.$curMonth.'/'.$curYear ?></td>
+					               </tr>
+						           <tr>
+						             <td width="50%" class="pfont">Work:</td>
+						             <td width="50%">
+						                 <select name="workname" class="inpt" style="width:131px">
+						                   <option>bla bla</option>
+						                   <option>bla bla bla</option>
+						                   <option>lalala</option>
+						                 </select>
+						              </td> 
+						           </tr>
 							       <tr>
 							         <td width="45%" class="pfont">Start Hour(hh:mm): </td>
 							         <td width="55%"><input type="text" name="starth" class="inpt" size="6" maxlength="2" id="rsh" onchange="rDayWageTotal()"/>
@@ -142,11 +139,12 @@
 						     </td>
 						     <td width="35%">
 						         <table>
-							         <thead><td nowrap="nowrap" class="pfont" style="font-size:16px">Income description:</td></thead>
-							         <tbody><td><textarea name="desc" rows="8" cols="28" class="inpt"></textarea></td></tbody>
-							         <tfoot><td align="right"><input type="submit" value="Update" class="blue button small bround" ></input></td></tfoot>
+							         <thead><tr><td nowrap="nowrap" class="pfont" style="font-size:16px">Income description:</td></tr></thead>
+							         <tbody><tr><td><textarea name="desc" rows="8" cols="28" class="inpt"></textarea></td></tr></tbody>
+							         <tfoot><tr><td align="right"><input type="submit" value="Update" class="blue button small bround" ></input></td></tr></tfoot>
 						         </table> 
-						     </td>  
+						     </td> 
+						   </tr> 
 					    </table>
 						</form>	
 					 </div>		
@@ -158,9 +156,10 @@
 					 <div class="panel2" style="<?php if(isset($usrinpt['err2']) && $usrinpt['err2'] == 1) echo "display:block;"; ?>">
 						<form method="post" action="addincomeTransaction.php" id="panel2_form">	
                           <table width="100%">
-					        <td width="63%">
-					        <input type="hidden" name="panel" value="2" />
-					          <table>
+                            <tr>
+					          <td width="63%">
+					          <input type="hidden" name="panel" value="2" />
+					            <table>
 							       <tr>
 							         <td width="45%" class="pfont">Name: </td>
 							         <td width="55%"><input type="text" name="inname" class="inpt" size="20" maxlength="30"/></td>
@@ -195,11 +194,12 @@
 						     </td>
 						     <td width="35%">
 						         <table>
-							         <thead><td nowrap="nowrap" class="pfont" style="font-size:16px">Income description:</td></thead>
-							         <tbody><td><textarea name="desc" rows="8" cols="28" class="inpt"></textarea></td></tbody>
-							         <tfoot><td align="right"><input type="submit" value="Update" class="blue button small bround"></input></td></tfoot>
+							         <thead><tr><td nowrap="nowrap" class="pfont" style="font-size:16px">Income description:</td></tr></thead>
+							         <tbody><tr><td><textarea name="desc" rows="8" cols="28" class="inpt"></textarea></td></tr></tbody>
+							         <tfoot><tr><td align="right"><input type="submit" value="Update" class="blue button small bround"></input></td></tr></tfoot>
 						         </table> 
-						     </td>  
+						     </td> 
+						   </tr>   
 					    </table>
                        </form>
 					 </div>
@@ -212,6 +212,7 @@
 		             <div class="panel3"  style="<?php  if(isset($usrinpt['err3']) && $usrinpt['err3'] == 1) echo "display:block;"; ?>">
 		             <form method="post" action="addincomeTransaction.php" id="panel3_form">
 					    <table width="100%">
+					      <tr>
 					        <td width="63%">
 					        <input type="hidden" name="panel" value="3" />
 					          <table>
@@ -237,11 +238,12 @@
 						     </td>
 						     <td width="35%">
 						         <table>
-							         <thead><td nowrap="nowrap" class="pfont" style="font-size:16px">Income description:</td></thead>
-							         <tbody><td><textarea name="desc" rows="8" cols="28" class="inpt"></textarea></td></tbody>
-							         <tfoot><td align="right"><input type="submit" value="Update" class="blue button small bround"></input></td></tfoot>
+							         <thead><tr><td nowrap="nowrap" class="pfont" style="font-size:16px">Income description:</td></tr></thead>
+							         <tbody><tr><td><textarea name="desc" rows="8" cols="28" class="inpt"></textarea></td></tr></tbody>
+							         <tfoot><tr><td align="right"><input type="submit" value="Update" class="blue button small bround"></input></td></tr></tfoot>
 						         </table> 
 						     </td>  
+						   </tr>  
 					    </table>
 					    </form>
 					 </div>	
