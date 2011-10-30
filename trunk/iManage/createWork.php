@@ -1,8 +1,8 @@
 <?php session_start();
 // Verifies that user has logged in. Redirect to login page in case not logged in.
-if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
+/*if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 	header("location:login.php");
-}
+}*/
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
