@@ -158,9 +158,9 @@ textarea {
 	display:block;
 	overflow:hidden;
 	width:69%;
-	min-height: 250px;
+	min-height: 215px;
 	margin:10px;
-	padding: 0px;
+	padding: 40px 0px 0px 0px;
 }
 
 
@@ -176,7 +176,7 @@ textarea {
 
 #daysum{
 	float:left;
-	margin:auto auto 15px 30px;
+	margin:0px auto 15px 30px;
 	display:block;
 	overflow:hidden;
 	width:61%;
@@ -194,7 +194,7 @@ textarea {
 	display:block;
 	overflow:hidden;
 	width:23%;
-	min-height: 176px;
+	min-height: 180px;
 	margin:auto 30px 15px auto;
 	padding: 5px;
 	position:relative;
