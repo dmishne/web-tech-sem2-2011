@@ -37,7 +37,7 @@
 			           <div id="createWork" class="greyCube">
 				           <table style="margin-left:auto; margin-right:auto; text-align:left;">
 				           		<tr style="text-align:center;"> 
-				           			<th colspan=2> Create Work Form </th> 
+				           			<th colspan="2"> Create Work Form </th> 
 				           		</tr>
 				           		<tr>
 				           			<td> Name: </td>

@@ -69,8 +69,8 @@
 			
 			         
 		         <div id="incomechoser" >
-		           <!---------------------------------------------------------------> 
-		           <!--------------------------------------------------------------->   
+		           <!--															--> 
+		           <!--															-->   
 		           <?php  if(isset($date))
 							        list($curDay, $curMonth, $curYear)= explode('.', $date,3);
 							else
@@ -112,20 +112,20 @@
 							                 <b>:</b><input type="text" name="startm" class="inpt" size="6" maxlength="2" id="rsm" onchange="rDayWageTotal()"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['time1']) && $usrinpt['time1'] == "error"){
-		            			            echo "<tr COLSPAN=2> <td COLSPAN=2> <div class=\"error\"> Incorect time </div> </td> </tr>";}?>
+		            			            echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Incorect time </div> </td> </tr>";}?>
 							       <tr>
 							         <td width="45%" class="pfont">End Hour(hh:mm): </td>
 							         <td width="55%"><input type="text" name="endh" class="inpt" size="6" maxlength="2" id="reh" onchange="rDayWageTotal()"/>
 							                 <b>:</b><input type="text" name="endm" class="inpt" size="6" maxlength="2" id="rem" onchange="rDayWageTotal()"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['time2']) && $usrinpt['time2'] == "error"){
-		            			            echo "<tr COLSPAN=2> <td COLSPAN=2> <div class=\"error\"> Incorect time </div> </td> </tr>";}?>
+		            			            echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Incorect time </div> </td> </tr>";}?>
 							       <tr>
 							         <td width="45%" class="pfont">Wage per Hour: </td>
 							         <td width="55%"><input type="text" name="wage" class="inpt" size="20" maxlength="30" id="rwpd"  onchange="rDayWageTotal()"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['amount']) && $usrinpt['amount'] == "error"){
-		            			            echo "<tr COLSPAN=2> <td COLSPAN=2> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}?>
+		            			            echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}?>
 							       <tr>
 							         <td width="45%" class="pfont">Total per Day: </td>
 							         <td width="55%"><input type="text" class="inpt" style="color:green" size="20" maxlength="30" readonly="readonly" id="rwt"/></td>
@@ -144,8 +144,8 @@
 						</form>	
 					 </div>		
 					 <p class="line1" style="<?php  if(isset($usrinpt['err1']) && $usrinpt['err1'] == 1) echo "visibility:hidden;"; ?>"></p>            
-					 <!---------------------------------------------------------------> 
-		             <!--------------------------------------------------------------->					 						 
+					 <!--															--> 
+		           	 <!--															-->					 						 
 					 <p class="flip"  style="text-align:center;"> Recurring Income</p>
 					 <button class="green rounded" id="scnd"><img id="2a" src="<?php  if(isset($usrinpt['err2']) && $usrinpt['err2'] == 1) echo "images/arrows_up.png"; else echo "images/arrows_down.png";?>" /></button>	
 					 <div class="panel2" style="<?php if(isset($usrinpt['err2']) && $usrinpt['err2'] == 1) echo "display:block;"; ?>">
@@ -164,7 +164,7 @@
 							         <td width="55%"><input type="text" name="amount" id="amount" class="inpt" style="color:green" size="20" maxlength="30"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['amount']) && $usrinpt['amount'] == "error"){
-		            			            echo "<tr COLSPAN=2> <td COLSPAN=2> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}?>
+		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}?>
 							       <tr>
 							         <td width="50%" class="pfont">From (dd/mm/yyyy): </td>
 							         <td width="50%"><input type="text" name="day" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
@@ -172,7 +172,7 @@
 							          <b>/</b><input type="text" name="year" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['date']) && $usrinpt['date'] == "error"){
-		            			            echo "<tr COLSPAN=2> <td COLSPAN=2> <div class=\"error\"> Invalid date input </div> </td> </tr>";}?>
+		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Invalid date input </div> </td> </tr>";}?>
 							       <tr>
 							          <td width="50%" class="pfont">Recurring Period: </td>
 							          <td width="50%">
@@ -200,8 +200,8 @@
 					 </div>
 					  <p class="line2" style="<?php  if(isset($usrinpt['err2']) && $usrinpt['err2'] == 1) echo "visibility:hidden;"; ?>"></p>
 					 
-					 <!---------------------------------------------------------------> 
-		             <!--------------------------------------------------------------->							 
+					 <!--															--> 
+		           	 <!--															-->							 
 					 <p class="flip"  style="text-align:center;"> One Time Income</p>
 					 <button class="green rounded" id="thrd"><img id="3a" src="<?php  if(isset($usrinpt['err3']) && $usrinpt['err3'] == 1) echo "images/arrows_up.png"; else echo "images/arrows_down.png";?>"/></button>					 
 		             <div class="panel3"  style="<?php  if(isset($usrinpt['err3']) && $usrinpt['err3'] == 1) echo "display:block;"; ?>">
@@ -220,7 +220,7 @@
 							         <td width="55%"><input type="text"  name="amount" id="amount" class="inpt" style="color:green" size="20" maxlength="30"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['amount']) && $usrinpt['amount'] == "error"){
-		            			            echo "<tr COLSPAN=2> <td COLSPAN=2> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}?>
+		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}?>
 							       <tr>
 							         <td width="45%" class="pfont">Income Date (dd/mm/yyyy): </td>
 							         <td width="55%"><input type="text" name="day" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
@@ -228,7 +228,7 @@
 							          <b>/</b><input type="text" name="year" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['date']) && $usrinpt['date'] == "error"){
-		            			            echo "<tr COLSPAN=2> <td COLSPAN=2> <div class=\"error\"> Invalid date input </div> </td> </tr>";}?>
+		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Invalid date input </div> </td> </tr>";}?>
 							     </table>  
 						     </td>
 						     <td width="35%">
@@ -243,8 +243,8 @@
 					    </form>
 					 </div>	
 					 <p class="line3" style="<?php  if(isset($usrinpt['err3']) && $usrinpt['err3'] == 1) echo "visibility:hidden;"; ?>"></p>
-					 <!---------------------------------------------------------------> 
-		             <!--------------------------------------------------------------->					 
+					 <!--															--> 
+		             <!--															-->				 
 									 
 					  <?php unset($_SESSION['addincome']);?>							
 		         </div>
