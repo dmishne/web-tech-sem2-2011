@@ -240,15 +240,11 @@
 								                   
 								                   $connection->select_db('webtech');
 						                         $username= $_SESSION['username'];
-						                         $date = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
-						                         $res = $connection->query("CALL GetDailyOneTimeIncomes('$username','$date')") or die(mysqli_error());
-						                         if (!$res) {
-						                         	echo 'Could not run query: ' . mysql_error();
-						                         	exit;
-						                         }
-						                         while ($row = mysql_fetch_assoc($res)){
+						                         $date2 = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
+						                         $res = $connection->query("CALL GetDailyOneTimeIncomes('$username','$date2')") or die(mysqli_error());
+						                         while ($row = $res->fetch_array(MYSQLI_ASSOC)){
 						                         	echo "<option>";
-						                         	echo $row["transCustomName"];
+						                         	echo $row["transname"];
 						                         	echo "</option>";
 						                         }
 						                   ?>
