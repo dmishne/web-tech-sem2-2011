@@ -461,8 +461,22 @@ z-index:9;
 	text-shadow: 0 2px 2px rgba(0,0,0,.3);
 }
 
-
-
 /*###################### AddIncome (end) ###########################*/
 
 
+
+/*###################### DeleteIncome (start) ###########################*/
+
+select.delChooser{
+	font-size:13px; 
+	font-family:"Times New Roman",Times,serif; 
+	color:black;
+	border:0.1em solid #7b9e01;
+}
+
+div.delChsr{
+	float:left;
+	margin:auto 30px auto 40px;
+}
+
+/*###################### DeleteIncome (end) ###########################*/
