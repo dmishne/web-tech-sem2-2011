@@ -3,7 +3,7 @@
 </script>
 <div id="topCenter"> Menu </div>
 <ul class="mainMenu">
-	<li id="noBullet"> <a href="index.php"> Home Page </a> </li>
+	<li class="noBullet"> <a href="index.php"> Home Page </a> </li>
 	<li class="toggleable"> Incomes
 		<ul id="incomesMenu">			
 			<li> <a href="addincome.php"> Add/Update Income </a> </li>
