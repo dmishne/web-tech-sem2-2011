@@ -11,10 +11,9 @@ if (mysqli_connect_errno()) {
 }
 
 $connection->select_db('webtech');
-$username= $_SESSION['firstname'];  // from current user session submited on login
+$username= $_SESSION['username'];  // from current user session submited on login
 $formN = htmlspecialchars($_POST['panel'],ENT_QUOTES);
 $description = htmlspecialchars($_POST['desc'],ENT_QUOTES);
-//echo $pass;
 
 if($formN == 1)  // Update working hours
 {

@@ -24,7 +24,7 @@ ul.mainMenu {
 	padding-bottom: 2px;
 }
 
-#noBullet{
+.noBullet{
 	list-style-type:none;
 	list-style-image:none;
 	list-style-position:inside;

@@ -69,8 +69,10 @@
 			
 			         
 		         <div id="incomechoser" >
+
 		           <!--															--> 
 		           <!--															-->   
+
 		           <?php  if(isset($date))
 							        list($curDay, $curMonth, $curYear)= explode('.', $date,3);
 							else
@@ -82,7 +84,8 @@
 			             	$usrinpt = $_SESSION['addincome'];
 			             	echo "<div class=\"error\"> Input error! Please check values </div>";
 			             }
-		             ?>	  
+		             ?>	
+		            
 		             <p class="flip"  style="text-align:center;"> Update working hours</p>
 				     <button class="green rounded" id="frst"><img  id="1a" src="<?php  if(isset($usrinpt['err1']) && $usrinpt['err1'] == 1) echo "images/arrows_up.png"; else echo "images/arrows_down.png";?>" /></button>		
 					 <div class="panel1" style="<?php if(isset($usrinpt['err1']) && $usrinpt['err1'] == 1) echo "display:block;"; ?>">
@@ -144,8 +147,10 @@
 						</form>	
 					 </div>		
 					 <p class="line1" style="<?php  if(isset($usrinpt['err1']) && $usrinpt['err1'] == 1) echo "visibility:hidden;"; ?>"></p>            
+
 					 <!--															--> 
 		           	 <!--															-->					 						 
+
 					 <p class="flip"  style="text-align:center;"> Recurring Income</p>
 					 <button class="green rounded" id="scnd"><img id="2a" src="<?php  if(isset($usrinpt['err2']) && $usrinpt['err2'] == 1) echo "images/arrows_up.png"; else echo "images/arrows_down.png";?>" /></button>	
 					 <div class="panel2" style="<?php if(isset($usrinpt['err2']) && $usrinpt['err2'] == 1) echo "display:block;"; ?>">
@@ -155,6 +160,16 @@
 					          <td width="63%">
 					          <input type="hidden" name="panel" value="2" />
 					            <table>
+					               <tr>
+						             <td width="50%" class="pfont">Update added income:</td>
+						             <td width="50%">
+						                 <select name="rIncome" class="inpt" style="width:131px">
+						                   <option>bla bla</option>
+						                   <option>bla bla bla</option>
+						                   <option>lalala</option>
+						                 </select>
+						              </td> 
+						           </tr>
 							       <tr>
 							         <td width="45%" class="pfont">Name: </td>
 							         <td width="55%"><input type="text" name="inname" class="inpt" size="20" maxlength="30"/></td>
@@ -176,7 +191,7 @@
 							       <tr>
 							          <td width="50%" class="pfont">Recurring Period: </td>
 							          <td width="50%">
-							             <select name="r_period" class="inpt" style="width:136px">
+							             <select name="r_period" class="inpt" style="width:131px">
 											<option value="daily">Daily</option>
 											<option value="weekly">Weekly</option>
 											<option value="2weeks">Fortnightly</option>
@@ -200,8 +215,10 @@
 					 </div>
 					  <p class="line2" style="<?php  if(isset($usrinpt['err2']) && $usrinpt['err2'] == 1) echo "visibility:hidden;"; ?>"></p>
 					 
+
 					 <!--															--> 
 		           	 <!--															-->							 
+
 					 <p class="flip"  style="text-align:center;"> One Time Income</p>
 					 <button class="green rounded" id="thrd"><img id="3a" src="<?php  if(isset($usrinpt['err3']) && $usrinpt['err3'] == 1) echo "images/arrows_up.png"; else echo "images/arrows_down.png";?>"/></button>					 
 		             <div class="panel3"  style="<?php  if(isset($usrinpt['err3']) && $usrinpt['err3'] == 1) echo "display:block;"; ?>">
@@ -211,6 +228,33 @@
 					        <td width="63%">
 					        <input type="hidden" name="panel" value="3" />
 					          <table>
+					               <tr>
+						             <td width="50%" class="pfont">Update added income:</td>
+						             <td width="50%">
+						                 <select name="rIncome" class="inpt" style="width:131px">
+						                   <?php 
+								                   $connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
+								                   if (mysqli_connect_errno()) {
+								                   	die('Could not connect: ' . mysqli_connect_error());
+								                   }
+								                   
+								                   $connection->select_db('webtech');
+						                         $username= $_SESSION['username'];
+						                         $date = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
+						                         $res = $connection->query("CALL GetDailyOneTimeIncomes('$username','$date')") or die(mysqli_error());
+						                         if (!$res) {
+						                         	echo 'Could not run query: ' . mysql_error();
+						                         	exit;
+						                         }
+						                         while ($row = mysql_fetch_assoc($res)){
+						                         	echo "<option>";
+						                         	echo $row["transCustomName"];
+						                         	echo "</option>";
+						                         }
+						                   ?>
+						                 </select>
+						              </td> 
+						           </tr>
 							       <tr>
 							         <td width="45%" class="pfont">Name: </td>
 							         <td width="55%"><input type="text" name="inname" class="inpt" size="20" maxlength="30"/></td>
@@ -243,8 +287,10 @@
 					    </form>
 					 </div>	
 					 <p class="line3" style="<?php  if(isset($usrinpt['err3']) && $usrinpt['err3'] == 1) echo "visibility:hidden;"; ?>"></p>
+
 					 <!--															--> 
 		             <!--															-->				 
+
 									 
 					  <?php unset($_SESSION['addincome']);?>							
 		         </div>
