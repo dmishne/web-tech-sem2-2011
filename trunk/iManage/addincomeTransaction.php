@@ -64,6 +64,7 @@ if($formN == 1)  // Update working hours
 		$transcustomname = $workname;
 		
 		$res = $connection->query("CALL insertTransaction('$amount','$username','$dd','$transcustomname','$rec','$transtypeid',null,'$startHour','$endHour','$description')") or die(mysqli_error());
+		$_SESSION['update'] = 1;
 		header("location:addincome.php");
 	}
 	else {
@@ -99,6 +100,7 @@ else if($formN == 2) //  add recuring income
 	   $usrinpt['amount']=null;
 	   $usrinpt['err2'] = null;
 	   $res = $connection->query("CALL insertTransaction('$amount','$username','$transdate','$transcustomname',null,'$transtypeid',null,null,null,'$description')") or die(mysqli_error());
+	   $_SESSION['update'] = 1;
 	   header("location:addincome.php");}
 	else {
 	   $_SESSION['addincome'] = $usrinpt;
@@ -131,6 +133,7 @@ else if($formN == 3)   // add one time income
 		$usrinpt['amount']=null;
 		$usrinpt['err3'] = null;
 		$res = $connection->query("CALL insertTransaction('$amount','$username','$transdate','$transcustomname',null,'$transtypeid',null,null,null,'$description')") or die(mysqli_error());
+		$_SESSION['update'] = 1;
 		header("location:addincome.php");
 	}
 	else if ($pass == 0){

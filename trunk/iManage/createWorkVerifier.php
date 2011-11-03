@@ -4,14 +4,6 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 	header("location:login.php");
 }
 
-//Connect to database from here
-$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
-if (mysqli_connect_errno()) {
-	die('Could not connect: ' . mysqli_connect_error());
-}
-
-$connection->select_db('webtech');
-
 $errors = array();
 $REG = 1;
 
@@ -48,6 +40,15 @@ if($desc != $_POST['creatework_desc'])
 
 if($REG == 1)
 {
+	
+	//Connect to database from here
+	$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
+	if (mysqli_connect_errno()) {
+		die('Could not connect: ' . mysqli_connect_error());
+	}
+	
+	$connection->select_db('webtech');
+	
 	/*$res = $connection->query("CALL register('$username','$firstname','$lastname','$year-$month-$day',1,'$email','$password')") or die(mysqli_error());
 	$userDetails = $res->fetch_array(MYSQLI_NUM);
 	if($userDetails[0] == 0)
