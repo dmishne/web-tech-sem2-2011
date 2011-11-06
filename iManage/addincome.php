@@ -232,6 +232,7 @@
 						             <td width="50%" class="pfont">Update added income:</td>
 						             <td width="50%">
 						                 <select name="rIncome" class="inpt" style="width:131px">
+						                 <option>New</option>
 						                   <?php 
 								                   $connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
 								                   if (mysqli_connect_errno()) {
