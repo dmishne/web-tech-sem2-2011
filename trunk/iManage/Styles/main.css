@@ -461,6 +461,60 @@ z-index:9;
 	text-shadow: 0 2px 2px rgba(0,0,0,.3);
 }
 
+
+
+.redinc {
+	color: black;
+	border: solid 1px #980c10;
+	background: #d81b21;
+	background: -webkit-gradient(linear, left top, left bottom, from(#ed1c24), to(#aa1317));
+	background: -moz-linear-gradient(top,  #ed1c24,  #aa1317);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ed1c24', endColorstr='#aa1317');
+	font:normal 14px serif;
+	padding:0.1em auto;
+}
+
+.greeninc {
+	color: black;
+	border: solid 1px #538312;
+	background: #7ab034;
+	background: -webkit-gradient(linear, left top, left bottom, from(#90be50), to(#b1da7e));
+	background: -moz-linear-gradient(top,  #90be50,  #b1da7e);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#90be50', endColorstr='#b1da7e');
+	font:normal 14px serif;
+	padding:0.1em auto;
+}
+
+.roundedinc{
+	position:relative;
+	width:70%;
+	margin: 2px auto auto 10px;
+	text-align:left;
+	text-decoration: none;
+	border-radius: .5em;
+	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	box-shadow: 0 1px 2px rgba(0,0,0,.2);
+}
+
+.daysumhead{
+	position:relative;
+	width:95%;
+	margin: 3px auto 6px auto;
+	padding:0px 10px;
+	text-align:left;
+	color:#004960;
+    font-family:"Times New Roman",Times,serif; 
+	text-shadow: 0 2px 2px rgba(0,0,0,.3);
+	background: rgba(0,0,255,0.08);
+	-webkit-border-radius: .8em; 
+	-moz-border-radius: .8em;
+	border-radius: .8em;
+	-webkit-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+	-moz-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+	box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+}
+
 /*###################### AddIncome (end) ###########################*/
 
 

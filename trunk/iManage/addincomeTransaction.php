@@ -78,6 +78,7 @@ else if($formN == 2) //  add recuring income
 {
 	$pass = 1;
 	$transtypeid = 2;
+	$selected = htmlspecialchars($_POST['rtIncome'],ENT_QUOTES);    // get values - "New" or jobId
 	$transcustomname = htmlspecialchars($_POST['inname'],ENT_QUOTES);
 	$amount = htmlspecialchars($_POST['amount'],ENT_QUOTES);
 	if(!is_numeric($amount) || (is_numeric($amount) && $amount < 0)){
@@ -95,11 +96,28 @@ else if($formN == 2) //  add recuring income
 	}
 	$transdate = sprintf('%4d-%02d-%02d', $syear, $smonth, $sday);
 	$recurrance = htmlspecialchars($_POST['r_period'],ENT_QUOTES);
+	switch ($recurrance){
+	     case Daily;
+	        $recurrance = 10;
+	     case Weekly;
+	        $recurrance = 1;
+	     case Fortnightly;
+	        $recurrance = 2;
+	     case Monthly;
+	        $recurrance = 4;
+	     case Bi - monthly;
+	        $recurrance = 8;       
+	}
 	if($pass == 1){
 	   $usrinpt['date'] = null;
 	   $usrinpt['amount']=null;
 	   $usrinpt['err2'] = null;
-	   $res = $connection->query("CALL insertTransaction('$amount','$username','$transdate','$transcustomname','$recurrance','$transtypeid',null,'$description')") or die(mysqli_error());
+	   if($selected == "New" && $transcustomname != null)
+	          $res = $connection->query("CALL insertTransaction('$amount','$username','$transdate','$transcustomname','$recurrance','$transtypeid',null,'$description')") or die(mysqli_error());
+	   else if($selected != "New"){
+	   	      $res = $connection->query("CALL editJobDetails('$selected','$transcustomname','$description','$amount','$transdate')") or die(mysqli_error());
+	   }
+	   
 	   $_SESSION['update'] = 1;
 	   header("location:addincome.php");}
 	else {
@@ -112,6 +130,7 @@ else if($formN == 3)   // add one time income
 {
 	$pass = 1;
 	$transtypeid = 1;
+	$selected = htmlspecialchars($_POST['rIncome'],ENT_QUOTES);    // get values - "New" or jobId
 	$transcustomname = htmlspecialchars($_POST['inname'],ENT_QUOTES);
 	$amount = htmlspecialchars($_POST['amount'],ENT_QUOTES);
 	if(!is_numeric($amount) || (is_numeric($amount) && $amount < 0)){
@@ -132,7 +151,11 @@ else if($formN == 3)   // add one time income
 		$usrinpt['date'] = null;
 		$usrinpt['amount']=null;
 		$usrinpt['err3'] = null;
-		$res = $connection->query("CALL insertTransaction('$amount','$username','$transdate','$transcustomname',null,'$transtypeid',null,'$description')") or die(mysqli_error());
+		if($selected == "New" && $transcustomname != null)
+		     $res = $connection->query("CALL insertTransaction('$amount','$username','$transdate','$transcustomname',null,'$transtypeid',null,'$description')") or die(mysqli_error());
+		else if($selected != "New"){
+		     $res = $connection->query("CALL editJobDetails('$selected','$transcustomname','$description','$amount','$transdate')") or die(mysqli_error());
+		    }
 		$_SESSION['update'] = 1;
 		header("location:addincome.php");
 	}
