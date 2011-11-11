@@ -40,6 +40,48 @@
 	echo "</script>";
 	?>
 	
+	<?php  if(isset($date))
+				list($curDay, $curMonth, $curYear)= explode('.', $date,3);
+				else
+				list($curDay, $curMonth, $curYear) = explode('-', date('d-m-Y'),3);
+	?>
+	
+	<?php 
+			$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
+			if (mysqli_connect_errno()) {
+				die('Could not connect: ' . mysqli_connect_error());
+			}
+			 
+			$connection->select_db('webtech');
+			$username= $_SESSION['username'];
+			$date2 = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
+			$res = $connection->query("CALL GetDailyOneTimeIncomes('$username','$date2')") or die(mysqli_error());
+	?>
+	
+    <?php /*
+			$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
+			if (mysqli_connect_errno()) {
+				die('Could not connect: ' . mysqli_connect_error());
+			}
+			 
+			$connection->select_db('webtech');
+			$username= $_SESSION['username'];
+			$date2 = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
+			$res2 = $connection->query("CALL getDailyRecurringIncomes('$username','$date2')") or die(mysqli_error());
+	*/?>	
+	
+	<?php 
+			$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
+			if (mysqli_connect_errno()) {
+				die('Could not connect: ' . mysqli_connect_error());
+			}
+			
+			$connection->select_db('webtech');
+			$username= $_SESSION['username'];
+			$date2 = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
+			$daySum = $connection->query("CALL getDailyTransactions('$username','$date2')") or die(mysqli_error());
+	?>
+	
 	<script type="text/javascript"> 
          $(document).ready(function(){
            slidetgl();
@@ -73,11 +115,7 @@
 		           <!--															--> 
 		           <!--															-->   
 
-		           <?php  if(isset($date))
-							        list($curDay, $curMonth, $curYear)= explode('.', $date,3);
-							else
-							        list($curDay, $curMonth, $curYear) = explode('-', date('d-m-Y'),3); 
-				    ?>
+		           
 	            	<?php 
 			             if((isset($_SESSION['addincome'])))
 			             {
@@ -92,7 +130,7 @@
 						<form method="post" action="addincomeTransaction.php" id="panel1_form">	
 						   <table width="100%">
 							 <tr>
-					          <td width="63%">
+					          <td width="97%">
 					            <input type="hidden" name="panel" value="1" />
 					            <table>
 					               <tr>
@@ -135,13 +173,6 @@
 							       </tr>
 							     </table>  
 						     </td>
-						     <td width="35%">
-						         <table>
-							         <thead><tr><td nowrap="nowrap" class="pfont" style="font-size:16px">Income description:</td></tr></thead>
-							         <tbody><tr><td><textarea name="desc" rows="8" cols="28" class="inpt"></textarea></td></tr></tbody>
-							         <tfoot><tr><td align="right"><input type="submit" value="Update" class="blue button small bround" ></input></td></tr></tfoot>
-						         </table> 
-						     </td> 
 						   </tr> 
 					    </table>
 						</form>	
@@ -163,20 +194,29 @@
 					               <tr>
 						             <td width="50%" class="pfont">Update added income:</td>
 						             <td width="50%">
-						                 <select name="rIncome" class="inpt" style="width:131px">
-						                   <option>bla bla</option>
-						                   <option>bla bla bla</option>
-						                   <option>lalala</option>
+						                 <select name="rtIncome" id="rinc" class="inpt" style="width:131px">
+						                   <option>New</option>
+						                   <?php   
+						                         /*while ($row2 = $res2->fetch_array(MYSQLI_ASSOC)){
+						                         	$name = $row2["recname"];
+						                         	$amount = $row2["amount"]; 
+						                        	$desc = $row2["description"];
+						                        	$jobId =$row2["recId"];
+						                         	echo "<option value=\"$jobId\" onclick=\"updtWorkinfo('rtinc','$name','$amount','$desc')\">";
+						                         	echo $name;
+						                         	echo "</option>";
+						                         }
+						                */   ?>
 						                 </select>
 						              </td> 
 						           </tr>
 							       <tr>
 							         <td width="45%" class="pfont">Name: </td>
-							         <td width="55%"><input type="text" name="inname" class="inpt" size="20" maxlength="30"/></td>
+							         <td width="55%"><input type="text" id="name2" name="inname" class="inpt" size="20" maxlength="30"/></td>
 							       </tr>
 							       <tr>
 							         <td width="45%" class="pfont">Amount: </td>
-							         <td width="55%"><input type="text" name="amount" id="amount" class="inpt" style="color:green" size="20" maxlength="30"/></td>
+							         <td width="55%"><input type="text" name="amount" id="amount2" class="inpt" style="color:green" size="20" maxlength="30"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['amount']) && $usrinpt['amount'] == "error"){
 		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}?>
@@ -205,7 +245,7 @@
 						     <td width="35%">
 						         <table>
 							         <thead><tr><td nowrap="nowrap" class="pfont" style="font-size:16px">Income description:</td></tr></thead>
-							         <tbody><tr><td><textarea name="desc" rows="8" cols="28" class="inpt"></textarea></td></tr></tbody>
+							         <tbody><tr><td><textarea name="desc" id="desc2" rows="8" cols="28" class="inpt"></textarea></td></tr></tbody>
 							         <tfoot><tr><td align="right"><input type="submit" value="Update" class="blue button small bround"></input></td></tr></tfoot>
 						         </table> 
 						     </td> 
@@ -231,21 +271,16 @@
 					               <tr>
 						             <td width="50%" class="pfont">Update added income:</td>
 						             <td width="50%">
-						                 <select name="rIncome" class="inpt" style="width:131px">
+						                 <select name="rIncome" id="otislct" class="inpt" style="width:131px">
 						                 <option>New</option>
-						                   <?php 
-								                   $connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
-								                   if (mysqli_connect_errno()) {
-								                   	die('Could not connect: ' . mysqli_connect_error());
-								                   }
-								                   
-								                   $connection->select_db('webtech');
-						                         $username= $_SESSION['username'];
-						                         $date2 = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
-						                         $res = $connection->query("CALL GetDailyOneTimeIncomes('$username','$date2')") or die(mysqli_error());
+						                   <?php   
 						                         while ($row = $res->fetch_array(MYSQLI_ASSOC)){
-						                         	echo "<option>";
-						                         	echo $row["transname"];
+						                         	$name = $row["transname"];
+						                         	$amount = $row["amount"]; 
+						                        	$desc = $row["description"];
+						                        	$jobId =$row["transId"];
+						                         	echo "<option value=\"$jobId\" onclick=\"updtWorkinfo('otislct','$name','$amount','$desc')\">";
+						                         	echo $name;
 						                         	echo "</option>";
 						                         }
 						                   ?>
@@ -254,11 +289,11 @@
 						           </tr>
 							       <tr>
 							         <td width="45%" class="pfont">Name: </td>
-							         <td width="55%"><input type="text" name="inname" class="inpt" size="20" maxlength="30"/></td>
+							         <td width="55%"><input type="text" id="name3" name="inname" class="inpt" size="20" maxlength="30"/></td>
 							       </tr>
 							       <tr>
 							         <td width="45%" class="pfont">Amount: </td>
-							         <td width="55%"><input type="text"  name="amount" id="amount" class="inpt" style="color:green" size="20" maxlength="30"/></td>
+							         <td width="55%"><input type="text"  name="amount" id="amount3" class="inpt" style="color:green" size="20" maxlength="30"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['amount']) && $usrinpt['amount'] == "error"){
 		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}?>
@@ -275,7 +310,7 @@
 						     <td width="35%">
 						         <table>
 							         <thead><tr><td nowrap="nowrap" class="pfont" style="font-size:16px">Income description:</td></tr></thead>
-							         <tbody><tr><td><textarea name="desc" rows="8" cols="28" class="inpt"></textarea></td></tr></tbody>
+							         <tbody><tr><td><textarea name="desc" id="desc3" rows="8" cols="28" class="inpt"></textarea></td></tr></tbody>
 							         <tfoot><tr><td align="right"><input type="submit" value="Update" class="blue button small bround"></input></td></tr></tfoot>
 						         </table> 
 						     </td>  
@@ -323,9 +358,32 @@
 		         </div>
 		         <div id="daysum">
 		            <?php  // if a day is clicked, view that date:
-							  if(isset($date))
-							     echo $date;
-							  ?>
+		                      $total = 0;
+							  if(!isset($date)){
+							  	 $date = sprintf('%02d.%02d.%4d', $curDay, $curMonth, $curYear);
+							     }	
+							  if($daySum->num_rows > 0){     
+							      echo "<div class=\"daysumhead\">Your balance for: $date</div>";	
+							  echo "<div style=\"min-height: 60px\">";         
+								  while ($row2 = $daySum->fetch_array(MYSQLI_ASSOC)){
+								      $transname = $row2['transname'];
+								      $amnt = $row2['amount'];
+								      $trnstype = $row2['transtype'];
+									  if ($amnt < 0){
+									   	   $div = "<div class=\"redinc roundedinc\">";
+									      }
+									   else {
+									   	   $div = "<div  class=\"greeninc roundedinc\">";
+									      } 
+									   echo "{$div}&nbsp;&nbsp;&nbsp;$transname&nbsp;&nbsp;&nbsp;$trnstype&nbsp;&nbsp;&nbsp;$amnt$ </div>";  					  
+								      $total += $amnt;
+								    }
+								    echo "</div>";
+								    echo "<div class=\"daysumhead\" style=\"bottom:-25px\">TOTAL: $total$</div>";
+							   }
+							  else 
+							      echo "<div class=\"daysumhead\">You have no transactions for $date</div>"
+					  ?>
 		         </div>
 		         <div id="monthsum">
 		             <?php // current month
