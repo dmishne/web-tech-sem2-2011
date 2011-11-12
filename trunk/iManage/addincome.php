@@ -58,7 +58,7 @@
 			$res = $connection->query("CALL GetDailyOneTimeIncomes('$username','$date2')") or die(mysqli_error());
 	?>
 	
-    <?php /*
+    <?php 
 			$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
 			if (mysqli_connect_errno()) {
 				die('Could not connect: ' . mysqli_connect_error());
@@ -68,7 +68,7 @@
 			$username= $_SESSION['username'];
 			$date2 = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
 			$res2 = $connection->query("CALL getDailyRecurringIncomes('$username','$date2')") or die(mysqli_error());
-	*/?>	
+	?>	
 	
 	<?php 
 			$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
@@ -117,9 +117,9 @@
 
 		           
 	            	<?php 
-			             if((isset($_SESSION['addincome'])))
+			             if((isset($_SESSION['transfer'])))
 			             {
-			             	$usrinpt = $_SESSION['addincome'];
+			             	$usrinpt = $_SESSION['transfer'];
 			             	echo "<div class=\"error\"> Input error! Please check values </div>";
 			             }
 		             ?>	
@@ -166,7 +166,9 @@
 							         <td width="55%"><input type="text" name="wage" class="inpt" size="20" maxlength="30" id="rwpd"  onchange="rDayWageTotal()"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['amount']) && $usrinpt['amount'] == "error"){
-		            			            echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}?>
+		            			            echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}
+		            			         else if(isset($usrinpt['sign']) && $usrinpt['sign'] == "error"){
+		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be positive </div> </td> </tr>";}?>
 							       <tr>
 							         <td width="45%" class="pfont">Total per Day: </td>
 							         <td width="55%"><input type="text" class="inpt" style="color:green" size="20" maxlength="30" readonly="readonly" id="rwt"/></td>
@@ -194,19 +196,20 @@
 					               <tr>
 						             <td width="50%" class="pfont">Update added income:</td>
 						             <td width="50%">
-						                 <select name="rtIncome" id="rinc" class="inpt" style="width:131px">
+						                 <select name="rtIncome" id="rtinc" class="inpt" style="width:131px">
 						                   <option>New</option>
 						                   <?php   
-						                         /*while ($row2 = $res2->fetch_array(MYSQLI_ASSOC)){
+						                         while ($row2 = $res2->fetch_array(MYSQLI_ASSOC)){
 						                         	$name = $row2["recname"];
 						                         	$amount = $row2["amount"]; 
 						                        	$desc = $row2["description"];
+						                        	$recType = $row2["recType"];
 						                        	$jobId =$row2["recId"];
-						                         	echo "<option value=\"$jobId\" onclick=\"updtWorkinfo('rtinc','$name','$amount','$desc')\">";
+						                         	echo "<option value=\"$jobId\" onclick=\"updtWorkinfo('rtinc','$name','$amount','$desc','$recType')\">";
 						                         	echo $name;
 						                         	echo "</option>";
 						                         }
-						                */   ?>
+						                   ?>
 						                 </select>
 						              </td> 
 						           </tr>
@@ -219,7 +222,9 @@
 							         <td width="55%"><input type="text" name="amount" id="amount2" class="inpt" style="color:green" size="20" maxlength="30"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['amount']) && $usrinpt['amount'] == "error"){
-		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}?>
+		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}
+		            			         else if(isset($usrinpt['sign']) && $usrinpt['sign'] == "error"){
+		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be positive </div> </td> </tr>";}?>
 							       <tr>
 							         <td width="50%" class="pfont">From (dd/mm/yyyy): </td>
 							         <td width="50%"><input type="text" name="day" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
@@ -231,7 +236,7 @@
 							       <tr>
 							          <td width="50%" class="pfont">Recurring Period: </td>
 							          <td width="50%">
-							             <select name="r_period" class="inpt" style="width:131px">
+							             <select name="r_period" id="rslct" class="inpt" style="width:131px">
 											<option value="daily">Daily</option>
 											<option value="weekly">Weekly</option>
 											<option value="2weeks">Fortnightly</option>
@@ -296,7 +301,9 @@
 							         <td width="55%"><input type="text"  name="amount" id="amount3" class="inpt" style="color:green" size="20" maxlength="30"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['amount']) && $usrinpt['amount'] == "error"){
-		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}?>
+		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}
+		            			         else if(isset($usrinpt['sign']) && $usrinpt['sign'] == "error"){
+		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be positive </div> </td> </tr>";}?>
 							       <tr>
 							         <td width="45%" class="pfont">Income Date (dd/mm/yyyy): </td>
 							         <td width="55%"><input type="text" name="day" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
@@ -324,7 +331,7 @@
 		             <!--															-->				 
 
 									 
-					  <?php unset($_SESSION['addincome']);?>							
+					  <?php unset($_SESSION['transfer']);?>							
 		         </div>
 		         
 		         
@@ -353,7 +360,7 @@
 					  $cal = new CALENDAR($year, $month);
 					  //$cal->offset = $offset;
 					  $cal->link = $PHP_SELF;
-					  echo $cal->create();							  
+					  echo $cal->create($date);							  
 					 ?>		             
 		         </div>
 		         <div id="daysum">
@@ -369,17 +376,18 @@
 								      $transname = $row2['transname'];
 								      $amnt = $row2['amount'];
 								      $trnstype = $row2['transtype'];
+								      $descript = $row2['description'];
 									  if ($amnt < 0){
-									   	   $div = "<div class=\"redinc roundedinc\">";
+									   	   $div = "<div class=\"redinc roundedinc\" title=\"$descript\">";
 									      }
 									   else {
-									   	   $div = "<div  class=\"greeninc roundedinc\">";
+									   	   $div = "<div  class=\"greeninc roundedinc\" title=\"$descript\">";
 									      } 
 									   echo "{$div}&nbsp;&nbsp;&nbsp;$transname&nbsp;&nbsp;&nbsp;$trnstype&nbsp;&nbsp;&nbsp;$amnt$ </div>";  					  
 								      $total += $amnt;
 								    }
 								    echo "</div>";
-								    echo "<div class=\"daysumhead\" style=\"bottom:-25px\">TOTAL: $total$</div>";
+								    echo "<div class=\"daysumhead\" style=\"bottom:-22px\">TOTAL: $total$</div>";
 							   }
 							  else 
 							      echo "<div class=\"daysumhead\">You have no transactions for $date</div>"

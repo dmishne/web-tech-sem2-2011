@@ -1,8 +1,16 @@
 <?php session_start();
-// Verifies that user has logged in. Redirect to login page in case not logged in.
-if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
+/*  if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 	header("location:login.php");
-}
+}*/
+  // PREDEFINED DATA
+  // get GPC data:
+  if(isset($_REQUEST['date'])) $date = $_REQUEST['date'];
+  if(isset($_REQUEST['year'])) $year = $_REQUEST['year'];
+  if(isset($_REQUEST['month'])) $month = $_REQUEST['month'];
+  if(isset($_REQUEST['offset'])) $offset = $_REQUEST['offset'];
+  
+  // set PHP_SELF:
+  if(isset($_SERVER['PHP_SELF'])) $PHP_SELF = $_SERVER['PHP_SELF'];
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -13,7 +21,50 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 	<meta http-equiv="X-UA-Compatible" content="IE=9" />
 	<link rel="icon" href="images/logo.ico" />
 	<link rel="apple-touch-icon" href="images/icon_apple.png" />
-	<?php include "include.php"; ?>
+	<?php include "include.php" ?>
+	
+	<?php
+	echo "<script type=\"text/javascript\">
+		  $.mon_year = {};";
+	if(isset($_REQUEST['year']) && isset($_REQUEST['month']))
+	{
+		echo "$.mon_year.year = {$_REQUEST[year]} ;" . "
+		   	  $.mon_year.month =  {$_REQUEST[month]} ;";
+	}
+	else
+	{
+		echo "$.mon_year.year = " . date("Y") . ";
+			  $.mon_year.month = " . date("m") . ";
+		";
+	}
+	echo "</script>";
+	?>
+	
+	<?php  if(isset($date))
+				list($curDay, $curMonth, $curYear)= explode('.', $date,3);
+				else
+				list($curDay, $curMonth, $curYear) = explode('-', date('d-m-Y'),3);
+	?>
+	
+	
+	<?php 
+			$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
+			if (mysqli_connect_errno()) {
+				die('Could not connect: ' . mysqli_connect_error());
+			}
+			
+			$connection->select_db('webtech');
+			$username= $_SESSION['username'];
+			$date2 = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
+			$daySum = $connection->query("CALL getDailyTransactions('$username','$date2')") or die(mysqli_error());
+	?>
+	
+	<script type="text/javascript"> 
+         $(document).ready(function(){
+           slidetgl();
+           initCalendar();
+       });
+	</script>
 </head>
 
 <body>
@@ -33,9 +84,244 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 		           Add/Update Payouts
 			</div>
 			<div id="content-middle">
-		           Content Here <br />
-		           more content <br />
-		           even more content
+		           
+  
+		         <div id="incomechoser" >
+
+		           <!--															--> 
+		           <!--															-->   
+
+		           
+	            	<?php 
+			             if((isset($_SESSION['transfer'])))
+			             {
+			             	$usrinpt = $_SESSION['transfer'];
+			             	echo "<div class=\"error\"> Input error! Please check values </div>";
+			             }
+		             ?>	
+   
+					 <!--															--> 
+		           	 <!--															-->					 						 
+
+					 <p class="flip"  style="text-align:center;"> Recurring Payout</p>
+					 <button class="green rounded" id="scnd"><img id="2a" src="<?php  if(isset($usrinpt['err2']) && $usrinpt['err2'] == 1) echo "images/arrows_up.png"; else echo "images/arrows_down.png";?>" /></button>	
+					 <div class="panel2" style="<?php if(isset($usrinpt['err2']) && $usrinpt['err2'] == 1) echo "display:block;"; ?>">
+						<form method="post" action="payoutTransaction.php" id="panel2_form">	
+                          <table width="100%">
+                            <tr>
+					          <td width="63%">
+					          <input type="hidden" name="panel" value="2" />
+					            <table>
+					               <tr>
+						             <td width="50%" class="pfont">Update added payout:</td>
+						             <td width="50%">
+						                 <select name="rtIncome" id="rtinc" class="inpt" style="width:131px">
+						                   <option>New</option>
+						                   <?php   
+						                        /* while ($row2 = $res2->fetch_array(MYSQLI_ASSOC)){
+						                         	$name = $row2["recname"];
+						                         	$amount = $row2["amount"]; 
+						                        	$desc = $row2["description"];
+						                        	$recType = $row2["recType"];
+						                        	$jobId =$row2["recId"];
+						                         	echo "<option value=\"$jobId\" onclick=\"updtWorkinfo('rtinc','$name','$amount','$desc','$recType')\">";
+						                         	echo $name;
+						                         	echo "</option>";
+						                         }*/
+						                   ?>
+						                 </select>
+						              </td> 
+						           </tr>
+							       <tr>
+							         <td width="45%" class="pfont">Name: </td>
+							         <td width="55%"><input type="text" id="name2" name="inname" class="inpt" size="20" maxlength="30"/></td>
+							       </tr>
+							       <tr>
+							         <td width="45%" class="pfont">Amount: </td>
+							         <td width="55%"><input type="text" name="amount" id="amount2" class="inpt" style="color:green" size="20" maxlength="30"/></td>
+							       </tr>
+							       <?php if(isset($usrinpt['amount']) && $usrinpt['amount'] == "error"){
+		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}
+		            			         else if(isset($usrinpt['sign']) && $usrinpt['sign'] == "error"){
+		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be negative </div> </td> </tr>";}?>
+							       <tr>
+							         <td width="50%" class="pfont">From (dd/mm/yyyy): </td>
+							         <td width="50%"><input type="text" name="day" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
+							          <b>/</b><input type="text" name="month" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
+							          <b>/</b><input type="text" name="year" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
+							       </tr>
+							       <?php if(isset($usrinpt['date']) && $usrinpt['date'] == "error"){
+		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Invalid date input </div> </td> </tr>";}?>
+							       <tr>
+							          <td width="50%" class="pfont">Recurring Period: </td>
+							          <td width="50%">
+							             <select name="r_period" id="rslct" class="inpt" style="width:131px">
+											<option value="daily">Daily</option>
+											<option value="weekly">Weekly</option>
+											<option value="2weeks">Fortnightly</option>
+											<option value="monthly">Monthly</option>
+											<option value="Bi - monthly">Bi - monthly</option>
+										 </select>
+							          </td>
+							       </tr>
+							     </table>  
+						     </td>
+						     <td width="35%">
+						         <table>
+							         <thead><tr><td nowrap="nowrap" class="pfont" style="font-size:16px">Payout description:</td></tr></thead>
+							         <tbody><tr><td><textarea name="desc" id="desc2" rows="8" cols="28" class="inpt"></textarea></td></tr></tbody>
+							         <tfoot><tr><td align="right"><input type="submit" value="Update" class="blue button small bround"></input></td></tr></tfoot>
+						         </table> 
+						     </td> 
+						   </tr>   
+					    </table>
+                       </form>
+					 </div>
+					  <p class="line2" style="<?php  if(isset($usrinpt['err2']) && $usrinpt['err2'] == 1) echo "visibility:hidden;"; ?>"></p>
+					 
+
+					 <!--															--> 
+		           	 <!--															-->							 
+
+					 <p class="flip"  style="text-align:center;"> One Time Payout</p>
+					 <button class="green rounded" id="thrd"><img id="3a" src="<?php  if(isset($usrinpt['err3']) && $usrinpt['err3'] == 1) echo "images/arrows_up.png"; else echo "images/arrows_down.png";?>"/></button>					 
+		             <div class="panel3"  style="<?php  if(isset($usrinpt['err3']) && $usrinpt['err3'] == 1) echo "display:block;"; ?>">
+		             <form method="post" action="payoutTransaction.php" id="panel3_form">
+					    <table width="100%">
+					      <tr>
+					        <td width="63%">
+					        <input type="hidden" name="panel" value="3" />
+					          <table>
+					               <tr>
+						             <td width="50%" class="pfont">Update added payout:</td>
+						             <td width="50%">
+						                 <select name="rIncome" id="otislct" class="inpt" style="width:131px">
+						                 <option>New</option>
+						                   <?php   
+						                        /* while ($row = $res->fetch_array(MYSQLI_ASSOC)){
+						                         	$name = $row["transname"];
+						                         	$amount = $row["amount"]; 
+						                        	$desc = $row["description"];
+						                        	$jobId =$row["transId"];
+						                         	echo "<option value=\"$jobId\" onclick=\"updtWorkinfo('otislct','$name','$amount','$desc')\">";
+						                         	echo $name;
+						                         	echo "</option>";
+						                         }*/
+						                   ?>
+						                 </select>
+						              </td> 
+						           </tr>
+							       <tr>
+							         <td width="45%" class="pfont">Name: </td>
+							         <td width="55%"><input type="text" id="name3" name="inname" class="inpt" size="20" maxlength="30"/></td>
+							       </tr>
+							       <tr>
+							         <td width="45%" class="pfont">Amount: </td>
+							         <td width="55%"><input type="text"  name="amount" id="amount3" class="inpt" style="color:green" size="20" maxlength="30"/></td>
+							       </tr>
+							       <?php if(isset($usrinpt['amount']) && $usrinpt['amount'] == "error"){
+		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}
+		            			         else if(isset($usrinpt['sign']) && $usrinpt['sign'] == "error"){
+		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be negative </div> </td> </tr>";}?>
+							       <tr>
+							         <td width="45%" class="pfont">Payout Date (dd/mm/yyyy): </td>
+							         <td width="55%"><input type="text" name="day" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
+							          <b>/</b><input type="text" name="month" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
+							          <b>/</b><input type="text" name="year" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
+							       </tr>
+							       <?php if(isset($usrinpt['date']) && $usrinpt['date'] == "error"){
+		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Invalid date input </div> </td> </tr>";}?>
+							     </table>  
+						     </td>
+						     <td width="35%">
+						         <table>
+							         <thead><tr><td nowrap="nowrap" class="pfont" style="font-size:16px">Payout description:</td></tr></thead>
+							         <tbody><tr><td><textarea name="desc" id="desc3" rows="8" cols="28" class="inpt"></textarea></td></tr></tbody>
+							         <tfoot><tr><td align="right"><input type="submit" value="Update" class="blue button small bround"></input></td></tr></tfoot>
+						         </table> 
+						     </td>  
+						   </tr>  
+					    </table>
+					    </form>
+					 </div>	
+					 <p class="line3" style="<?php  if(isset($usrinpt['err3']) && $usrinpt['err3'] == 1) echo "visibility:hidden;"; ?>"></p>
+
+					 <!--															--> 
+		             <!--															-->				 
+
+									 
+					  <?php unset($_SESSION['transfer']);?>							
+		         </div>
+		         
+		         
+		         
+		         
+		         <div id="calendar">
+		              <!-- Form POST for calendar.php -->
+		              <form action="<? echo $PHP_SELF; ?>" method="get">
+							<?php
+							  // if year is empty, set year to current year:
+							  if($year == '') $year = date('Y');
+							  // if month is empty, set month to current month:
+							  if($month == '') $month = date('n');
+							
+							  // if offset is empty, set offset to 1 (start with Sunday):
+							  if($offset == '') $offset = 1;
+							?>
+					 </form>
+							
+					<!--  Calendar declaration & creation  -->		
+					 <?
+					  // include calendar class:
+					  include('calendar.php');
+					
+					  // create calendar:
+					  $cal = new CALENDAR($year, $month);
+					  //$cal->offset = $offset;
+					  $cal->link = $PHP_SELF;
+					  echo $cal->create($date);							  
+					 ?>		             
+		         </div>
+		         <div id="daysum">
+		            <?php  // if a day is clicked, view that date:
+		                      $total = 0;
+							  if(!isset($date)){
+							  	 $date = sprintf('%02d.%02d.%4d', $curDay, $curMonth, $curYear);
+							     }	
+							  if($daySum->num_rows > 0){     
+							      echo "<div class=\"daysumhead\">Your balance for: $date</div>";	
+							  echo "<div style=\"min-height: 60px\">";         
+								  while ($row2 = $daySum->fetch_array(MYSQLI_ASSOC)){
+								      $transname = $row2['transname'];
+								      $amnt = $row2['amount'];
+								      $trnstype = $row2['transtype'];
+								      $descript = $row2['description'];
+									  if ($amnt < 0){
+									   	   $div = "<div class=\"redinc roundedinc\" title=\"$descript\">";
+									      }
+									   else {
+									   	   $div = "<div  class=\"greeninc roundedinc\" title=\"$descript\">";
+									      } 
+									   echo "{$div}&nbsp;&nbsp;&nbsp;$transname&nbsp;&nbsp;&nbsp;$trnstype&nbsp;&nbsp;&nbsp;$amnt$ </div>";  					  
+								      $total += $amnt;
+								    }
+								    echo "</div>";
+								    echo "<div class=\"daysumhead\" style=\"bottom:-22px\">TOTAL: $total$</div>";
+							   }
+							  else 
+							      echo "<div class=\"daysumhead\">You have no transactions for $date</div>"
+					  ?>
+		         </div>
+		         <div id="monthsum">
+		             <?php // current month
+		                  $months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+						  if(isset($month) && isset($year)) echo  $months[$month-1] . ' ' . $year ;
+						  ?>
+		         </div>
+			</div>
+
+
+
 			</div>
 		</div>
 	</div>
