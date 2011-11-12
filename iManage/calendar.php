@@ -259,9 +259,9 @@
 			}
 		}
 
-		function create() {
+		function create($pickdDate) {
 			global $cal_ID;
-
+			
 			$this->size = ($this->hFontSize > $this->dFontSize) ? $this->hFontSize : $this->dFontSize;
 			if($this->wFontSize > $this->size) $this->size = $this->wFontSize;
 
@@ -288,7 +288,8 @@
 				else $inThisMonth = false;
 
 				if($this->weekNumbers || $this->week) $weekNr = $this->get_week($this->year, $days);
-
+                
+				list($pickdDay, $pickdMonth, $pickdYear) = explode('.', $pickdDate);
 				while($daycount <= $stop) {
 					if($this->week && $this->week != $weekNr) {
 						$daycount += 7 - ($daycount == 1 ? $start : 0);
@@ -310,6 +311,9 @@
 							$content = $daycount;
 							if($inThisMonth && $daycount == $curDay) {
 								$style = 'padding:0px;border:3px solid ' . $this->tdBorderColor . ';';
+							}
+							else if($inThisMonth && $daycount == $pickdDay){
+								$class = 'cssHilight';
 							}
 							else if($this->year == 1582 && $this->month == 10 && $daycount == 4) $daycount = 14;
 							$daycount++;

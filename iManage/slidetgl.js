@@ -44,16 +44,35 @@ function rDayWageTotal(){
 }
 
 
-function updtWorkinfo(id,name,amount,desc){     
+function updtWorkinfo(id,name,amount,desc,rtype){     
 	
 	if(id == "otislct"){
 	    document.getElementById("name3").value = name;
 	    document.getElementById("amount3").value = amount;
 	    document.getElementById("desc3").value = desc;
 	}
-	else if(id == "rtinc"){
+	else if(id == "rtinc")
+	{
 	    document.getElementById("name2").value = name;
 	    document.getElementById("amount2").value = amount;
 	    document.getElementById("desc2").value = desc;
+	    switch (rtype)
+	    {
+		    case '10':
+		    	document.getElementById("rslct").selectedIndex = 0;
+		    	break;
+		    case '1':
+		    	document.getElementById("rslct").selectedIndex = 1;
+		    	break;
+		    case '2':
+		    	document.getElementById("rslct").selectedIndex = 2;
+		    	break;
+		    case '4':
+		    	document.getElementById("rslct").selectedIndex = 3;
+		    	break;
+		    case '8':
+		    	document.getElementById("rslct").selectedIndex = 4;
+		    	break;
+	     }
 	}
 }
