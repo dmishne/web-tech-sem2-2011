@@ -101,33 +101,16 @@ else if($formN == 2) //  add recuring income
 	}
 	$transdate = sprintf('%4d-%02d-%02d', $syear, $smonth, $sday);
 	$recurrance = htmlspecialchars($_POST['r_period'],ENT_QUOTES);
-	switch ($recurrance){
-	     case Daily:
-	        $recurrance = 10;
-	        break;      
-	     case Weekly:
-	        $recurrance = 1;
-	        break;
-	     case Fortnightly:
-	        $recurrance = 2;
-	        break;
-	     case Monthly:
-	        $recurrance = 4;
-	        break;
-	     case Bi - monthly:
-	        $recurrance = 8;
-	        break;
-	}
 	$sdate = sprintf('%02d.%02d.%4d', $sday, $smonth, $syear);
 	if($pass == 1){
 	   $usrinpt['date'] = null;
 	   $usrinpt['amount']=null;
 	   $usrinpt['err2'] = null;
-	   if($selected == "New" && $transcustomname != null)
+	   if($selected == 'New')
 	          $res = $connection->query("CALL insertTransaction('$amount','$username','$transdate','$transcustomname','$recurrance','$transtypeid',null,'$description')") or die(mysqli_error());
-	   else if($selected != "New"){
+	   /*else if($selected != 'New'){
 	   	      $res = $connection->query("CALL editJobDetails('$selected','$transcustomname','$description','$amount','$transdate')") or die(mysqli_error());
-	   }
+	   }*/
 	   
 	   $_SESSION['update'] = 1;
 	   header("location:addincome.php?date=$sdate&month=$smonth&year=$syear");}
@@ -168,10 +151,10 @@ else if($formN == 3)   // add one time income
 		$usrinpt['date'] = null;
 		$usrinpt['amount']=null;
 		$usrinpt['err3'] = null;
-		if($selected == "New" && $transcustomname != null)
+		if($selected == 'New')
 		     $res = $connection->query("CALL insertTransaction('$amount','$username','$transdate','$transcustomname',null,'$transtypeid',null,'$description')") or die(mysqli_error());
-		else if($selected != "New"){
-		     $res = $connection->query("CALL editJobDetails('$selected','$transcustomname','$description','$amount','$transdate')") or die(mysqli_error());
+		else if($selected != 'New'){
+		    /* $res = $connection->query("CALL editJobDetails('$selected','$transcustomname','$description','$amount','$transdate')") or die(mysqli_error());*/
 		    }
 		$_SESSION['update'] = 1;
 		header("location:addincome.php?date=$tdate&month=$tmonth&year=$tyear");

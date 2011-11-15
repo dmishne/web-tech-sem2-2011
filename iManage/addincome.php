@@ -163,7 +163,7 @@
 		            			            echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Incorect time </div> </td> </tr>";}?>
 							       <tr>
 							         <td width="45%" class="pfont">Wage per Hour: </td>
-							         <td width="55%"><input type="text" name="wage" class="inpt" size="20" maxlength="30" id="rwpd"  onchange="rDayWageTotal()"/></td>
+							         <td width="55%"><input type="text" name="wage" class="inpt" size="20" maxlength="30" id="rwpd"  onkeyup="rDayWageTotal()"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['amount']) && $usrinpt['amount'] == "error"){
 		            			            echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}
@@ -175,6 +175,11 @@
 							       </tr>
 							     </table>  
 						     </td>
+						     <td width="35%" style="position:relative; vertical-align:bottom">
+						         <table>
+							         <tr><td align="right"><input type="submit" value="Update" class="blue button small bround"></input></td></tr>
+						         </table> 
+						     </td> 
 						   </tr> 
 					    </table>
 						</form>	
@@ -197,7 +202,7 @@
 						             <td width="50%" class="pfont">Update added income:</td>
 						             <td width="50%">
 						                 <select name="rtIncome" id="rtinc" class="inpt" style="width:131px">
-						                   <option>New</option>
+						                   <option value="New" onclick="updtWorkinfo('otislct','','','')">New</option>
 						                   <?php   
 						                         while ($row2 = $res2->fetch_array(MYSQLI_ASSOC)){
 						                         	$name = $row2["recname"];
@@ -237,11 +242,11 @@
 							          <td width="50%" class="pfont">Recurring Period: </td>
 							          <td width="50%">
 							             <select name="r_period" id="rslct" class="inpt" style="width:131px">
-											<option value="daily">Daily</option>
-											<option value="weekly">Weekly</option>
-											<option value="2weeks">Fortnightly</option>
-											<option value="monthly">Monthly</option>
-											<option value="Bi - monthly">Bi - monthly</option>
+											<option value=10>Daily</option>
+											<option value=1>Weekly</option>
+											<option value=2>Fortnightly</option>
+											<option value=4>Monthly</option>
+											<option value=8>Bi-monthly</option>
 										 </select>
 							          </td>
 							       </tr>
@@ -277,7 +282,7 @@
 						             <td width="50%" class="pfont">Update added income:</td>
 						             <td width="50%">
 						                 <select name="rIncome" id="otislct" class="inpt" style="width:131px">
-						                 <option>New</option>
+						                 <option value="New" onclick="updtWorkinfo('otislct','','','')">New</option>
 						                   <?php   
 						                         while ($row = $res->fetch_array(MYSQLI_ASSOC)){
 						                         	$name = $row["transname"];
@@ -371,22 +376,30 @@
 							     }	
 							  if($daySum->num_rows > 0){     
 							      echo "<div class=\"daysumhead\">Your balance for: $date</div>";	
-							  echo "<div style=\"min-height: 60px\">";         
+							  echo "<div style=\"min-height:60px\"><table>";         
 								  while ($row2 = $daySum->fetch_array(MYSQLI_ASSOC)){
 								      $transname = $row2['transname'];
 								      $amnt = $row2['amount'];
 								      $trnstype = $row2['transtype'];
 								      $descript = $row2['description'];
+								      echo "<tr>";
 									  if ($amnt < 0){
-									   	   $div = "<div class=\"redinc roundedinc\" title=\"$descript\">";
+									   	   $div1 = "<td class=\"redinc roundedincleft\" style=\"cursor:help\" title=\"$descript\">";
+									   	   $div2 = "<td class=\"redinc roundedinccntr\" style=\"cursor:help\" title=\"$descript\">";
+									   	   $div3 = "<td class=\"redinc roundedincright\" style=\"cursor:help\" title=\"$descript\">";
 									      }
 									   else {
-									   	   $div = "<div  class=\"greeninc roundedinc\" title=\"$descript\">";
+									   	   $div1 = "<td  class=\"greeninc roundedincleft\" style=\"cursor:help\" title=\"$descript\">";
+									   	   $div2 = "<td  class=\"greeninc roundedinccntr\" style=\"cursor:help\" title=\"$descript\">";
+									   	   $div3 = "<td  class=\"greeninc roundedincright\" style=\"cursor:help\" title=\"$descript\">";
 									      } 
-									   echo "{$div}&nbsp;&nbsp;&nbsp;$transname&nbsp;&nbsp;&nbsp;$trnstype&nbsp;&nbsp;&nbsp;$amnt$ </div>";  					  
+									   echo "{$div1}$trnstype</td>";
+								       echo "{$div2}$transname</td>";
+								       echo "{$div3}$amnt$ </td>";  
+								       echo "</tr>";					  
 								      $total += $amnt;
 								    }
-								    echo "</div>";
+								    echo "</table></div>";
 								    echo "<div class=\"daysumhead\" style=\"bottom:-22px\">TOTAL: $total$</div>";
 							   }
 							  else 

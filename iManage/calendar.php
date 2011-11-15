@@ -147,6 +147,7 @@
 			if($this->dFontSize) $html .= 'font-size: ' . $this->dFontSize . 'px; ';
 			if($this->dFontColor) $html .= 'color: ' . $this->dFontColor . '; ';
 			if($this->hilightColor) $html .= 'background-color: ' . $this->hilightColor . '; ';
+			$html .= 'cursor: pointer; ';
 			$html .= '} .cssPicked' . $cal_ID . ' { ';
 			if($this->dFontFace) $html .= 'font-family: ' . $this->dFontFace . '; ';
 			if($this->dFontSize) $html .= 'font-size: ' . $this->dFontSize . 'px; ';
@@ -312,7 +313,7 @@
 							if($inThisMonth && $daycount == $curDay) {
 								$style = 'padding:0px;border:3px solid ' . $this->tdBorderColor . ';';
 							}
-							else if($inThisMonth && $daycount == $pickdDay){
+							if($inThisMonth && $daycount == $pickdDay){
 								$class = 'cssHilight';
 							}
 							else if($this->year == 1582 && $this->month == 10 && $daycount == 4) $daycount = 14;

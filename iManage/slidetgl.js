@@ -1,6 +1,6 @@
 function slidetgl()
 {
-	$("#frst").click(function(){
+	 $("#frst").click(function(){
 		$(".panel1").slideToggle("slow");
 		$(".line1").is(":visible")?$(".line1").hide():$(".line1").show();
 		var src = ($("#1a").attr("src") === "images/arrows_down.png")
@@ -47,32 +47,54 @@ function rDayWageTotal(){
 function updtWorkinfo(id,name,amount,desc,rtype){     
 	
 	if(id == "otislct"){
-	    document.getElementById("name3").value = name;
-	    document.getElementById("amount3").value = amount;
-	    document.getElementById("desc3").value = desc;
+		var sel = document.getElementById(id);
+		var op = sel.options[sel.selectedIndex].value;
+		if(op == "New" && (document.getElementById("name3").value) != null){
+			document.getElementById("name3").value = '';
+		    document.getElementById("amount3").value = '';
+		    document.getElementById("desc3").value = '';
+		}
+		else {
+		    document.getElementById("name3").value = name;
+		    document.getElementById("amount3").value = amount;
+		    document.getElementById("desc3").value = desc;
+		}
 	}
 	else if(id == "rtinc")
 	{
-	    document.getElementById("name2").value = name;
-	    document.getElementById("amount2").value = amount;
-	    document.getElementById("desc2").value = desc;
-	    switch (rtype)
-	    {
-		    case '10':
-		    	document.getElementById("rslct").selectedIndex = 0;
-		    	break;
-		    case '1':
-		    	document.getElementById("rslct").selectedIndex = 1;
-		    	break;
-		    case '2':
-		    	document.getElementById("rslct").selectedIndex = 2;
-		    	break;
-		    case '4':
-		    	document.getElementById("rslct").selectedIndex = 3;
-		    	break;
-		    case '8':
-		    	document.getElementById("rslct").selectedIndex = 4;
-		    	break;
-	     }
+		var sel = document.getElementById(id);
+		var op = sel.options[sel.selectedIndex].value;
+		alert(op);
+		if(op == "New" && (document.getElementById("name3").value) != null){
+			document.getElementById("name3").value = '';
+		    document.getElementById("amount3").value = '';
+		    document.getElementById("desc3").value = '';
+		    document.getElementById("rslct").selectedIndex = 0;
+		}
+		else {
+		    document.getElementById("name3").value = name;
+		    document.getElementById("amount3").value = amount;
+		    document.getElementById("desc3").value = desc;
+		    switch (rtype)
+		    {
+			    case '10':
+			    	document.getElementById("rslct").selectedIndex = 0;
+			    	break;
+			    case '1':
+			    	document.getElementById("rslct").selectedIndex = 1;
+			    	break;
+			    case '2':
+			    	document.getElementById("rslct").selectedIndex = 2;
+			    	break;
+			    case '4':
+			    	document.getElementById("rslct").selectedIndex = 3;
+			    	break;
+			    case '8':
+			    	document.getElementById("rslct").selectedIndex = 4;
+			    	break;
+		     }
+		}
 	}
 }
+
+
