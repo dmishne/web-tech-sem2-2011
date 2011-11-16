@@ -1,3 +1,5 @@
+html {overflow-y: scroll;}
+
 body{
 	background-image:url('../images/siteBackground.jpg');
 }
@@ -33,7 +35,6 @@ textarea {
 #menu{
 	float:left;
 	width:195px;
- 	min-height:450px; 
 	height:auto;
 	background: rgba(255,255,255,0.60);
 	margin:0px 5px 0px auto;
