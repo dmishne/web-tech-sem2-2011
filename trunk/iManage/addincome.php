@@ -98,7 +98,7 @@
 	</div>
 	
 	<div id="middle">
-		<div id="menu">
+		<div class="menu" style="min-height:450px">
 			<?php include "menu.php"; ?>
 		</div>
 				
@@ -110,7 +110,7 @@
 			
 			
 			         
-		         <div id="incomechoser" >
+		         <div class="incomechoser" >
 
 		           <!--															--> 
 		           <!--															-->   
