@@ -24,7 +24,7 @@
 	</div>
 	
 	<div id="middle">
-		<div id="menu">
+		<div class="menu">
 			<?php include "menu.php"; ?>
 		</div>
 				

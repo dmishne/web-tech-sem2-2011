@@ -3,10 +3,17 @@ function slidetgl()
 	 $("#frst").click(function(){
 		$(".panel1").slideToggle("slow");
 		$(".line1").is(":visible")?$(".line1").hide():$(".line1").show();
+		
+		/*if($(".line1").is(":visible")){
+            $(".menu").css({height:($("#menu").height()-100)}); 
+            }
+		else {
+			$("#menu").css({height:($("#menu").height()+100)});
+			}*/		
 		var src = ($("#1a").attr("src") === "images/arrows_down.png")
         ? "images/arrows_up.png" 
         : "images/arrows_down.png";
-            $("#1a").attr("src", src);
+		$("#1a").attr("src", src);
 	     });
 	$("#scnd").click(function(){
         $(".panel2").slideToggle("slow");
@@ -25,6 +32,7 @@ function slidetgl()
             $("#3a").attr("src", src);
          });
 }
+
 
 
 function rDayWageTotal(){
