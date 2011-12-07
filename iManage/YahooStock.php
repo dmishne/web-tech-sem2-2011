@@ -1,4 +1,71 @@
 <?php
+// -------> BEGIN DELETE <----------
+$y = new YahooStockPage("GOOG");
+y.showStockPage();
+
+// -------> END DELETE <------------
+
+class YahooStockPage
+{
+	private $mStocks;
+	private $mStocksData;
+	
+	public function __construct($stocks) {
+		$this->mStocks = $stocks;
+	}
+	
+	public function showStockPage()
+	{
+		if ($stocks == null)
+		{
+			echo "<p>You don't have any stocks registered<\p>
+			      </br>
+			      <a href=\"stockManage.php\"> click here to register for stocks </a>";
+			return;
+		}
+		loadStockData();
+		foreach ($mStocksData as &$stockData)  // remove header
+		{
+			unset($stockData[0]);
+			$stockData = array_values($stockData);
+			$n = count($stockData);
+			for ($i = 0; $i < $n; $i++)
+			{
+				$stockData[$i][0] = strtotime($stockData[$i][0])*1000; 		//  Unix timestamp with microseconds
+				$stockData = array( 0 => $stockData[$i][0] , 1 => $stockData[$i][4]);
+			}
+		}
+	}
+	
+	private function loadStockData()
+	{
+		foreach($mStocks as &$stock)
+		{
+			$tempCsvString = file_get_contents("http://ichart.yahoo.com/table.csv?s=" . $stock . "&a=0&b=1&c=2009&g=d&ignore=.csv");
+			$mStocksData[$stock] = csvToArray($tempCsvString);
+		}
+	}
+	
+	private function csvToArray($csvString)
+	{
+		$csv_data = str_getcsv($csvString, "\n"); // split to csv rows
+		foreach ($csv_data as &$row)
+		{
+			$row = str_getcsv($row);
+		}
+		return $csv_data;
+	}
+	
+	
+}
+
+
+
+
+
+
+
+
 
 /**
 * Class to fetch stock data from Yahoo! Finance
