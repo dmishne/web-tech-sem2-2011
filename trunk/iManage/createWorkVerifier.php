@@ -15,7 +15,7 @@ if(strlen($jobsname) < 3 || $jobsname != $_POST['creatework_jobsname'])
 }
 
 $wage=htmlspecialchars($_POST['creatework_wagehour'],ENT_QUOTES);
-if($jobsname != $_POST['creatework_wagehour'] && !is_numeric($wage))
+if($wage != $_POST['creatework_wagehour'] && !is_numeric($wage))
 {
 	$error['creatework_wagehour'] = 1;
 	$REG = 0;
@@ -48,18 +48,18 @@ if($REG == 1)
 	}
 	
 	$connection->select_db('webtech');
-	
-	/*$res = $connection->query("CALL register('$username','$firstname','$lastname','$year-$month-$day',1,'$email','$password')") or die(mysqli_error());
+	$username = $_SESSION['username'];
+	$res = $connection->query("CALL insertJob('$username','$jobsname','$desc',$wage,'$year-$month-$day')") or die(mysqli_error());
 	$userDetails = $res->fetch_array(MYSQLI_NUM);
 	if($userDetails[0] == 0)
-	{*/
-		header("location:index.php");
-	//}
-	/*else
+	{
+		header("location:addincome.php");
+	}
+	else
 	{
 		$error['Reg'] = 1;
 		$REG = 0;
-	}*/
+	}
 }
 
 if($REG == 0)

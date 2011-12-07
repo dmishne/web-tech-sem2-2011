@@ -19,8 +19,8 @@
 	</li>
 	<li class="toggleable"> Investments
 		<ul id="investmentsMenu">
-			<li> View stock market </li>
-			<li> Manage portfolio </li>
+			<li> View virtual portfolio </li>
+			<li> Manage virtual portfolio </li>
 		</ul>
 	</li>
 	<li class="toggleable"> Reports 
@@ -28,7 +28,6 @@
 			<li>  <a href="reportIncome.php"> Generate incomes report </a> </li>
 			<li> Generate payouts report </li>
 			<li> Balance forecast report </li>
-			<li> Investments report </li>
 		</ul>
 	</li>
 	<li class="toggleable"> User Management

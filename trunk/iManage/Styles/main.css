@@ -599,3 +599,18 @@ div.delChsr{
 }
 
 /*###################### DeleteIncome (end) ###########################*/
+
+
+/*###################### yahooStockInfo (start) ###########################*/
+#container-stock{
+	height: 500px;
+	min-width: 500px;
+	text-align: center;
+}
+
+#userStock{
+	min-width: 500px;
+	text-align: center;
+
+}
+/*###################### yahooStockInfo (end) ###########################*/
