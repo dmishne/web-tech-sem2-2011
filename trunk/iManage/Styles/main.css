@@ -189,7 +189,6 @@ textarea {
 	float:left;
 	margin:0px auto 15px 30px;
 	display:block;
-	overflow: auto;
 	width:61%;
 	min-height: 140px;
 	max-height: 140px;
@@ -328,7 +327,7 @@ p.line1{
 	width:93%;
 	height:15px;
 	position:relative;
-	top:-18px;	
+	top:-19px;	
 	-webkit-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
 	-moz-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
 	box-shadow: 2px 5px 5px rgba(0,0,0,.2);
@@ -342,7 +341,7 @@ p.line2{
 	width:93%;
 	height:15px;
 	position:relative;
-	top:-18px;	
+	top:-19px;	
 	-webkit-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
 	-moz-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
 	box-shadow: 2px 5px 5px rgba(0,0,0,.2);
@@ -356,7 +355,7 @@ p.line3{
 	width:93%;
 	height:15px;
 	position:relative;
-	top:-18px;	
+	top:-19px;	
 	-webkit-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
 	-moz-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
 	box-shadow: 2px 5px 5px rgba(0,0,0,.2);
@@ -370,7 +369,7 @@ p.line4{
 	width:93%;
 	height:15px;
 	position:relative;
-	top:-18px;
+	top:-19px;
 	-webkit-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
 	-moz-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
 	box-shadow: 2px 5px 5px rgba(0,0,0,.2);

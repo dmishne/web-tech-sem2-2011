@@ -19,21 +19,23 @@ if($formN == 1)  // Update working hours
 {
 	$pass = 1;
 	$transtypeid = 3;  
-	$workname = htmlspecialchars($_POST['workname'],ENT_QUOTES); 
+	$jobId = htmlspecialchars($_POST['workid'],ENT_QUOTES); 
+	$workName = htmlspecialchars($_POST['workname'],ENT_QUOTES);
 	$amount = htmlspecialchars($_POST['wage'],ENT_QUOTES);
 	if(!is_numeric($amount) || (is_numeric($amount) && $amount < 0)){
 		$usrinpt['amount']="error";
 		$usrinpt['err1'] = 1;
 		$pass =0;
 	}
-/*	$sday = htmlspecialchars($_POST['day'],ENT_QUOTES);
-	$smonth = htmlspecialchars($_POST['month'],ENT_QUOTES);
-	$syear = htmlspecialchars($_POST['year'],ENT_QUOTES);
-	if(!checkdate(intval($smonth),intval($sday),intval($syear))){
+	$pday = htmlspecialchars($_POST['day1'],ENT_QUOTES);
+	$pmonth = htmlspecialchars($_POST['month1'],ENT_QUOTES);
+	$pyear = htmlspecialchars($_POST['year1'],ENT_QUOTES);
+	if(!checkdate(intval($pmonth),intval($pday),intval($pyear))){
 		$usrinpt['date'] = "error";
-		$usrinpt['err1'] = 1;
+		$usrinpt['err3'] = 1;
 		$pass = 0;
-	}*/
+	}
+	$pdate = sprintf('%4d-%02d-%02d', $pyear, $pmonth, $pday);
 	$sH = htmlspecialchars($_POST['starth'],ENT_QUOTES);
 	$sM = htmlspecialchars($_POST['startm'],ENT_QUOTES);
 	$eH = htmlspecialchars($_POST['endh'],ENT_QUOTES);
@@ -48,22 +50,19 @@ if($formN == 1)  // Update working hours
 		$usrinpt['err1'] = 1;
 		$pass = 0;
 	}
-	$startHour = sprintf('%02d:%02d', $sH, $sM);
-	$endHour = sprintf('%02d:%02d', $eH, $eM);
-	//$transdate = sprintf('%4d-%02d-%02d', $syear, $smonth, $sday);
-	//$recurrance = htmlspecialchars($_POST['r_period'],ENT_QUOTES);
+	$cDay = htmlspecialchars($_POST['curday'],ENT_QUOTES);
+	$cMonth = htmlspecialchars($_POST['curmonth'],ENT_QUOTES);
+	$cYear = htmlspecialchars($_POST['curyear'],ENT_QUOTES);
+	$startHour = sprintf('%4d-%02d-%02d %02d:%02d:%02d',$cYear, $cMonth, $cDay, $sH, $sM, 0);
+	$endHour = sprintf('%4d-%02d-%02d %02d:%02d:%02d',$cYear, $cMonth, $cDay, $eH, $eM, 0);
 	if($pass == 1){
-		//$usrinpt['date'] = null;
 		$usrinpt['amount']=null;
 		$usrinpt['time1'] = null;
 		$usrinpt['time2']=null;
 		$usrinpt['err1'] = null;
 		
-		$dd = "2011-10-30";
-		$rec = "Daily";
-		$transcustomname = $workname;
-		
-		//$res = $connection->query("CALL insertTransaction('$amount','$username','$dd','$transcustomname','$rec','$transtypeid',null,'$startHour','$endHour','$description')") or die(mysqli_error());
+		$res = $connection->query("CALL editJobDetails('$jobId','$workName',null,'$amount','$pdate')") or die(mysqli_error());
+		$res2 = $connection->query("CALL updateWorkingHours('$jobId','$startHour','$endHour',null)") or die(mysqli_error());
 		$_SESSION['update'] = 1;
 		header("location:addincome.php");
 	}
@@ -91,10 +90,20 @@ else if($formN == 2) //  add recuring income
 		$usrinpt['err2'] = 1;
 		$pass =0;
 	}
-	$sday = htmlspecialchars($_POST['day'],ENT_QUOTES);
-	$smonth = htmlspecialchars($_POST['month'],ENT_QUOTES);
-	$syear = htmlspecialchars($_POST['year'],ENT_QUOTES);
-	if(!checkdate(intval($smonth),intval($sday),intval($syear))){
+	$sday = htmlspecialchars($_POST['day2'],ENT_QUOTES);
+	$smonth = htmlspecialchars($_POST['month2'],ENT_QUOTES);
+	$syear = htmlspecialchars($_POST['year2'],ENT_QUOTES);
+	$sday2 = htmlspecialchars($_POST['dayU'],ENT_QUOTES);
+	$smonth2 = htmlspecialchars($_POST['monthU'],ENT_QUOTES);
+	$syear2 = htmlspecialchars($_POST['yearU'],ENT_QUOTES);
+	if(($selected != 'New') && (!checkdate(intval($smonth2),intval($sday2),intval($syear2))))  // it's UPDATE - check DATE2
+	{
+		$usrinpt['date'] = "error";
+		$usrinpt['err2'] = 1;
+		$pass = 0;
+	}
+	else if(!checkdate(intval($smonth),intval($sday),intval($syear)))  // it's new Income - check DATE
+	{
 		$usrinpt['date'] = "error";
 		$usrinpt['err2'] = 1;
 		$pass = 0;
@@ -108,9 +117,13 @@ else if($formN == 2) //  add recuring income
 	   $usrinpt['err2'] = null;
 	   if($selected == 'New')
 	          $res = $connection->query("CALL insertTransaction('$amount','$username','$transdate','$transcustomname','$recurrance','$transtypeid',null,'$description')") or die(mysqli_error());
-	   /*else if($selected != 'New'){
-	   	      $res = $connection->query("CALL editJobDetails('$selected','$transcustomname','$description','$amount','$transdate')") or die(mysqli_error());
-	   }*/
+	   else if($selected != 'New'){
+	   	      $period = htmlspecialchars($_POST['changeP'],ENT_QUOTES);
+	   	      
+	   	      $transdate = sprintf('%4d-%02d-%02d', $syear, $smonth, $sday);
+	   	      if(!$period){ $period = '3';}
+	   	      $res = $connection->query("CALL editRecurringTransDetails('$selected','$transcustomname','$description','$recurrance','$amount','$period','$transdate')") or die(mysqli_error());
+	   }
 	   
 	   $_SESSION['update'] = 1;
 	   header("location:addincome.php?date=$sdate&month=$smonth&year=$syear");}
@@ -137,9 +150,9 @@ else if($formN == 3)   // add one time income
 		$usrinpt['err3'] = 1;
 		$pass =0;
 	}	    
-	$tday = htmlspecialchars($_POST['day'],ENT_QUOTES);
-	$tmonth = htmlspecialchars($_POST['month'],ENT_QUOTES);
-	$tyear = htmlspecialchars($_POST['year'],ENT_QUOTES);
+	$tday = htmlspecialchars($_POST['day3'],ENT_QUOTES);
+	$tmonth = htmlspecialchars($_POST['month3'],ENT_QUOTES);
+	$tyear = htmlspecialchars($_POST['year3'],ENT_QUOTES);
 	if(!checkdate(intval($tmonth),intval($tday),intval($tyear))){
 		$usrinpt['date'] = "error";
 		$usrinpt['err3'] = 1;
@@ -154,7 +167,7 @@ else if($formN == 3)   // add one time income
 		if($selected == 'New')
 		     $res = $connection->query("CALL insertTransaction('$amount','$username','$transdate','$transcustomname',null,'$transtypeid',null,'$description')") or die(mysqli_error());
 		else if($selected != 'New'){
-		    /* $res = $connection->query("CALL editJobDetails('$selected','$transcustomname','$description','$amount','$transdate')") or die(mysqli_error());*/
+		     $res = $connection->query("CALL editOneTimeTransDetails('$selected','$transcustomname','$description','$amount')") or die(mysqli_error());
 		    }
 		$_SESSION['update'] = 1;
 		header("location:addincome.php?date=$tdate&month=$tmonth&year=$tyear");

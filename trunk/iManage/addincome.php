@@ -55,8 +55,21 @@
 			$connection->select_db('webtech');
 			$username= $_SESSION['username'];
 			$date2 = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
-			$res = $connection->query("CALL GetDailyOneTimeIncomes('$username','$date2')") or die(mysqli_error());
+			$res = $connection->query("CALL getDailyOneTimeIncomes('$username','$date2')") or die(mysqli_error());
 	?>
+	
+	
+	<?PHP
+			$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
+			if (mysqli_connect_errno()) {
+				die('Could not connect: ' . mysqli_connect_error());
+			}
+			
+			$connection->select_db('webtech');
+			$username= $_SESSION['username'];
+			$jobs = $connection->query("CALL getJobs('$username')") or die(mysqli_error());
+	?>
+	
 	
     <?php 
 			$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
@@ -135,18 +148,51 @@
 					            <table>
 					               <tr>
 					                  <td width="45%" class="pfont">Work date:</td>
-					                  <td width="55%" class="pfont"><?php echo $curDay.'/'.$curMonth.'/'.$curYear ?></td>
+					                  <td width="55%" class="pfont"><?php echo $curDay.'/'.$curMonth.'/'.$curYear ?>
+					                  <input type="hidden" name="curday" value="<?php echo $curDay; ?>"/>
+							          <input type="hidden" name="curmonth"  value="<?php echo $curMonth; ?>"/>
+							          <input type="hidden" name="curyear"  value="<?php echo $curYear; ?>"/></td>
 					               </tr>
 						           <tr>
 						             <td width="50%" class="pfont">Work:</td>
 						             <td width="50%">
-						                 <select name="workname" class="inpt" style="width:131px">
-						                   <option>bla bla</option>
-						                   <option>bla bla bla</option>
-						                   <option>lalala</option>
+						                 <select name="workid" id="uwi" class="inpt" style="width:131px">
+                                               <?php  
+                                               if($jobs->num_rows > 0)
+                                               {     
+						                         while ($job = $jobs->fetch_array(MYSQLI_ASSOC)){
+						                         	$name = $job["name"];
+						                         	$wage = $job["wage"]; 
+						                        	$jobId =$job["recTrans"];
+						                         	echo "<option value=\"$jobId\" onclick=\"updtWorkinfo('uwi','$name','$wage',null,null)\">";
+						                         	echo $name;
+						                         	echo "</option>";
+						                         }
+                                               }
+						                   ?>
 						                 </select>
 						              </td> 
 						           </tr>
+							       <tr>
+							         <td width="45%" class="pfont">Work Name: </td>
+							         <td width="55%"><input type="text" id="wname" name="workname" class="inpt" size="20" maxlength="30"/></td>
+							       </tr>
+							       <tr>
+							         <td width="45%" class="pfont">Wage per Hour: </td>
+							         <td width="55%"><input type="text" id="jobwage" name="wage" class="inpt" size="20" maxlength="30" onkeyup="rDayWageTotal()"/></td>
+							       </tr>
+							       <?php if(isset($usrinpt['amount']) && $usrinpt['amount'] == "error"){
+		            			            echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}
+		            			         else if(isset($usrinpt['sign']) && $usrinpt['sign'] == "error"){
+		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be positive </div> </td> </tr>";}?>
+							       <tr>
+							         <td width="45%" class="pfont">Payment Date (dd/mm/yyyy): </td>
+							         <td width="55%"><input type="text" name="day1" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
+							          <b>/</b><input type="text" name="month1" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
+							          <b>/</b><input type="text" name="year1" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
+							       </tr>
+							       <?php if(isset($usrinpt['date']) && $usrinpt['date'] == "error"){
+		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Invalid date input </div> </td> </tr>";}?>
 							       <tr>
 							         <td width="45%" class="pfont">Start Hour(hh:mm): </td>
 							         <td width="55%"><input type="text" name="starth" class="inpt" size="6" maxlength="2" id="rsh" onchange="rDayWageTotal()"/>
@@ -161,14 +207,7 @@
 							       </tr>
 							       <?php if(isset($usrinpt['time2']) && $usrinpt['time2'] == "error"){
 		            			            echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Incorect time </div> </td> </tr>";}?>
-							       <tr>
-							         <td width="45%" class="pfont">Wage per Hour: </td>
-							         <td width="55%"><input type="text" name="wage" class="inpt" size="20" maxlength="30" id="rwpd"  onkeyup="rDayWageTotal()"/></td>
-							       </tr>
-							       <?php if(isset($usrinpt['amount']) && $usrinpt['amount'] == "error"){
-		            			            echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}
-		            			         else if(isset($usrinpt['sign']) && $usrinpt['sign'] == "error"){
-		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be positive </div> </td> </tr>";}?>
+							       
 							       <tr>
 							         <td width="45%" class="pfont">Total per Day: </td>
 							         <td width="55%"><input type="text" class="inpt" style="color:green" size="20" maxlength="30" readonly="readonly" id="rwt"/></td>
@@ -202,7 +241,7 @@
 						             <td width="50%" class="pfont">Update added income:</td>
 						             <td width="50%">
 						                 <select name="rtIncome" id="rtinc" class="inpt" style="width:131px">
-						                   <option value="New" onclick="updtWorkinfo('otislct','','','')">New</option>
+						                   <option value="New" onclick="updtWorkinfo('rtinc','','','')">New</option>
 						                   <?php   
 						                         while ($row2 = $res2->fetch_array(MYSQLI_ASSOC)){
 						                         	$name = $row2["recname"];
@@ -230,11 +269,11 @@
 		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}
 		            			         else if(isset($usrinpt['sign']) && $usrinpt['sign'] == "error"){
 		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be positive </div> </td> </tr>";}?>
-							       <tr>
-							         <td width="50%" class="pfont">From (dd/mm/yyyy): </td>
-							         <td width="50%"><input type="text" name="day" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
-							          <b>/</b><input type="text" name="month" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
-							          <b>/</b><input type="text" name="year" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
+							       <tr id="firstDate" style="display:table-row">
+							         <td width="50%" class="pfont">Date (dd/mm/yyyy): </td>
+							         <td width="50%"><input type="text" name="day2" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
+							          <b>/</b><input type="text" name="month2" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
+							          <b>/</b><input type="text" name="year2" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['date']) && $usrinpt['date'] == "error"){
 		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Invalid date input </div> </td> </tr>";}?>
@@ -250,6 +289,21 @@
 										 </select>
 							          </td>
 							       </tr>
+							       
+							          <tr><td width="50%" class="pfont" id="updtperiodl" style="display:none"><u>Update Effect For: </u></td></tr>
+							          <tr id="secondDate" style="display:none">
+								          <td width="50%" class="pfont">Date (dd/mm/yyyy): </td>
+								          <td width="50%"><input type="text" name="dayU" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
+								          <b>/</b><input type="text" name="monthU" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
+								          <b>/</b><input type="text" name="yearU" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
+							          </tr>
+							          <tr><td colspan="2" class="pfont" id="updtperiod" style="display:none">
+							          <input type="radio" value="1" name="changeP"/>This date &nbsp&nbsp&nbsp
+                                      <input type="radio" value="2" name="changeP"/>From now &nbsp&nbsp&nbsp
+                                      <input type="radio" value="3" name="changeP"/>For all
+                                      </td></tr>
+							     
+							       
 							     </table>  
 						     </td>
 						     <td width="35%">
@@ -310,10 +364,10 @@
 		            			         else if(isset($usrinpt['sign']) && $usrinpt['sign'] == "error"){
 		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be positive </div> </td> </tr>";}?>
 							       <tr>
-							         <td width="45%" class="pfont">Income Date (dd/mm/yyyy): </td>
-							         <td width="55%"><input type="text" name="day" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
-							          <b>/</b><input type="text" name="month" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
-							          <b>/</b><input type="text" name="year" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
+							         <td width="45%" class="pfont">Date (dd/mm/yyyy): </td>
+							         <td width="55%"><input type="text" name="day3" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
+							          <b>/</b><input type="text" name="month3" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
+							          <b>/</b><input type="text" name="year3" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['date']) && $usrinpt['date'] == "error"){
 		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Invalid date input </div> </td> </tr>";}?>
@@ -376,31 +430,31 @@
 							     }	
 							  if($daySum->num_rows > 0){     
 							      echo "<div class=\"daysumhead\">Your balance for: $date</div>";	
-							  echo "<div style=\"min-height:60px\"><table>";         
-								  while ($row2 = $daySum->fetch_array(MYSQLI_ASSOC)){
-								      $transname = $row2['transname'];
-								      $amnt = $row2['amount'];
-								      $trnstype = $row2['transtype'];
-								      $descript = $row2['description'];
-								      echo "<tr>";
-									  if ($amnt < 0){
-									   	   $div1 = "<td class=\"redinc roundedincleft\" style=\"cursor:help\" title=\"$descript\">";
-									   	   $div2 = "<td class=\"redinc roundedinccntr\" style=\"cursor:help\" title=\"$descript\">";
-									   	   $div3 = "<td class=\"redinc roundedincright\" style=\"cursor:help\" title=\"$descript\">";
-									      }
-									   else {
-									   	   $div1 = "<td  class=\"greeninc roundedincleft\" style=\"cursor:help\" title=\"$descript\">";
-									   	   $div2 = "<td  class=\"greeninc roundedinccntr\" style=\"cursor:help\" title=\"$descript\">";
-									   	   $div3 = "<td  class=\"greeninc roundedincright\" style=\"cursor:help\" title=\"$descript\">";
-									      } 
-									   echo "{$div1}$trnstype</td>";
-								       echo "{$div2}$transname</td>";
-								       echo "{$div3}$amnt$ </td>";  
-								       echo "</tr>";					  
-								      $total += $amnt;
-								    }
+							      echo "<div style=\"min-height:83px; max-height:83px; overflow:auto;\"><table>";         
+									  while ($row2 = $daySum->fetch_array(MYSQLI_ASSOC)){
+									      $transname = $row2['transname'];
+									      $amnt = $row2['amount'];
+									      $trnstype = $row2['transtype'];
+									      $descript = $row2['description'];
+									      echo "<tr>";
+										  if ($amnt < 0){
+										   	   $div1 = "<td class=\"redinc roundedincleft\" style=\"cursor:help\" title=\"$descript\">";
+										   	   $div2 = "<td class=\"redinc roundedinccntr\" style=\"cursor:help\" title=\"$descript\">";
+										   	   $div3 = "<td class=\"redinc roundedincright\" style=\"cursor:help\" title=\"$descript\">";
+										      }
+										   else {
+										   	   $div1 = "<td  class=\"greeninc roundedincleft\" style=\"cursor:help\" title=\"$descript\">";
+										   	   $div2 = "<td  class=\"greeninc roundedinccntr\" style=\"cursor:help\" title=\"$descript\">";
+										   	   $div3 = "<td  class=\"greeninc roundedincright\" style=\"cursor:help\" title=\"$descript\">";
+										      } 
+										   echo "{$div1}$trnstype</td>";
+									       echo "{$div2}$transname</td>";
+									       echo "{$div3}$amnt$ </td>";  
+									       echo "</tr>";					  
+									      $total += $amnt;
+									    }
 								    echo "</table></div>";
-								    echo "<div class=\"daysumhead\" style=\"bottom:-22px\">TOTAL: $total$</div>";
+								    echo "<div class=\"daysumhead\" >TOTAL: $total$</div>";
 							   }
 							  else 
 							      echo "<div class=\"daysumhead\">You have no transactions for $date</div>"
