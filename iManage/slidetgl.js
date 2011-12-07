@@ -36,19 +36,26 @@ function slidetgl()
 
 
 function rDayWageTotal(){
-	var rh=(document.getElementById("reh").value - document.getElementById("rsh").value);
-	var rm=(document.getElementById("rem").value - document.getElementById("rsm").value);
-	var rw=document.getElementById("rwpd").value;
-	if(rh < 0)
-		rh=24+rh;
-	else if(rh == 0 && rm < 0)
-		rh=24;
-	if(isNaN(rw)){
-		alert("Invalid wage value!");	
-		document.getElementById("rwpd").value= 0;
+	var sh = document.getElementById("rsh").value;
+	var eh = document.getElementById("reh").value;
+	var sm = document.getElementById("rsm").value;
+	var em = document.getElementById("rem").value;
+	var rw=document.getElementById("jobwage").value;
+	if(sh && eh && sm && em && rw)
+	{
+		var dh = eh - sh;
+		var dm = em - sm;
+		if(dh < 0)
+			dh=24+dh;
+		else if(dh == 0 && dm < 0)
+			dh=24;
+		if(isNaN(rw)){
+			alert("Invalid wage value!");	
+			document.getElementById("rwpd").value= 0;
+		}
+		dm=(dm*100)/6000;
+		           document.getElementById("rwt").value= ((dh*rw)+(dm*rw)).toFixed(2);
 	}
-	rm=(rm*100)/6000;
-	           document.getElementById("rwt").value= ((rh*rw)+(rm*rw)).toFixed(2);
 }
 
 
@@ -72,17 +79,24 @@ function updtWorkinfo(id,name,amount,desc,rtype){
 	{
 		var sel = document.getElementById(id);
 		var op = sel.options[sel.selectedIndex].value;
-		alert(op);
 		if(op == "New" && (document.getElementById("name3").value) != null){
-			document.getElementById("name3").value = '';
-		    document.getElementById("amount3").value = '';
-		    document.getElementById("desc3").value = '';
+			document.getElementById("name2").value = '';
+		    document.getElementById("amount2").value = '';
+		    document.getElementById("desc2").value = '';
 		    document.getElementById("rslct").selectedIndex = 0;
+		    document.getElementById("updtperiodl").style.display="none";
+		    document.getElementById("updtperiod").style.display="none";
+		    document.getElementById("firstDate").style.display="table-row";
+		    document.getElementById("secondDate").style.display="none";
 		}
 		else {
-		    document.getElementById("name3").value = name;
-		    document.getElementById("amount3").value = amount;
-		    document.getElementById("desc3").value = desc;
+		    document.getElementById("name2").value = name;
+		    document.getElementById("amount2").value = amount;
+		    document.getElementById("desc2").value = desc;
+		    document.getElementById("updtperiodl").style.display="table-cell";
+		    document.getElementById("updtperiod").style.display="table-cell";
+		    document.getElementById("firstDate").style.display="none";
+		    document.getElementById("secondDate").style.display="table-row";
 		    switch (rtype)
 		    {
 			    case '10':
@@ -102,6 +116,16 @@ function updtWorkinfo(id,name,amount,desc,rtype){
 			    	break;
 		     }
 		}
+	}
+	else if(id == "uwi")
+	{
+		document.getElementById("jobwage").value = amount;
+		document.getElementById("wname").value = name;
+		document.getElementById("rsh").value = '';	
+		document.getElementById("rsm").value = '';	
+	    document.getElementById("reh").value = '';	
+	    document.getElementById("rem").value = '';
+	    document.getElementById("rwt").value = '';
 	}
 }
 

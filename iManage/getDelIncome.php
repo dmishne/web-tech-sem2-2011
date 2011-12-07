@@ -10,9 +10,11 @@ if (mysqli_connect_errno()) {
 }
 
 $connection->select_db('webtech');
-$username= $_SESSION['firstname'];  // from current user session submited on login
-
-$result = $connection->query();
+$username= $_SESSION['username'];  // from current user session submited on login
+$delmonth = htmlspecialchars($_POST['delMonth'],ENT_QUOTES);
+$delyear = htmlspecialchars($_POST['delYear'],ENT_QUOTES);
+$delDate = sprintf('%4d-%02d-%02d', $delyear, $delmonth, '01');
+$result = $connection->query("CALL getTransToDelete('date','$username')") or die(mysqli_error());
 if (!$result) {
 echo 'Could not run query: ' . mysql_error();
 exit;
