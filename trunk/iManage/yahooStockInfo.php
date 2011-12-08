@@ -44,7 +44,46 @@ $stocks[4] = "F";
 	<script type="text/javascript" src="chart/exporting.js"></script>
 	<script type="text/javascript" src="jquery.csv.min.js"></script>
 	<script type="text/javascript">
-		
+
+	/*
+	$(function() {
+		var seriesOptions = [],
+			yAxisOptions = [],
+			seriesCounter = 0,
+			names = ['MSFT', 'AAPL', 'GOOG'],
+			colors = Highcharts.getOptions().colors;
+
+	
+		$.each(names, function(i, name) {
+			
+			$.get('geturl.php',{url:'http://ichart.yahoo.com/table.csv?s='+ name +'&a=0&b=1&c=2009&g=d&ignore=.csv'}, function(to_do_data) {				
+
+				dataArray = jQuery.csv()(to_do_data);
+				data = [];
+				$.each(dataArray, function(k, value) {
+					if(k!=0)
+					{
+						data[k-1] = [Date.parse(value[0]),value[4]];
+					}
+				});
+				data.reverse();
+				
+				seriesOptions[i] = {
+					name: name,
+					data: data
+				};
+				
+				// As we're loading the data asynchronously, we don't know what order it will arrive. So
+				// we keep a counter and create the chart when all the data is loaded.
+				seriesCounter++;
+				if (seriesCounter == names.length) {
+					createChart();
+				}
+			});
+		});
+
+	*/
+
 	// create the chart when all data is loaded
 	function createChart() {
 		chart = new Highcharts.StockChart({
