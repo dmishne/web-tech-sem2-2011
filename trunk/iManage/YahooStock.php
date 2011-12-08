@@ -1,48 +1,73 @@
 <?php
 // -------> BEGIN DELETE <----------
-$y = new YahooStockPage("GOOG");
-y.showStockPage();
+
 
 // -------> END DELETE <------------
 
 class YahooStockPage
 {
-	private $mStocks;
-	private $mStocksData;
+	private $mStocks = null;
+	private $mStocksData = null;
 	
 	public function __construct($stocks) {
+		if (!is_array($stocks)){
+			throw new Exception("Constructor didn't recieved ARRAY of names of stocks");
+		}
+		// PUT IN ANOTHER PLACE
+		date_default_timezone_set("UTC");
+		////////////////////////
 		$this->mStocks = $stocks;
 	}
 	
 	public function showStockPage()
 	{
-		if ($stocks == null)
+		if ($this->mStocks == null)
 		{
 			echo "<p>You don't have any stocks registered<\p>
 			      </br>
 			      <a href=\"stockManage.php\"> click here to register for stocks </a>";
 			return;
 		}
-		loadStockData();
-		foreach ($mStocksData as &$stockData)  // remove header
+		$this->loadStockData();
+		foreach ($this->mStocksData as &$stockData) 
 		{
-			unset($stockData[0]);
+			unset($stockData[0]);					// Remove Header
 			$stockData = array_values($stockData);
 			$n = count($stockData);
 			for ($i = 0; $i < $n; $i++)
 			{
 				$stockData[$i][0] = strtotime($stockData[$i][0])*1000; 		//  Unix timestamp with microseconds
-				$stockData = array( 0 => $stockData[$i][0] , 1 => $stockData[$i][4]);
+				$stockData[$i] = array( 0 => $stockData[$i][0] , 1 => $stockData[$i][4]);
 			}
+			$stockData = array_reverse($stockData);
 		}
+		$this->dataToJavaScript();
+	}
+	
+	private function dataToJavaScript()
+	{
+		echo "<script type=\"text/javascript\">\n";
+		echo "var data = [] , \n
+				  names = [] ,
+			      seriesOptions = [];\n";
+		$i = 0;
+		foreach ($this->mStocksData as &$stockData){
+			$tname = $this->mStocks[$i];
+			echo "data[$i] =" . json_encode($stockData) . ";\n";
+			echo "names[$i] = '$tname';\n";
+			echo "seriesOptions[$i] = { name : names[$i] ,\n data : data[$i]};\n";
+			$i++;
+		}
+		echo "createChart();\n";
+		echo "</script>";
 	}
 	
 	private function loadStockData()
 	{
-		foreach($mStocks as &$stock)
+		foreach($this->mStocks as &$stock)
 		{
 			$tempCsvString = file_get_contents("http://ichart.yahoo.com/table.csv?s=" . $stock . "&a=0&b=1&c=2009&g=d&ignore=.csv");
-			$mStocksData[$stock] = csvToArray($tempCsvString);
+			$this->mStocksData[$stock] = $this->csvToArray($tempCsvString);
 		}
 	}
 	
