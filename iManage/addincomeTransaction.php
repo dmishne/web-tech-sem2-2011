@@ -18,6 +18,7 @@ $description = htmlspecialchars($_POST['desc'],ENT_QUOTES);
 if($formN == 1)  // Update working hours
 {
 	$pass = 1;
+	$timeupdate = 0;
 	$transtypeid = 3;  
 	$jobId = htmlspecialchars($_POST['workid'],ENT_QUOTES); 
 	$workName = htmlspecialchars($_POST['workname'],ENT_QUOTES);
@@ -40,12 +41,15 @@ if($formN == 1)  // Update working hours
 	$sM = htmlspecialchars($_POST['startm'],ENT_QUOTES);
 	$eH = htmlspecialchars($_POST['endh'],ENT_QUOTES);
 	$eM = htmlspecialchars($_POST['endm'],ENT_QUOTES);
-	if(!chktimeH($sH) || !chktimeM($sM)){
+	if($sH && $sM && $eH && $eM){
+		$timeupdate = 1;
+	}
+	if($timeupdate && (!chktimeH($sH) || !chktimeM($sM))){
 		$usrinpt['time1'] = "error";
 		$usrinpt['err1'] = 1;
 		$pass = 0;
 	}
-	if(!chktimeH($eH) || !chktimeM($eM)){
+	if($timeupdate && (!chktimeH($eH) || !chktimeM($eM))){
 		$usrinpt['time2'] = "error";
 		$usrinpt['err1'] = 1;
 		$pass = 0;
@@ -62,7 +66,18 @@ if($formN == 1)  // Update working hours
 		$usrinpt['err1'] = null;
 		
 		$res = $connection->query("CALL editJobDetails('$jobId','$workName',null,'$amount','$pdate')") or die(mysqli_error());
-		$res2 = $connection->query("CALL updateWorkingHours('$jobId','$startHour','$endHour',null)") or die(mysqli_error());
+		$res->free();
+        if($timeupdate)
+        {
+			while ($connection->next_result()) {
+				//free each result.
+				$result = $connection->use_result();
+				if ($result instanceof mysqli_result) {
+					$result->free();
+				}
+			}
+			$res2 = $connection->query("CALL updateWorkingHours('$jobId','$startHour','$endHour',null)") or die(mysqli_error());
+        }
 		$_SESSION['update'] = 1;
 		header("location:addincome.php");
 	}
