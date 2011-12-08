@@ -37,7 +37,7 @@ class YahooStockPage
 			for ($i = 0; $i < $n; $i++)
 			{
 				$stockData[$i][0] = strtotime($stockData[$i][0])*1000; 		//  Unix timestamp with microseconds
-				$stockData[$i] = array( 0 => $stockData[$i][0] , 1 => $stockData[$i][4]);
+				$stockData[$i] = array( 0 => $stockData[$i][0] , 1 => floatval($stockData[$i][4]));
 			}
 			$stockData = array_reverse($stockData);
 		}
