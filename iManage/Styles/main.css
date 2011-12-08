@@ -610,6 +610,29 @@ div.delChsr{
 #userStock{
 	min-width: 500px;
 	text-align: center;
+}
 
+.table-symbol
+{
+	background-color:#0099ff;	
+}
+
+.table-profit
+{
+	background-color:#00cccc;	
+}
+
+table.stocks
+{
+	border-width: 0px;
+	width: 100%;
+}
+
+table.stocks th
+{
+	height:50px;
+	border-width:0px;	
+	border-spacing:0px;
+	background-color:#0099ff;
 }
 /*###################### yahooStockInfo (end) ###########################*/

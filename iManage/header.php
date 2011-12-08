@@ -33,7 +33,7 @@
 				}
 				echo "Hey {$_SESSION['firstname']},
 					  <br />
-					  {$div} &Sigma; {$_SESSION['balance']}$ </div>
+					  {$div} {$_SESSION['balance']}$ </div>
 					  <a class=\"blue buttonStyle medium\" href=\"index.php?logout=1\"> Logout </a>";
 				
 			}

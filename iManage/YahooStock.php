@@ -1,9 +1,4 @@
 <?php
-// -------> BEGIN DELETE <----------
-
-
-// -------> END DELETE <------------
-
 class YahooStockPage
 {
 	private $mStocks = null;
@@ -66,7 +61,7 @@ class YahooStockPage
 	{
 		foreach($this->mStocks as &$stock)
 		{
-			$tempCsvString = file_get_contents("http://ichart.yahoo.com/table.csv?s=" . $stock . "&a=0&b=1&c=2009&g=d&ignore=.csv");
+			$tempCsvString = file_get_contents("http://ichart.yahoo.com/table.csv?s=" . $stock . "&a=0&b=1&c=20011&g=d&ignore=.csv");
 			$this->mStocksData[$stock] = $this->csvToArray($tempCsvString);
 		}
 	}
@@ -83,88 +78,5 @@ class YahooStockPage
 	
 	
 }
-
-
-
-
-
-
-
-
-
-/**
-* Class to fetch stock data from Yahoo! Finance
-*
-*/
-
-class YahooStock {
-
-	/**
-	 * Array of stock code
-	 */
-	private $stocks = array();
-
-	/**
-	 * Parameters string to be fetched
-	 */
-	private $format;
-
-	/**
-	 * Populate stock array with stock code
-	 *
-	 * @param string $stock Stock code of company
-	 * @return void
-	 */
-	public function addStock($stock)
-	{
-		$this->stocks[] = $stock;
-	}
-
-	/**
-	 * Populate parameters/format to be fetched
-	 *
-	 * @param string $param Parameters/Format to be fetched
-	 * @return void
-	 */
-	public function addFormat($format)
-	{
-		$this->format = $format;
-	}
-
-	/**
-	 * Get Stock Data
-	 *
-	 * @return array
-	 */
-	public function getQuotes()
-	{
-		$result = array();
-		$format = $this->format;
-
-		foreach ($this->stocks as $stock)
-		{
-			/**
-			 * fetch data from Yahoo!
-			 * s = stock code
-			 * f = format
-			 * e = filetype
-			 */
-			$s = file_get_contents("http://finance.yahoo.com/d/quotes.csv?s=$stock&f=$format&e=.csv");
-
-			/**
-			 * convert the comma separated data into array
-			 */
-			$data = str_getcsv($s, ',');
-
-			/**
-			 * populate result array with stock code as key
-			 */
-			$result[$stock] = $data;
-		}
-		return $result;
-	}
-}
-
-
 
 ?>
