@@ -44,7 +44,7 @@ $stocks[4] = "F";
 	<script type="text/javascript" src="chart/exporting.js"></script>
 	<script type="text/javascript" src="jquery.csv.min.js"></script>
 	<script type="text/javascript">
-
+	/*
 	$(function() {
 		var seriesOptions = [],
 			yAxisOptions = [],
@@ -81,51 +81,54 @@ $stocks[4] = "F";
 			});
 		});
 
-		// create the chart when all data is loaded
-		function createChart() {
-			chart = new Highcharts.StockChart({
-			    chart: {
-			        renderTo: 'container-stock'
-			    },
+		*/
+	
+	// create the chart when all data is loaded
+	function createChart() {
+		chart = new Highcharts.StockChart({
+		    chart: {
+		        renderTo: 'container-stock'
+		    },
 
-			    rangeSelector: {
-			        selected: 4
-			    },
+		    rangeSelector: {
+		        selected: 4
+		    },
 
-			    yAxis: {
-			    	labels: {
-			    		formatter: function() {
-			    			return (this.value > 0 ? '+' : '') + this.value + '%';
-			    		}
-			    	},
-			    	plotLines: [{
-			    		value: 0,
-			    		width: 2,
-			    		color: 'silver'
-			    	}]
-			    },
-			    plotOptions: {
-			    	series: {
-			    		compare: 'percent'
-			    	}
-			    },
-			    tooltip: {
-			    	pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>',
-			    	yDecimals: 2
-			    },
-			    legend: {
-					enabled: true,
-					layout: 'vertical',
-					align: 'right',
-					verticalAlign: 'top',
-					x: -10,
-					y: 100,
-					borderWidth: 0
-				},
-			    series: seriesOptions
-			});
-		}
-	});
+		    yAxis: {
+		    	labels: {
+		    		formatter: function() {
+		    			return (this.value > 0 ? '+' : '') + this.value + '%';
+		    		}
+		    	},
+		    	plotLines: [{
+		    		value: 0,
+		    		width: 2,
+		    		color: 'silver'
+		    	}]
+		    },
+		    plotOptions: {
+		    	series: {
+		    		compare: 'percent'
+		    	}
+		    },
+		    tooltip: {
+		    	pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>',
+		    	yDecimals: 2
+		    },
+		    legend: {
+				enabled: true,
+				layout: 'vertical',
+				align: 'right',
+				verticalAlign: 'top',
+				x: -10,
+				y: 100,
+				borderWidth: 0
+			},
+		    series: seriesOptions
+		});
+	}
+		
+//	});
 	
 	</script>
 
@@ -169,7 +172,12 @@ $stocks[4] = "F";
 		          	</table>		                   
 
 		          </div>       
-		          <div id="container-stock"><img style="margin-top:200px;" src="images/loading.gif"></img></div>		
+		          <div id="container-stock"> 
+		          <?php include "YahooStock.php";
+		          		$y = new YahooStockPage($stocks);
+						$y->showStockPage(); ?>
+						<img style="margin-top:200px;" src="images/loading.gif"></img>
+				  </div>		
 			</div>
 		</div>
 	</div>
