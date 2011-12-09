@@ -605,6 +605,18 @@ div.delChsr{
 	height: 500px;
 	min-width: 500px;
 	text-align: center;
+	
+	background: rgb(96,96,96); /* Old browsers */
+/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzYwNjA2MCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMxMDEwMTAiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  rgba(96,96,96,1) 0%, rgba(16,16,16,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(96,96,96,1)), color-stop(100%,rgba(16,16,16,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(96,96,96,1) 0%,rgba(16,16,16,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(96,96,96,1) 0%,rgba(16,16,16,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(96,96,96,1) 0%,rgba(16,16,16,1) 100%); /* IE10+ */
+	background: linear-gradient(top,  rgba(96,96,96,1) 0%,rgba(16,16,16,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#606060', endColorstr='#101010',GradientType=0 ); /* IE6-8 */
+		
 }
 
 #userStock{
@@ -612,27 +624,43 @@ div.delChsr{
 	text-align: center;
 }
 
-.table-symbol
+table.stocksTablesStyle
 {
-	background-color:#0099ff;	
-}
-
-.table-profit
-{
-	background-color:#00cccc;	
-}
-
-table.stocks
-{
-	border-width: 0px;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 13px;
 	width: 100%;
+	border-width: 2px;
+	border-spacing: 2px;
+	border-style: groove;
+	border-collapse: collapse;
 }
 
-table.stocks th
+table.stocksTablesStyle th
 {
 	height:50px;
-	border-width:0px;	
-	border-spacing:0px;
-	background-color:#0099ff;
+	border-width: 0px;
+	padding: 3px;
+	border-style: inset;
+	background-color: #b9c9fe;
+	font-size: 14px;
+	color: #039;
+	white-space: pre-wrap;
 }
+table.stocksTablesStyle tr
+{
+	height:30px;
+	border-width:0px;	
+}
+
+table.stocksTablesStyle td
+{
+	border-width: 1px 0px 1px 0px;	
+	padding: 3px;
+	border-style: solid;
+	background-color:#E8EDFF;
+	color: #669;
+}
+
+
+
 /*###################### yahooStockInfo (end) ###########################*/
