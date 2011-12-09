@@ -200,7 +200,7 @@ $stocks[4] = "F";
 				
 		<div id="content">
 			<div id="content-head">
-		           Content Head
+		           Virtual Portfolio
 			</div>
 			<div id="content-middle">
 				  <div id="stockInfo"></div>
