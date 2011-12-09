@@ -8,9 +8,6 @@ class YahooStockPage
 		if (!is_array($stocks)){
 			throw new Exception("Constructor didn't recieved ARRAY of names of stocks");
 		}
-		// PUT IN ANOTHER PLACE
-		date_default_timezone_set("UTC");
-		////////////////////////
 		$this->mStocks = $stocks;
 	}
 	

@@ -11,3 +11,4 @@
 <script type="text/javascript" src="slidetgl.js"></script>
 <script type="text/javascript" src="collapseList.js"></script>
 		     
+<?php include "ini.php" ?>
