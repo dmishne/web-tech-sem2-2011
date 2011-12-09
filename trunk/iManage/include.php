@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="Styles/bar.css" type="text/css" />
 
 
-<script type="text/javascript" src="jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="jquery.cookie.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript" src="init.js"></script>

@@ -44,57 +44,65 @@ $stocks[4] = "F";
 	<script type="text/javascript" src="chart/exporting.js"></script>
 	<script type="text/javascript" src="jquery.csv.min.js"></script>
 	<script type="text/javascript">
-
-	/*
-	$(function() {
-		var seriesOptions = [],
-			yAxisOptions = [],
-			seriesCounter = 0,
-			names = ['MSFT', 'AAPL', 'GOOG'],
-			colors = Highcharts.getOptions().colors;
-
+	var seriesOptions = [];
+	var stockData = {};
+	var chart = null;
+	var names = ['MSFT', 'AAPL', 'GOOG'];
 	
-		$.each(names, function(i, name) {
-			
-			$.get('geturl.php',{url:'http://ichart.yahoo.com/table.csv?s='+ name +'&a=0&b=1&c=2009&g=d&ignore=.csv'}, function(to_do_data) {				
-
-				dataArray = jQuery.csv()(to_do_data);
-				data = [];
-				$.each(dataArray, function(k, value) {
-					if(k!=0)
-					{
-						data[k-1] = [Date.parse(value[0]),value[4]];
-					}
-				});
-				data.reverse();
-				
-				seriesOptions[i] = {
-					name: name,
-					data: data
-				};
-				
-				// As we're loading the data asynchronously, we don't know what order it will arrive. So
-				// we keep a counter and create the chart when all the data is loaded.
-				seriesCounter++;
-				if (seriesCounter == names.length) {
-					createChart();
+	var createTableRow = function(stocksymbol) {
+		$('#stocksTable tr:last').after('<tr> <td>'+ stocksymbol +'</td> <td>' + stockData[stocksymbol][0] + '</td> <td> amount </td> <td> sdate </td> <td> svalue</td> <td>' + stockData[stocksymbol][1] + '</td> <td> Change </td> <td> Profit </td> <td> <div class=\"blue buttonStyle small\" onclick=\"createChartSingle(\'' + stocksymbol + '\')\"> View </div> </td> </tr>');
+	}
+	
+	// create chart of single stock
+	var createChartSingle = function(stocksymbol) {
+		singlechart = new Highcharts.StockChart({
+			chart : {
+				renderTo : 'container-stock'
+			},
+			rangeSelector : {
+				selected : 1
+			},
+			title : {
+				text : stocksymbol + ' Stock Price'
+			},
+			xAxis : {
+				maxZoom : 14 * 24 * 3600000 // fourteen days
+			},
+		    credits: {
+		        enabled: false
+		    },
+			series : [{
+				name : stocksymbol,
+				data : stockData[stocksymbol][2],
+				tooltip: {
+					yDecimals: 2
 				}
-			});
+			}]
 		});
-
-	*/
-
-	// create the chart when all data is loaded
-	function createChart() {
+	}
+	
+	// create the chart of many variables
+	var createChart = function() {
+		if (chart != null)
+		{
+			
+			$.each(names, function(i, name) {
+				seriesOptions[i] = {
+						name: name,
+						data: stockData[name][2]
+					};
+			});
+		}
 		chart = new Highcharts.StockChart({
 		    chart: {
 		        renderTo: 'container-stock'
 		    },
-
 		    rangeSelector: {
 		        selected: 4
 		    },
-
+		    title : {
+				text : 'Compare Your Stocks'
+			},
 		    yAxis: {
 		    	labels: {
 		    		formatter: function() {
@@ -130,11 +138,52 @@ $stocks[4] = "F";
 			},
 		    series: seriesOptions
 		});
-	}
-	</script>
+	}	
 
+	$(function() {
+		var yAxisOptions = [],
+			seriesCounter = 0,
+			colors = Highcharts.getOptions().colors;
 
 	
+		$.each(names, function(i, name) {
+			
+			$.get('geturl.php',{url:'http://download.finance.yahoo.com/d/quotes.csv?s=' + name +'&f=snp'}, function(data) {
+				dataArray = jQuery.csv()(data);
+				stockData[name] = [];
+				stockData[name][0] = dataArray[0][1];
+				stockData[name][1] = parseFloat(dataArray[0][2]);
+				createTableRow(name);
+			});
+			
+			$.get('geturl.php',{url:'http://ichart.yahoo.com/table.csv?s='+ name +'&a=0&b=1&c=2009&g=d&ignore=.csv'}, function(to_do_data) {				
+
+				dataArray = jQuery.csv()(to_do_data);
+				data = [];
+				$.each(dataArray, function(k, value) {
+					if(k!=0)
+					{
+						data[k-1] = [Date.parse(value[0]),parseFloat(value[4])];
+					}
+				});
+				data.reverse();
+				stockData[name][2] = data;
+				seriesOptions[i] = {
+					name: name,
+					data: data
+				};
+				
+				// As we're loading the data asynchronously, we don't know what order it will arrive. So
+				// we keep a counter and create the chart when all the data is loaded.
+				seriesCounter++;
+				if (seriesCounter == names.length) {
+					$('#stocksTable tr:last').after("<tr> <td colspan=9> <div class=\"blue buttonStyle medium\" onclick=\"createChart()\"> Compare </div></td></tr>");
+					createChart();
+				}
+			});
+		});
+	});
+	</script>
 </head>
 
 <body>
@@ -157,35 +206,21 @@ $stocks[4] = "F";
 				  <div id="stockInfo"></div>
 		                 
 		          <div id="userStock">
-		          	<table class="stocks">
-		          		<colgroup>
-		          			<col class="table-symbol" />
-		          			<col />
-		          			<col />
-		          			<col />
-		          			<col />
-		          			<col />
-		          			<col class="table-profit" />
-		          		</colgroup>
-		          		<tr style="background-color:#0099ff; border-spacing:0px;">
+		          	<table class="stocksTablesStyle" id="stocksTable">
+		          		<tr style="background-color:#0099ff; display: table-row;">
 		          			<th>Symbol</th>
 		          			<th>Name</th>
 		          			<th>Amount Invested</th>
+		          			<th>Start Date</th>
 		          			<th>Start Value</th>
 		          			<th>Today Value</th>
 		          			<th>Change</th>
 		          			<th>Profit</th>
+		          			<th></th>
 		          		</tr>
-		          		
-		          	
-		          	
 		          	</table>		                   
-
 		          </div>       
 		          <div id="container-stock"> 
-		          <?php include "YahooStock.php";
-		          		$y = new YahooStockPage($stocks);
-						$y->showStockPage(); ?>
 						<img style="margin-top:200px;" src="images/loading.gif"></img>
 				  </div>		
 			</div>
