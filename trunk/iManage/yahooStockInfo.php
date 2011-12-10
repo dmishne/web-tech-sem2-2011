@@ -47,7 +47,7 @@ $stocks[4] = "F";
 	var seriesOptions = [];
 	var stockData = {};
 	var chart = null;
-	var names = ['MSFT', 'AAPL', 'GOOG'];
+	var names = ['MSFT', 'AAPL', 'GOOG', 'INTC'];
 	
 	var createTableRow = function(stocksymbol) {
 		$('#stocksTable tr:last').after('<tr> <td>'+ stocksymbol +'</td> <td>' + stockData[stocksymbol][0] + '</td> <td> amount </td> <td> sdate </td> <td> svalue</td> <td>' + stockData[stocksymbol][1] + '</td> <td> Change </td> <td> Profit </td> <td> <div class=\"blue buttonStyle small\" onclick=\"createChartSingle(\'' + stocksymbol + '\')\"> View </div> </td> </tr>');
@@ -163,7 +163,7 @@ $stocks[4] = "F";
 				$.each(dataArray, function(k, value) {
 					if(k!=0)
 					{
-						data[k-1] = [Date.parse(value[0]),parseFloat(value[4])];
+						data[k-1] = [Date.parse(value[0].replace("-","/")),parseFloat(value[4])];
 					}
 				});
 				data.reverse();
