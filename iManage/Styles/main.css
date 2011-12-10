@@ -595,6 +595,7 @@ select.delChooser{
 div.delChsr{
 	float:left;
 	margin:auto 30px auto 40px;
+	width: 10%;
 }
 
 /*###################### DeleteIncome (end) ###########################*/

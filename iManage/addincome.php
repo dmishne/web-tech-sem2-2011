@@ -298,9 +298,9 @@
 								          <b>/</b><input type="text" name="yearU" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
 							          </tr>
 							          <tr><td colspan="2" class="pfont" id="updtperiod" style="display:none">
-							          <input type="radio" value="1" name="changeP"/>This date &nbsp&nbsp&nbsp
-                                      <input type="radio" value="2" name="changeP"/>From now &nbsp&nbsp&nbsp
-                                      <input type="radio" value="3" name="changeP"/>For all
+							          <input type="radio" id="td" value="1" name="changeP"/><label for="td" style="margin-right:20px">This date</label>
+                                      <input type="radio" id="fn" value="2" name="changeP"/><label for="fn" style="margin-right:20px">From now</label>
+                                      <input type="radio" id="fa" value="3" name="changeP"/><label for="fa" >For all </label>
                                       </td></tr>
 							     
 							       
