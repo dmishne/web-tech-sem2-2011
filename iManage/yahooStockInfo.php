@@ -147,10 +147,9 @@ $stocks[4] = "F";
 
 	
 		$.each(names, function(i, name) {
-			
+			stockData[name] = [];
 			$.get('geturl.php',{url:'http://download.finance.yahoo.com/d/quotes.csv?s=' + name +'&f=snp'}, function(data) {
 				dataArray = jQuery.csv()(data);
-				stockData[name] = [];
 				stockData[name][0] = dataArray[0][1];
 				stockData[name][1] = parseFloat(dataArray[0][2]);
 				createTableRow(name);
@@ -163,7 +162,9 @@ $stocks[4] = "F";
 				$.each(dataArray, function(k, value) {
 					if(k!=0)
 					{
-						data[k-1] = [Date.parse(value[0].replace("-","/")),parseFloat(value[4])];
+						sdate = value[0].split("-");
+						tdate = new Date(Date.UTC(sdate[0],sdate[1],sdate[2]));
+						data[k-1] = [tdate.getTime(),parseFloat(value[4])];
 					}
 				});
 				data.reverse();
