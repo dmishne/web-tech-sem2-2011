@@ -66,22 +66,36 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 				       <div style="margin:auto 10px auto 40px; width:11%; float:left">
 					       <select name="delMonth" class="delChooser" style="width:80px">
 				                <?php  
+				                    $selMonth = null;
+					                if((isset($_SESSION['deletemonth'])))
+					                {
+					                	$selMonth = $_SESSION['deletemonth'];
+					                }
+					                $selectM= $selMonth != null?$selMonth:$curMonth;
 			                      for($j = 1 ; $j < 13 ; $j++){
-			                         if($j == $curMonth)
+			                         if($j == $selectM)
 			                             echo " <option  selected=\"1\">$j</option>";
                                      else
 			                             echo " <option>$j</option>";}
+                                     $_SESSION['deletemonth'] = null;
 			                   ?>
 				            </select> 
 			            </div>
 			            <div style="margin:auto 30px auto auto; width:11%; float:left">
 			                <select name="delYear" class="delChooser" style="width:80px">
 			                   <?php  
-			                      for($i = ($curYear-30),$j = 1 ; $j <= 61 ; $i++,$j++){
-			                         if($i == $curYear)
+				                   $selYear = null;
+				                   if((isset($_SESSION['deleteyear'])))
+				                   {
+				                   	$selYear = $_SESSION['deleteyear'];
+				                   }
+				                   $selectY= $selYear != null?$selYear:$curYear;
+			                      for($i = ($curYear-10),$j = 1 ; $j <= 21 ; $i++,$j++){
+			                         if($i == $selectY)
 			                             echo " <option  selected=\"1\">$i</option>";
                                      else
 			                             echo " <option>$i</option>";}
+                                     $_SESSION['deleteyear'] = null;
 			                   ?>
 			                </select>
 			            </div>
@@ -110,7 +124,6 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 					                  $amount = $row["amount"];
 					                  $transdate = $row['transdate'];
 					                  $iscommited = $row['iscommited'];
-			              
 
 					                 	// ---------  reccurings -----------//
 							           	if($recid != null && $jobhourid == null && $transid == null && $transdate == null)   // is reccuring label?
@@ -126,15 +139,19 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 								           		    	       document.getElementById(\"row$tmp\").style.display = \"none\";
 								           		    	   </script>
 							           		    	     ";
-							           		    	  $tamnt = 0;
 							           		         }
+							           		         $tamnt = 0;
+							           		}
+							           		if($transdate == null && $jobhourid == null){
+							           			$transdate = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 							           		}
 								           	echo "
-								           	      <li class=\"noBullet\" id=\"row$i\" style=\"display:block\"><img id=\"i$i\" style=\"cursor: pointer;\"  src=\"images/chooserexpand.png\" onclick=\"collapseLst('ulexp$i');chngimg('#i$i')\"/>&nbsp;&nbsp;&nbsp;&nbsp;
+								           	      <li class=\"noBullet\" id=\"row$i\" style=\"clear:both; display:block\"><img id=\"i$i\" style=\"cursor: pointer;\"  src=\"images/chooserexpand.png\" onclick=\"collapseLst('ulexp$i');chngimg('#i$i')\"/>&nbsp;&nbsp;&nbsp;&nbsp;
 								           	        $transdate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$amount&nbsp;&nbsp;&nbsp;
 								           	        <input type=\"checkbox\" id=\"del$j\" style=\"float:right\"/>  
 								           	       <ul style=\"display:none\" id=\"ulexp$i\"> 
 								           	  ";
+								           	$transdate = null;
 								           	$prevLi = 1;
 								           	$i++;
 								           	$j++;
@@ -142,7 +159,7 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 							           	if($recid != null && $jobhourid == null && $transid != null && $transdate != null)  // is reccuring child?
 							           	{
 							           	    echo "
-							           	        <li class=\"noBullet\"><img src=\"images/chooserempty.png\"/>&nbsp;&nbsp;
+							           	        <li class=\"noBullet\" style=\"clear:both; display:block\"><img src=\"images/chooserempty.png\"/>&nbsp;&nbsp;
 								           	      $transdate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$amount&nbsp;&nbsp;
 								           	      <input type=\"checkbox\" id=\"del$j\" style=\"float:right\"/></li>   
 							           	      ";
@@ -157,9 +174,18 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 							           		{
 							           			echo "</ul></li>";
 							           			$prevLi = 0;
+							           			if($tamnt < 0 ){
+							           				$tmp = $i;
+							           				echo "
+           											        <script type=\"text/javascript\">
+           											          document.getElementById(\"row$tmp\").style.display = \"none\";
+           											          </script>
+           										         ";
+           											     $tamnt = 0;
+							           			}
 							           	        }
 							           		echo "
-           									       <li class=\"noBullet\"><img id=\"i$i\" style=\"cursor: pointer;\"  src=\"images/chooserexpand.png\" onclick=\"collapseLst('ulexp$i');chngimg('#i$i')\"/>&nbsp;&nbsp;&nbsp;&nbsp;
+           									       <li class=\"noBullet\" id=\"row$i\" style=\"clear:both; display:block\"><img id=\"i$i\" style=\"cursor: pointer;\"  src=\"images/chooserexpand.png\" onclick=\"collapseLst('ulexp$i');chngimg('#i$i')\"/>&nbsp;&nbsp;&nbsp;&nbsp;
            									          $transdate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$amount&nbsp;&nbsp;&nbsp;&nbsp;
            									          <input type=\"checkbox\" id=\"del$j\" style=\"float:right\"/>  
            									        <ul style=\"display:none\" id=\"ulexp$i\"> 
@@ -171,7 +197,7 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 							           	if($recid != null && $jobhourid != null && $transid == null && $transdate == null)  // is job child?
 							           	{
 								           	echo "
-								           	      <li class=\"noBullet\"><img src=\"images/chooserempty.png\"/>&nbsp;&nbsp;
+								           	      <li class=\"noBullet\" style=\"clear:both; display:block\"><img src=\"images/chooserempty.png\"/>&nbsp;&nbsp;
 	           									    $transdate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$amount&nbsp;&nbsp;
 	           									    <input type=\"checkbox\" id=\"del$j\" style=\"float:right\"/></li>   
 	           								     ";
@@ -186,20 +212,39 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 							            	if($amount >= 0 || $amount == null)
 							            	{
 								            	echo "
-									           	      <li class=\"noBullet\"><img id=\"i$i\" style=\"cursor: pointer;\"  src=\"images/chooserempty.png\"/>&nbsp;&nbsp;&nbsp;&nbsp;
+									           	      <li class=\"noBullet\" style=\"clear:both; display:block\"><img id=\"i$i\" style=\"cursor: pointer;\"  src=\"images/chooserempty.png\"/>&nbsp;&nbsp;&nbsp;&nbsp;
 									           	      $transdate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$amount&nbsp;&nbsp;&nbsp;&nbsp;
-									           	      <input type=\"checkbox\" id=\"del$j\" style=\"float:right\"/> 
+									           	      <input type=\"checkbox\" id=\"del$j\" style=\"position:relative; float:right\"/> 
 								            	     "; 
 								            	$i++;
 								            	$j++;
+								            	//echo "<p style=\"clear:both;\"></p>";
 							            	}
 							            } 
-			                  }   // while ($row = $result->fetch_array(MYSQLI_ASSOC))  
-			              }		//   if($result->num_rows > 0)	    
-				          $_SESSION['deletedate']= null;
-				          unset($_SESSION['deletedate']);
-				          mysql_free_result($result);
-			           ?>
+			                       }   // while ($row = $result->fetch_array(MYSQLI_ASSOC))  
+			                       if($prevLi != 0)       // end internal list
+			                       {
+				                      echo "</ul></li>";
+				                      $prevLi = 0;
+				                      if($tamnt < 0 ){
+				                       		$tmp = $i-1;
+				                       		echo "
+	                       						  <script type=\"text/javascript\">
+	                       						    document.getElementById(\"row$tmp\").style.display = \"none\";
+	                       						  </script>
+	                       						 ";
+				                       	 }
+			                            $tamnt = 0;
+			                       	}
+			                       
+			                       
+			                   }		//   if($result->num_rows > 0)	    
+				              $_SESSION['deletedate']= null;
+				              unset($_SESSION['deletedate']);
+				              unset($_SESSION['deletemonth']); 
+				              unset($_SESSION['deleteyear']);
+                              
+			               ?>
 			        </ul>
 			        
 		      </div>
@@ -218,6 +263,11 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 			            if($result->num_rows > 0){
 			               echo "<input type=\"submit\" value=\"Delete\" class=\"blue button small bround\" style=\"position:relative; align:bottom;\"></input>";
 			            }
+			        ?>
+			        <?php 
+				        if ($result instanceof mysqli_result && $result->num_rows > 0) {
+				        	$result->free();
+				        }
 			        ?>
 		      </div>
 		      </form> 

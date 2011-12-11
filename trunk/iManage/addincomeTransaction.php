@@ -23,7 +23,7 @@ if($formN == 1)  // Update working hours
 	$jobId = htmlspecialchars($_POST['workid'],ENT_QUOTES); 
 	$workName = htmlspecialchars($_POST['workname'],ENT_QUOTES);
 	$amount = htmlspecialchars($_POST['wage'],ENT_QUOTES);
-	if(!is_numeric($amount) || (is_numeric($amount) && $amount < 0)){
+	if($amount !=null && (!is_numeric($amount) || (is_numeric($amount) && $amount < 0))){
 		$usrinpt['amount']="error";
 		$usrinpt['err1'] = 1;
 		$pass =0;
@@ -95,7 +95,7 @@ else if($formN == 2) //  add recuring income
 	$selected = htmlspecialchars($_POST['rtIncome'],ENT_QUOTES);    // get values - "New" or jobId
 	$transcustomname = htmlspecialchars($_POST['inname'],ENT_QUOTES);
 	$amount = htmlspecialchars($_POST['amount'],ENT_QUOTES);
-	if(!is_numeric($amount)){
+	if($amount !=null && (!is_numeric($amount) || (is_numeric($amount) && $amount < 0))){
 		$usrinpt['amount']="error";
 		$usrinpt['err2'] = 1;
 		$pass =0;
@@ -155,7 +155,7 @@ else if($formN == 3)   // add one time income
 	$selected = htmlspecialchars($_POST['rIncome'],ENT_QUOTES);    // get values - "New" or jobId
 	$transcustomname = htmlspecialchars($_POST['inname'],ENT_QUOTES);
 	$amount = htmlspecialchars($_POST['amount'],ENT_QUOTES);
-	if(!is_numeric($amount)){
+	if($amount !=null && (!is_numeric($amount) || (is_numeric($amount) && $amount < 0))){
 		$usrinpt['amount']="error";
 		$usrinpt['err3'] = 1;
 		$pass =0;

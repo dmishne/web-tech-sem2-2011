@@ -1,7 +1,7 @@
 <?php session_start();
-/*  if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
+  if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 	header("location:login.php");
-}*/
+}
   // PREDEFINED DATA
   // get GPC data:
   if(isset($_REQUEST['date'])) $date = $_REQUEST['date'];
@@ -248,7 +248,7 @@
 						                         	$amount = $row2["amount"]; 
 						                        	$desc = $row2["description"];
 						                        	$recType = $row2["recType"];
-						                        	$jobId =$row2["recId"];
+						                        	$jobId =$row2["recId"];						                       
 						                         	echo "<option value=\"$jobId\" onclick=\"updtWorkinfo('rtinc','$name','$amount','$desc','$recType')\">";
 						                         	echo $name;
 						                         	echo "</option>";
