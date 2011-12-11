@@ -3,13 +3,6 @@ function slidetgl()
 	 $("#frst").click(function(){
 		$(".panel1").slideToggle("slow");
 		$(".line1").is(":visible")?$(".line1").hide():$(".line1").show();
-		
-		/*if($(".line1").is(":visible")){
-            $(".menu").css({height:($("#menu").height()-100)}); 
-            }
-		else {
-			$("#menu").css({height:($("#menu").height()+100)});
-			}*/		
 		var src = ($("#1a").attr("src") === "images/arrows_down.png")
         ? "images/arrows_up.png" 
         : "images/arrows_down.png";
@@ -60,7 +53,6 @@ function rDayWageTotal(){
 
 
 function updtWorkinfo(id,name,amount,desc,rtype){     
-	
 	if(id == "otislct"){
 		var sel = document.getElementById(id);
 		var op = sel.options[sel.selectedIndex].value;

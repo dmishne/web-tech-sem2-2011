@@ -8,5 +8,7 @@ $delyear = htmlspecialchars($_POST['delYear'],ENT_QUOTES);
 $delDate = sprintf('%4d-%02d-%02d', $delyear, $delmonth, '01');
 
 $_SESSION['deletedate']=$delDate;
+$_SESSION['deletemonth']=$delmonth;
+$_SESSION['deleteyear']=$delyear;
 header("location:delincome.php")
 ?>
