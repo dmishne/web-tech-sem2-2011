@@ -40,12 +40,6 @@
 	echo "</script>";
 	?>
 	
-	<?php
-	    $browser = $_SERVER['HTTP_USER_AGENT'];
-		if (strpos($browser,'Chrome') !== false) {
-		    $isChrome = true;
-		}	     
-	?>
 	
 	<?php  if(isset($date))
 				list($curDay, $curMonth, $curYear)= explode('.', $date,3);
@@ -222,9 +216,9 @@
 		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be positive </div> </td> </tr>";}?>
 							       <tr>
 							         <td width="45%" class="pfont">Payment Date (dd/mm/yyyy): </td>
-							         <td width="55%"><input type="text" name="day1" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
-							          <b>/</b><input type="text" name="month1" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
-							          <b>/</b><input type="text" name="year1" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
+							         <td width="55%"><input type="text" name="day1" id="wday" size="1" maxlength="2" class="inpt"/>
+							          <b>/</b><input type="text" name="month1"  id="wmonth" size="1" maxlength="2" class="inpt"/>
+							          <b>/</b><input type="text" name="year1" id="wyear" size="2" maxlength="4" class="inpt"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['date']) && $usrinpt['date'] == "error"){
 		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Invalid date input </div> </td> </tr>";}?>

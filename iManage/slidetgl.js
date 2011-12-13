@@ -124,6 +124,9 @@ function updtWorkinfo(id){
 	    
 		    document.getElementById("wname").value = jobtable[idx]['name'];
 		    document.getElementById("jobwage").value = jobtable[idx]['wage'];
+		    document.getElementById("wday").value = jobtable[idx]['incomeDate'].substring(8,10);
+        	document.getElementById("wmonth").value = jobtable[idx]['incomeDate'].substring(5,7);
+        	document.getElementById("wyear").value = jobtable[idx]['incomeDate'].substring(0,4);
 		    var j = 0;
 		    //var ok = 0;
 		    
@@ -141,7 +144,7 @@ function updtWorkinfo(id){
 			    document.getElementById("rwt").value = '';
 	        }
 	        else
-	    	{	   	
+	    	{	   
 			    document.getElementById("rsh").value = htable[j]['startHour'].substring(11,13);	
 				document.getElementById("rsm").value = htable[j]['startHour'].substring(14,16);	
 			    document.getElementById("reh").value = htable[j]['endHour'].substring(11,13);	
