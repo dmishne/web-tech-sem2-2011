@@ -21,7 +21,7 @@ if($formN == 1)  // Update working hours
 	$timeupdate = 0;
 	$transtypeid = 3;  
 	$jobId = htmlspecialchars($_POST['workid'],ENT_QUOTES); 
-	$workName = htmlspecialchars($_POST['workname'],ENT_QUOTES);   // marked out for security reasons 
+	//$workName = htmlspecialchars($_POST['workname'],ENT_QUOTES);   // marked out for security reasons 
 	$amount = htmlspecialchars($_POST['wage'],ENT_QUOTES);
 	if($amount !=null && (!is_numeric($amount) || (is_numeric($amount) && $amount < 0))){
 		$usrinpt['amount']="error";

@@ -29,14 +29,11 @@ function slidetgl()
 
 
 function rDayWageTotal(){
-	//alert(sh);
-	/*if( !(sh && sm && eh && em)){*/
 		var sh = document.getElementById("rsh").value;
 		var eh = document.getElementById("reh").value;
 		var sm = document.getElementById("rsm").value;
 		var em = document.getElementById("rem").value;
 		var rw=document.getElementById("jobwage").value;
-	//}
 	if(sh && eh && sm && em && rw)
 	{
 		var dh = eh - sh;
@@ -128,7 +125,6 @@ function updtWorkinfo(id){
         	document.getElementById("wmonth").value = jobtable[idx]['incomeDate'].substring(5,7);
         	document.getElementById("wyear").value = jobtable[idx]['incomeDate'].substring(0,4);
 		    var j = 0;
-		    //var ok = 0;
 		    
 		    while(j < htable.length && jobtable[idx]['name'] != htable[j]['transname'])
 		    {		    	
