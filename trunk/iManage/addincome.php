@@ -40,6 +40,13 @@
 	echo "</script>";
 	?>
 	
+	<?php
+	    $browser = $_SERVER['HTTP_USER_AGENT'];
+		if (strpos($browser,'Chrome') !== false) {
+		    $isChrome = true;
+		}	     
+	?>
+	
 	<?php  if(isset($date))
 				list($curDay, $curMonth, $curYear)= explode('.', $date,3);
 				else
@@ -55,7 +62,7 @@
 			$connection->select_db('webtech');
 			$username= $_SESSION['username'];
 			$date2 = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
-			$res = $connection->query("CALL getDailyOneTimeIncomes('$username','$date2')") or die(mysqli_error());
+			$res = $connection->query("CALL getDailyOneTimeIncomes('$username','$date2')") or die(mysqli_error());	
 	?>
 	
 	
@@ -69,6 +76,29 @@
 			$username= $_SESSION['username'];
 			$jobs = $connection->query("CALL getJobs('$username')") or die(mysqli_error());
 	?>
+	
+	
+	<?PHP
+			$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
+			if (mysqli_connect_errno()) {
+				die('Could not connect: ' . mysqli_connect_error());
+			}				
+			$connection->select_db('webtech');
+			$username= $_SESSION['username'];
+			$dateh = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
+			$hours = $connection->query("CALL getDailyWorkHours('$username','$dateh')") or die(mysqli_error());
+			if($hours->num_rows > 0)
+			{
+				$harray = array();
+				while ($r = $hours->fetch_array(MYSQLI_ASSOC)){
+					$harray[] = $r;
+				}				
+			}
+	?>
+	
+	<script>
+	   htable = <?php echo json_encode($harray); ?>;
+    </script>
 	
 	
     <?php 
@@ -156,30 +186,35 @@
 						           <tr>
 						             <td width="50%" class="pfont">Work:</td>
 						             <td width="50%">
-						                 <select name="workid" id="uwi" class="inpt" style="width:131px">
-                                               <?php  
+						               
+						               
+							           <select name="workid" id="uwi" class="inpt" style="width:131px" onchange="updtWorkinfo('uwi')">							                     
+						                  
+                                          <?php     
                                                if($jobs->num_rows > 0)
                                                {     
+                                               	$jobsarray = array();
 						                         while ($job = $jobs->fetch_array(MYSQLI_ASSOC)){
-						                         	$name = $job["name"];
-						                         	$wage = $job["wage"]; 
+						                            $jobsarray[] = $job;						                         	
+						                         	$name = $job["name"];						                         	
 						                        	$jobId =$job["recTrans"];
-						                         	echo "<option value=\"$jobId\" onclick=\"updtWorkinfo('uwi','$name','$wage',null,null)\">";
-						                         	echo $name;
-						                         	echo "</option>";
+						                         	echo "<option value=\"$jobId\">$name</option>";						                         	
 						                         }
                                                }
 						                   ?>
 						                 </select>
+						                 <script>
+                                           jobtable = <?php echo json_encode($jobsarray); ?>;
+                                         </script>
 						              </td> 
 						           </tr>
 							       <tr>
 							         <td width="45%" class="pfont">Work Name: </td>
-							         <td width="55%"><input type="text" id="wname" name="workname" class="inpt" size="20" maxlength="30"/></td>
+							         <td width="55%"><input type="text" id="wname" name="workname" class="inpt" size="20" maxlength="30" readonly="readonly"/></td>
 							       </tr>
 							       <tr>
 							         <td width="45%" class="pfont">Wage per Hour: </td>
-							         <td width="55%"><input type="text" id="jobwage" name="wage" class="inpt" size="20" maxlength="30" onkeyup="rDayWageTotal()"/></td>
+							         <td width="55%"><input type="text" id="jobwage" name="wage" class="inpt" size="20" maxlength="30" onchange="rDayWageTotal()"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['amount']) && $usrinpt['amount'] == "error"){
 		            			            echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}
@@ -240,21 +275,24 @@
 					               <tr>
 						             <td width="50%" class="pfont">Update added income:</td>
 						             <td width="50%">
-						                 <select name="rtIncome" id="rtinc" class="inpt" style="width:131px">
-						                   <option value="New" onclick="updtWorkinfo('rtinc','','','')">New</option>
+						                 <select name="rtIncome" id="rtinc" class="inpt" style="width:131px" onchange="updtWorkinfo('rtinc')">
+						                   <option value="New">New</option>
 						                   <?php   
+							                   if($res2->num_rows > 0)
+							                   {
+							                   	$recarray = array();
 						                         while ($row2 = $res2->fetch_array(MYSQLI_ASSOC)){
+						                         	$recarray[] = $row2;
 						                         	$name = $row2["recname"];
-						                         	$amount = $row2["amount"]; 
-						                        	$desc = $row2["description"];
-						                        	$recType = $row2["recType"];
-						                        	$jobId =$row2["recId"];						                       
-						                         	echo "<option value=\"$jobId\" onclick=\"updtWorkinfo('rtinc','$name','$amount','$desc','$recType')\">";
-						                         	echo $name;
-						                         	echo "</option>";
+						                        	$recId =$row2["recId"];						                       
+						                         	echo "<option value=\"$recId\">$name</option>";					                         	
 						                         }
+							                   }
 						                   ?>
 						                 </select>
+						                 <script>
+                                           rectable = <?php echo json_encode($recarray); ?>;
+                                         </script>
 						              </td> 
 						           </tr>
 							       <tr>
@@ -335,20 +373,24 @@
 					               <tr>
 						             <td width="50%" class="pfont">Update added income:</td>
 						             <td width="50%">
-						                 <select name="rIncome" id="otislct" class="inpt" style="width:131px">
-						                 <option value="New" onclick="updtWorkinfo('otislct','','','')">New</option>
-						                   <?php   
-						                         while ($row = $res->fetch_array(MYSQLI_ASSOC)){
+						                 <select name="rIncome" id="otislct" class="inpt" style="width:131px" onchange="updtWorkinfo('otislct')">
+						                 <option value="New">New</option>
+						                   <?php  
+							                    if($res->num_rows > 0)
+							                    {
+							                   	  $onetimearray = array();							                   	  						                   		  
+						                          while ($row = $res->fetch_array(MYSQLI_ASSOC)){
+						                         	$onetimearray[] = $row;						                         
 						                         	$name = $row["transname"];
-						                         	$amount = $row["amount"]; 
-						                        	$desc = $row["description"];
-						                        	$jobId =$row["transId"];
-						                         	echo "<option value=\"$jobId\" onclick=\"updtWorkinfo('otislct','$name','$amount','$desc')\">";
-						                         	echo $name;
-						                         	echo "</option>";
+						                        	$trnsId =$row["transId"];
+						                         	echo "<option value=\"$trnsId\">$name</option>";						                         	
 						                         }
+							                    }
 						                   ?>
 						                 </select>
+						                 <script>
+                                           onetimetable = <?php echo json_encode($onetimearray); ?>;
+                                         </script>
 						              </td> 
 						           </tr>
 							       <tr>

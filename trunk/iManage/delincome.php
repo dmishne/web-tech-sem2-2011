@@ -107,7 +107,7 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 			    </form>
 			   <form method="post" action="" id="deleteincomes">   		
 			   <div style="width:65%; float:left; min-height:260px; margin:auto 30px auto auto;">
-				   <ul>
+				   <ul id="mainul">
 			           <?php 
 			              $prevLi = 0;
 			              $prevLi = 0;
@@ -136,7 +136,9 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 							           		    	$tmp = $i-1;
 							           		    	echo "
 								           		    	   <script type=\"text/javascript\">
-								           		    	       document.getElementById(\"row$tmp\").style.display = \"none\";
+								           		    	      var payout = document.getElementById(\"row$tmp\");
+           											          var lst = document.getElementById(\"mainul\");
+           											          lst.removeChild(payout);
 								           		    	   </script>
 							           		    	     ";
 							           		         }
@@ -178,7 +180,9 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 							           				$tmp = $i;
 							           				echo "
            											        <script type=\"text/javascript\">
-           											          document.getElementById(\"row$tmp\").style.display = \"none\";
+	           											          var payout = document.getElementById(\"row$tmp\");
+	           											          var lst = document.getElementById(\"mainul\");
+	           											          lst.removeChild(payout);
            											          </script>
            										         ";
            											     $tamnt = 0;
@@ -230,7 +234,9 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 				                       		$tmp = $i-1;
 				                       		echo "
 	                       						  <script type=\"text/javascript\">
-	                       						    document.getElementById(\"row$tmp\").style.display = \"none\";
+	                       						      var payout = document.getElementById(\"row$tmp\");
+           											  var lst = document.getElementById(\"mainul\");
+           											  lst.removeChild(payout);
 	                       						  </script>
 	                       						 ";
 				                       	 }
