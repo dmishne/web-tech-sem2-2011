@@ -21,7 +21,7 @@ if($formN == 1)  // Update working hours
 	$timeupdate = 0;
 	$transtypeid = 3;  
 	$jobId = htmlspecialchars($_POST['workid'],ENT_QUOTES); 
-	$workName = htmlspecialchars($_POST['workname'],ENT_QUOTES);
+	$workName = htmlspecialchars($_POST['workname'],ENT_QUOTES);   // marked out for security reasons 
 	$amount = htmlspecialchars($_POST['wage'],ENT_QUOTES);
 	if($amount !=null && (!is_numeric($amount) || (is_numeric($amount) && $amount < 0))){
 		$usrinpt['amount']="error";
@@ -63,12 +63,11 @@ if($formN == 1)  // Update working hours
 		$usrinpt['amount']=null;
 		$usrinpt['time1'] = null;
 		$usrinpt['time2']=null;
-		$usrinpt['err1'] = null;
-		
-		$res = $connection->query("CALL editJobDetails('$jobId','$workName',null,'$amount','$pdate')") or die(mysqli_error());
-		$res->free();
+		$usrinpt['err1'] = null;		
+		$eres = $connection->query("CALL editJobDetails('$jobId',null,null,'$amount','$pdate')") or die(mysqli_error());
         if($timeupdate)
         {
+        	$eres->free();
 			while ($connection->next_result()) {
 				//free each result.
 				$result = $connection->use_result();
