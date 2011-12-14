@@ -14,6 +14,14 @@
 	<link rel="icon" href="images/logo.ico" />
 	<link rel="apple-touch-icon" href="images/icon_apple.png" />
 	<?php include "include.php"; ?>
+	
+	<?php 
+		
+	
+	?>
+	
+	
+	
 </head>
 
 <body>
@@ -30,14 +38,24 @@
 				
 		<div id="content">
 			<div id="content-head">
-		           Create Work Information
+		           Job Information
 			</div>
 			<div id="content-middle">
 				   <form  method="post" action="createWorkVerifier.php" id="createWork_form">
 			           <div id="createWork" class="greyCube">
 				           <table style="margin-left:auto; margin-right:auto; text-align:left;">
 				           		<tr style="text-align:center;"> 
-				           			<th colspan="2"> Create Work Form </th> 
+				           			<th colspan="2"> Job Information </th> 
+				           		</tr>
+				           		<tr style="text-align:center;">
+				           			<td colspan="2">
+				           				<select>
+				           					<option> New Job Information </option>
+				           					<?php 
+				           					
+				           					?>
+				           				</select>
+				           			</td>
 				           		</tr>
 				           		<tr>
 				           			<td> Name: </td>

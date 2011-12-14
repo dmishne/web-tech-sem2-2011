@@ -172,8 +172,7 @@
 							       </tr>
 							       <?php if(isset($usrinpt['amount']) && $usrinpt['amount'] == "error"){
 		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}
-		            			         else if(isset($usrinpt['sign']) && $usrinpt['sign'] == "error"){
-		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be positive </div> </td> </tr>";}?>
+		            			         ?>
 							       <tr id="pfirstDate" style="display:table-row">
 							         <td width="50%" class="pfont">Date (dd/mm/yyyy): </td>
 							         <td width="50%"><input type="text" name="pday2" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
@@ -222,7 +221,7 @@
 					    </table>
                        </form>
 					 </div>
-					  <p class="line2" style="<?php  if(isset($usrinpt['err2']) && $usrinpt['err2'] == 1) echo "visibility:hidden;"; ?>"></p>
+					  <p class="line2" style="<?php  if(isset($usrinpt['err4']) && $usrinpt['err4'] == 1) echo "visibility:hidden;"; ?>"></p>
 					 
 
 					 <!--															--> 
@@ -268,10 +267,9 @@
 							         <td width="45%" class="pfont">Amount: </td>
 							         <td width="55%"><input type="text"  name="pamount" id="amount3" class="inpt" style="color:green" size="20" maxlength="30"/></td>
 							       </tr>
-							       <?php if(isset($usrinpt['amount']) && $usrinpt['amount'] == "error"){
+							       <?php if(isset($usrinpt['pamount']) && $usrinpt['pamount'] == "error"){
 		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}
-		            			         else if(isset($usrinpt['sign']) && $usrinpt['sign'] == "error"){
-		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be positive </div> </td> </tr>";}?>
+		            			         ?>
 							       <tr>
 							         <td width="45%" class="pfont">Date (dd/mm/yyyy): </td>
 							         <td width="55%"><input type="text" name="pday3" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
@@ -293,7 +291,7 @@
 					    </table>
 					    </form>
 					 </div>	
-					 <p class="line3" style="<?php  if(isset($usrinpt['err3']) && $usrinpt['err3'] == 1) echo "visibility:hidden;"; ?>"></p>
+					 <p class="line3" style="<?php  if(isset($usrinpt['err5']) && $usrinpt['err5'] == 1) echo "visibility:hidden;"; ?>"></p>
 
 					 <!--															--> 
 		             <!--															-->				 
