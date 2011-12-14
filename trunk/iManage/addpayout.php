@@ -62,7 +62,7 @@
 	<script type="text/javascript"> 
          $(document).ready(function(){
            slidetgl();
-           initCalendar();
+           initCalendar('addpayout.php');
        });
 	</script>
 </head>
