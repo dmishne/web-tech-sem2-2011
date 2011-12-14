@@ -17,14 +17,14 @@ $description = htmlspecialchars($_POST['desc'],ENT_QUOTES);
 
 
 
-if($formN == 2) //  add recuring payout
+if($formN == 4) //  add recuring payout
 {
 	$pass = 1;
 	$transtypeid = 6;
-	$selected = htmlspecialchars($_POST['rtIncome'],ENT_QUOTES);    // get values - "New" or jobId
-	$transcustomname = htmlspecialchars($_POST['inname'],ENT_QUOTES);
-	$amount = htmlspecialchars($_POST['amount'],ENT_QUOTES);
-	if(!is_numeric($amount)){
+	$selected = htmlspecialchars($_POST['rtPayout'],ENT_QUOTES);    // get values - "New" or jobId
+	$transcustomname = htmlspecialchars($_POST['pay2name'],ENT_QUOTES);
+	$amount = htmlspecialchars($_POST['p2amount'],ENT_QUOTES);
+	if($amount !=null && (!is_numeric($amount) || (is_numeric($amount) && $amount > 0))){
 		$usrinpt['amount']="error";
 		$usrinpt['err2'] = 1;
 		$pass =0;
@@ -34,9 +34,12 @@ if($formN == 2) //  add recuring payout
 		$usrinpt['err2'] = 1;
 		$pass =0;
 	}
-	$sday = htmlspecialchars($_POST['day'],ENT_QUOTES);
-	$smonth = htmlspecialchars($_POST['month'],ENT_QUOTES);
-	$syear = htmlspecialchars($_POST['year'],ENT_QUOTES);
+	$sday = htmlspecialchars($_POST['pday2'],ENT_QUOTES);
+	$smonth = htmlspecialchars($_POST['pmonth2'],ENT_QUOTES);
+	$syear = htmlspecialchars($_POST['pyear2'],ENT_QUOTES);
+	$sday2 = htmlspecialchars($_POST['pdayU'],ENT_QUOTES);
+	$smonth2 = htmlspecialchars($_POST['pmonthU'],ENT_QUOTES);
+	$syear2 = htmlspecialchars($_POST['pyearU'],ENT_QUOTES);
 	if(!checkdate(intval($smonth),intval($sday),intval($syear))){
 		$usrinpt['date'] = "error";
 		$usrinpt['err2'] = 1;
@@ -49,10 +52,16 @@ if($formN == 2) //  add recuring payout
 	   $usrinpt['date'] = null;
 	   $usrinpt['amount']=null;
 	   $usrinpt['err2'] = null;
-	   if($selected == 'New')
+	   if($selected == 'New'){
 	          $res = $connection->query("CALL insertTransaction('$amount','$username','$transdate','$transcustomname','$recurrance','$transtypeid',null,'$description')") or die(mysqli_error());
+	   }
 	   else if($selected != 'New'){
-	   	      $res = $connection->query("CALL editJobDetails('$selected','$transcustomname','$description','$amount','$transdate')") or die(mysqli_error());
+	   	      $period = htmlspecialchars($_POST['pchangeP'],ENT_QUOTES);
+	   	      $transdate = sprintf('%4d-%02d-%02d', $syear2, $smonth2, $sday2);
+	   	      if(!$period){
+	   	      	$period = '3';
+	   	      }
+	   	      $res = $connection->query("CALL editRecurringTransDetails('$selected','$transcustomname','$description','$recurrance','$amount','$period','$transdate')") or die(mysqli_error());
 	   }
 	   
 	   $_SESSION['update'] = 1;
@@ -63,15 +72,15 @@ if($formN == 2) //  add recuring payout
 	   header("location:addpayout.php?date=$sdate&month=$smonth&year=$syear");}
 }
 
-else if($formN == 3)   // add one time payout
+else if($formN == 5)   // add one time payout
 {
 	$pass = 1;
 	$transtypeid = 5;
-	$selected = htmlspecialchars($_POST['rIncome'],ENT_QUOTES);    // get values - "New" or jobId
-	$transcustomname = htmlspecialchars($_POST['inname'],ENT_QUOTES);
+	$selected = htmlspecialchars($_POST['rPayout'],ENT_QUOTES);    // get values - "New" or jobId
+	$transcustomname = htmlspecialchars($_POST['payname'],ENT_QUOTES);
 	$amount = htmlspecialchars($_POST['amount'],ENT_QUOTES);
 	if(!is_numeric($amount)){
-		$usrinpt['amount']="error";
+		$usrinpt['pamount']="error";
 		$usrinpt['err3'] = 1;
 		$pass =0;
 	}
@@ -80,9 +89,9 @@ else if($formN == 3)   // add one time payout
 		$usrinpt['err3'] = 1;
 		$pass =0;
 	}
-	$tday = htmlspecialchars($_POST['day'],ENT_QUOTES);
-	$tmonth = htmlspecialchars($_POST['month'],ENT_QUOTES);
-	$tyear = htmlspecialchars($_POST['year'],ENT_QUOTES);
+	$tday = htmlspecialchars($_POST['pday3'],ENT_QUOTES);
+	$tmonth = htmlspecialchars($_POST['pmonth3'],ENT_QUOTES);
+	$tyear = htmlspecialchars($_POST['pyear3'],ENT_QUOTES);
 	if(!checkdate(intval($tmonth),intval($tday),intval($tyear))){
 		$usrinpt['date'] = "error";
 		$usrinpt['err3'] = 1;
@@ -97,7 +106,7 @@ else if($formN == 3)   // add one time payout
 		if($selected == 'New')
 		     $res = $connection->query("CALL insertTransaction('$amount','$username','$transdate','$transcustomname',null,'$transtypeid',null,'$description')") or die(mysqli_error());
 		else if($selected != 'New'){
-		     $res = $connection->query("CALL editJobDetails('$selected','$transcustomname','$description','$amount','$transdate')") or die(mysqli_error());
+		     $res = $connection->query("CALL editOneTimeTransDetails('$selected','$transcustomname','$description','$amount')") or die(mysqli_error());
 		    }
 		$_SESSION['update'] = 1;
 	   header("location:addpayout.php?date=$tdate&month=$tmonth&year=$tyear");

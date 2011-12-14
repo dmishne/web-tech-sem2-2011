@@ -40,14 +40,39 @@
 	echo "</script>";
 	?>
 	
-	<?php  if(isset($date))
-				list($curDay, $curMonth, $curYear)= explode('.', $date,3);
-				else
-				list($curDay, $curMonth, $curYear) = explode('-', date('d-m-Y'),3);
+	<?php
+			if(isset($date))
+			          { list($curDay, $curMonth, $curYear)= explode('.', $date,3);}
+			else
+			         {  list($curDay, $curMonth, $curYear) = explode('-', date('d-m-Y'),3);}
 	?>
 	
 	
-	<?php 
+	<?php
+		$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
+		if (mysqli_connect_errno()) {
+			die('Could not connect: ' . mysqli_connect_error());
+		}
+		
+		$connection->select_db('webtech');
+		$username= $_SESSION['username'];
+		$date2 = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
+		$pres = $connection->query("CALL getDailyOneTimePayouts('$username','$date2')") or die(mysqli_error());
+	?>
+	
+	<?php
+		$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
+		if (mysqli_connect_errno()) {
+			die('Could not connect: ' . mysqli_connect_error());
+		}
+		
+		$connection->select_db('webtech');
+		$username= $_SESSION['username'];
+		$date2 = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
+		$pres2 = $connection->query("CALL getDailyRecurringPayouts('$username','$date2')") or die(mysqli_error());
+	?>
+	
+	  <?php 
 			$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
 			if (mysqli_connect_errno()) {
 				die('Could not connect: ' . mysqli_connect_error());
@@ -57,7 +82,7 @@
 			$username= $_SESSION['username'];
 			$date2 = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
 			$daySum = $connection->query("CALL getDailyTransactions('$username','$date2')") or die(mysqli_error());
-	?>
+	   ?>
 	
 	<script type="text/javascript"> 
          $(document).ready(function(){
@@ -100,7 +125,8 @@
 			             	echo "<div class=\"error\"> Input error! Please check values </div>";
 			             }
 		             ?>	
-   
+		            
+		             
 					 <!--															--> 
 		           	 <!--															-->					 						 
 
@@ -111,66 +137,84 @@
                           <table width="100%">
                             <tr>
 					          <td width="63%">
-					          <input type="hidden" name="panel" value="2" />
+					          <input type="hidden" name="panel" value="4" />
 					            <table>
 					               <tr>
 						             <td width="50%" class="pfont">Update added payout:</td>
 						             <td width="50%">
-						                 <select name="rtIncome" id="rtinc" class="inpt" style="width:131px">
-						                   <option>New</option>
+						                 <select name="rtPayout" id="rtpay" class="inpt" style="width:131px" onchange="updtWorkinfo('rtpay')">
+						                   <option value="New">New</option>
 						                   <?php   
-						                        /* while ($row2 = $res2->fetch_array(MYSQLI_ASSOC)){
+							                   if($pres2->num_rows > 0)
+							                   {
+							                   	$recarray = array();
+						                         while ($row2 = $pres2->fetch_array(MYSQLI_ASSOC)){
+						                         	$recarray[] = $row2;
 						                         	$name = $row2["recname"];
-						                         	$amount = $row2["amount"]; 
-						                        	$desc = $row2["description"];
-						                        	$recType = $row2["recType"];
-						                        	$jobId =$row2["recId"];
-						                         	echo "<option value=\"$jobId\" onclick=\"updtWorkinfo('rtinc','$name','$amount','$desc','$recType')\">";
-						                         	echo $name;
-						                         	echo "</option>";
-						                         }*/
+						                        	$recId =$row2["recId"];						                       
+						                         	echo "<option value=\"$recId\">$name</option>";					                         	
+						                         }
+							                   }
 						                   ?>
 						                 </select>
+						                 <script>
+                                           prectable = <?php echo json_encode($recarray); ?>;
+                                         </script>
 						              </td> 
 						           </tr>
 							       <tr>
 							         <td width="45%" class="pfont">Name: </td>
-							         <td width="55%"><input type="text" id="name2" name="inname" class="inpt" size="20" maxlength="30"/></td>
+							         <td width="55%"><input type="text" id="pname2" name="pay2name" class="inpt" size="20" maxlength="30"/></td>
 							       </tr>
 							       <tr>
 							         <td width="45%" class="pfont">Amount: </td>
-							         <td width="55%"><input type="text" name="amount" id="amount2" class="inpt" style="color:green" size="20" maxlength="30"/></td>
+							         <td width="55%"><input type="text" name="p2amount" id="pamount2" class="inpt" style="color:green" size="20" maxlength="30"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['amount']) && $usrinpt['amount'] == "error"){
 		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}
 		            			         else if(isset($usrinpt['sign']) && $usrinpt['sign'] == "error"){
-		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be negative </div> </td> </tr>";}?>
-							       <tr>
-							         <td width="50%" class="pfont">From (dd/mm/yyyy): </td>
-							         <td width="50%"><input type="text" name="day" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
-							          <b>/</b><input type="text" name="month" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
-							          <b>/</b><input type="text" name="year" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
+		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be positive </div> </td> </tr>";}?>
+							       <tr id="pfirstDate" style="display:table-row">
+							         <td width="50%" class="pfont">Date (dd/mm/yyyy): </td>
+							         <td width="50%"><input type="text" name="pday2" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
+							          <b>/</b><input type="text" name="pmonth2" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
+							          <b>/</b><input type="text" name="pyear2" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['date']) && $usrinpt['date'] == "error"){
 		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Invalid date input </div> </td> </tr>";}?>
 							       <tr>
 							          <td width="50%" class="pfont">Recurring Period: </td>
 							          <td width="50%">
-							             <select name="r_period" id="rslct" class="inpt" style="width:131px">
+							             <select name="r_period" id="prslct" class="inpt" style="width:131px">
 											<option value=10>Daily</option>
 											<option value=1>Weekly</option>
 											<option value=2>Fortnightly</option>
 											<option value=4>Monthly</option>
-											<option value=8>Bi - monthly</option>
+											<option value=8>Bi-monthly</option>
 										 </select>
 							          </td>
 							       </tr>
+							       
+							          <tr><td width="50%" class="pfont" id="pupdtperiodl" style="display:none"><u>Update Effect For: </u></td></tr>
+							          <tr id="psecondDate" style="display:none">
+								          <td width="50%" class="pfont">Date (dd/mm/yyyy): </td>
+								          <td width="50%"><input type="text" name="pdayU" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
+								          <b>/</b><input type="text" name="pmonthU" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
+								          <b>/</b><input type="text" name="pyearU" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
+							          </tr>
+							          <tr><td colspan="2" class="pfont" id="pupdtperiod" style="display:none">
+							          <input type="radio" id="td" value="1" name="pchangeP"/><label for="td" style="margin-right:20px">This date</label>
+                                      <input type="radio" id="fn" value="2" name="pchangeP"/><label for="fn" style="margin-right:20px">From now</label>
+                                      <input type="radio" id="fa" value="3" name="pchangeP"/><label for="fa" >For all </label>
+                                      </td></tr>
+							     
+							       
 							     </table>  
 						     </td>
 						     <td width="35%">
 						         <table>
 							         <thead><tr><td nowrap="nowrap" class="pfont" style="font-size:16px">Payout description:</td></tr></thead>
-							         <tbody><tr><td><textarea name="desc" id="desc2" rows="8" cols="28" class="inpt"></textarea></td></tr></tbody>
+							         <tbody><tr><td><textarea name="desc" id="pdesc2" rows="8" cols="28" class="inpt"></textarea></td></tr></tbody>
 							         <tfoot><tr><td align="right"><input type="submit" value="Update" class="blue button small bround"></input></td></tr></tfoot>
 						         </table> 
 						     </td> 
@@ -191,44 +235,48 @@
 					    <table width="100%">
 					      <tr>
 					        <td width="63%">
-					        <input type="hidden" name="panel" value="3" />
+					        <input type="hidden" name="panel" value="5" />
 					          <table>
 					               <tr>
 						             <td width="50%" class="pfont">Update added payout:</td>
 						             <td width="50%">
-						                 <select name="rIncome" id="otislct" class="inpt" style="width:131px">
-						                 <option>New</option>
-						                   <?php   
-						                        /* while ($row = $res->fetch_array(MYSQLI_ASSOC)){
+						                 <select name="rPayout" id="otislct" class="inpt" style="width:131px" onchange="updtWorkinfo('otislct')">
+						                 <option value="New">New</option>
+						                   <?php  
+							                    if($pres->num_rows > 0)
+							                    {
+							                   	  $onetimearray = array();							                   	  						                   		  
+						                          while ($row = $pres->fetch_array(MYSQLI_ASSOC)){
+						                         	$onetimearray[] = $row;						                         
 						                         	$name = $row["transname"];
-						                         	$amount = $row["amount"]; 
-						                        	$desc = $row["description"];
-						                        	$jobId =$row["transId"];
-						                         	echo "<option value=\"$jobId\" onclick=\"updtWorkinfo('otislct','$name','$amount','$desc')\">";
-						                         	echo $name;
-						                         	echo "</option>";
-						                         }*/
+						                        	$trnsId =$row["transId"];
+						                         	echo "<option value=\"$trnsId\">$name</option>";						                         	
+						                         }
+							                    }
 						                   ?>
 						                 </select>
+						                 <script>
+                                           onetimetable = <?php echo json_encode($onetimearray); ?>;
+                                         </script>
 						              </td> 
 						           </tr>
 							       <tr>
 							         <td width="45%" class="pfont">Name: </td>
-							         <td width="55%"><input type="text" id="name3" name="inname" class="inpt" size="20" maxlength="30"/></td>
+							         <td width="55%"><input type="text" id="name3" name="payname" class="inpt" size="20" maxlength="30"/></td>
 							       </tr>
 							       <tr>
 							         <td width="45%" class="pfont">Amount: </td>
-							         <td width="55%"><input type="text"  name="amount" id="amount3" class="inpt" style="color:green" size="20" maxlength="30"/></td>
+							         <td width="55%"><input type="text"  name="pamount" id="amount3" class="inpt" style="color:green" size="20" maxlength="30"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['amount']) && $usrinpt['amount'] == "error"){
 		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be numeric </div> </td> </tr>";}
 		            			         else if(isset($usrinpt['sign']) && $usrinpt['sign'] == "error"){
-		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be negative </div> </td> </tr>";}?>
+		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Value must be positive </div> </td> </tr>";}?>
 							       <tr>
-							         <td width="45%" class="pfont">Payout Date (dd/mm/yyyy): </td>
-							         <td width="55%"><input type="text" name="day" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
-							          <b>/</b><input type="text" name="month" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
-							          <b>/</b><input type="text" name="year" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
+							         <td width="45%" class="pfont">Date (dd/mm/yyyy): </td>
+							         <td width="55%"><input type="text" name="pday3" size="1" maxlength="2" class="inpt" value="<?php echo $curDay; ?>"/>
+							          <b>/</b><input type="text" name="pmonth3" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
+							          <b>/</b><input type="text" name="pyear3" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['date']) && $usrinpt['date'] == "error"){
 		            			            echo "<tr> <td colspan=\"2\> <div class=\"error\"> Invalid date input </div> </td> </tr>";}?>
@@ -253,6 +301,7 @@
 									 
 					  <?php unset($_SESSION['transfer']);?>							
 		         </div>
+		         
 		         
 		         
 		         
