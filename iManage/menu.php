@@ -8,7 +8,7 @@
 		<ul id="incomesMenu">			
 			<li> <a href="addincome.php"> Add/Update Income </a> </li>
 			<li> <a href="delincome.php"> Delete Income </a> </li>
-			<li> <a href="createWork.php"> Create Work Information </a> </li>
+			<li> <a href="createWork.php"> Job Information </a> </li>
 		</ul>
 	</li>
 	<li class="toggleable"> Payouts

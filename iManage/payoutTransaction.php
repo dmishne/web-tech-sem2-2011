@@ -24,15 +24,13 @@ if($formN == 4) //  add recuring payout
 	$selected = htmlspecialchars($_POST['rtPayout'],ENT_QUOTES);    // get values - "New" or jobId
 	$transcustomname = htmlspecialchars($_POST['pay2name'],ENT_QUOTES);
 	$amount = htmlspecialchars($_POST['p2amount'],ENT_QUOTES);
-	if($amount !=null && (!is_numeric($amount) || (is_numeric($amount) && $amount > 0))){
+	if($amount !=null && (!is_numeric($amount))){
 		$usrinpt['amount']="error";
-		$usrinpt['err2'] = 1;
+		$usrinpt['err4'] = 1;
 		$pass =0;
 	}
 	if((is_numeric($amount) && $amount > 0)){
-		$usrinpt['sign']="error";
-		$usrinpt['err2'] = 1;
-		$pass =0;
+		$amount = $amount * (-1);
 	}
 	$sday = htmlspecialchars($_POST['pday2'],ENT_QUOTES);
 	$smonth = htmlspecialchars($_POST['pmonth2'],ENT_QUOTES);
@@ -42,7 +40,7 @@ if($formN == 4) //  add recuring payout
 	$syear2 = htmlspecialchars($_POST['pyearU'],ENT_QUOTES);
 	if(!checkdate(intval($smonth),intval($sday),intval($syear))){
 		$usrinpt['date'] = "error";
-		$usrinpt['err2'] = 1;
+		$usrinpt['err4'] = 1;
 		$pass = 0;
 	}
 	$transdate = sprintf('%4d-%02d-%02d', $syear, $smonth, $sday);
@@ -51,7 +49,7 @@ if($formN == 4) //  add recuring payout
 	if($pass == 1){
 	   $usrinpt['date'] = null;
 	   $usrinpt['amount']=null;
-	   $usrinpt['err2'] = null;
+	   $usrinpt['err4'] = null;
 	   if($selected == 'New'){
 	          $res = $connection->query("CALL insertTransaction('$amount','$username','$transdate','$transcustomname','$recurrance','$transtypeid',null,'$description')") or die(mysqli_error());
 	   }
@@ -78,23 +76,21 @@ else if($formN == 5)   // add one time payout
 	$transtypeid = 5;
 	$selected = htmlspecialchars($_POST['rPayout'],ENT_QUOTES);    // get values - "New" or jobId
 	$transcustomname = htmlspecialchars($_POST['payname'],ENT_QUOTES);
-	$amount = htmlspecialchars($_POST['amount'],ENT_QUOTES);
-	if(!is_numeric($amount)){
+	$amount = htmlspecialchars($_POST['pamount'],ENT_QUOTES);
+	if($amount !=null && (!is_numeric($amount))){
 		$usrinpt['pamount']="error";
-		$usrinpt['err3'] = 1;
+		$usrinpt['err5'] = 1;
 		$pass =0;
 	}
 	if((is_numeric($amount) && $amount > 0)){
-		$usrinpt['sign']="error";
-		$usrinpt['err3'] = 1;
-		$pass =0;
+		$amount = $amount * (-1);
 	}
 	$tday = htmlspecialchars($_POST['pday3'],ENT_QUOTES);
 	$tmonth = htmlspecialchars($_POST['pmonth3'],ENT_QUOTES);
 	$tyear = htmlspecialchars($_POST['pyear3'],ENT_QUOTES);
 	if(!checkdate(intval($tmonth),intval($tday),intval($tyear))){
 		$usrinpt['date'] = "error";
-		$usrinpt['err3'] = 1;
+		$usrinpt['err5'] = 1;
 		$pass = 0;
 	}
 	$transdate = sprintf('%4d-%02d-%02d', $tyear, $tmonth, $tday);
@@ -102,7 +98,7 @@ else if($formN == 5)   // add one time payout
 	if($pass == 1){
 		$usrinpt['date'] = null;
 		$usrinpt['amount']=null;
-		$usrinpt['err3'] = null;
+		$usrinpt['err5'] = null;
 		if($selected == 'New')
 		     $res = $connection->query("CALL insertTransaction('$amount','$username','$transdate','$transcustomname',null,'$transtypeid',null,'$description')") or die(mysqli_error());
 		else if($selected != 'New'){
