@@ -10,5 +10,10 @@ $delDate = sprintf('%4d-%02d-%02d', $delyear, $delmonth, '01');
 $_SESSION['deletedate']=$delDate;
 $_SESSION['deletemonth']=$delmonth;
 $_SESSION['deleteyear']=$delyear;
-header("location:delincome.php")
+$formD = htmlspecialchars($_POST['deleteform'],ENT_QUOTES);
+  if ( $formD == "deleteIncome")
+      {$where = "location:delincome.php";}
+  else if ( $formD == "deletePayout")
+      {$where = "location:delpayout.php";}
+     header($where)
 ?>

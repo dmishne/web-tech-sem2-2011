@@ -21,70 +21,89 @@ if($formN == 1)  // Update working hours
 	$timeupdate = 0;
 	$transtypeid = 3;  
 	$jobId = htmlspecialchars($_POST['workid'],ENT_QUOTES); 
-	//$workName = htmlspecialchars($_POST['workname'],ENT_QUOTES);   // marked out for security reasons 
-	$amount = htmlspecialchars($_POST['wage'],ENT_QUOTES);
-	if($amount !=null && (!is_numeric($amount) || (is_numeric($amount) && $amount < 0))){
-		$usrinpt['amount']="error";
-		$usrinpt['err1'] = 1;
-		$pass =0;
-	}
-	$pday = htmlspecialchars($_POST['day1'],ENT_QUOTES);
-	$pmonth = htmlspecialchars($_POST['month1'],ENT_QUOTES);
-	$pyear = htmlspecialchars($_POST['year1'],ENT_QUOTES);
-	if(!checkdate(intval($pmonth),intval($pday),intval($pyear))){
-		$usrinpt['date'] = "error";
-		$usrinpt['err3'] = 1;
-		$pass = 0;
-	}
-	$pdate = sprintf('%4d-%02d-%02d', $pyear, $pmonth, $pday);
-	$sH = htmlspecialchars($_POST['starth'],ENT_QUOTES);
-	$sM = htmlspecialchars($_POST['startm'],ENT_QUOTES);
-	$eH = htmlspecialchars($_POST['endh'],ENT_QUOTES);
-	$eM = htmlspecialchars($_POST['endm'],ENT_QUOTES);
-	if($sH && $sM && $eH && $eM){
-		$timeupdate = 1;
-	}
-	if($timeupdate && (!chktimeH($sH) || !chktimeM($sM))){
-		$usrinpt['time1'] = "error";
-		$usrinpt['err1'] = 1;
-		$pass = 0;
-	}
-	if($timeupdate && (!chktimeH($eH) || !chktimeM($eM))){
-		$usrinpt['time2'] = "error";
-		$usrinpt['err1'] = 1;
-		$pass = 0;
-	}
-	$cDay = htmlspecialchars($_POST['curday'],ENT_QUOTES);
-	$cMonth = htmlspecialchars($_POST['curmonth'],ENT_QUOTES);
-	$cYear = htmlspecialchars($_POST['curyear'],ENT_QUOTES);
-	$startHour = sprintf('%4d-%02d-%02d %02d:%02d:%02d',$cYear, $cMonth, $cDay, $sH, $sM, 0);
-	$endHour = sprintf('%4d-%02d-%02d %02d:%02d:%02d',$cYear, $cMonth, $cDay, $eH, $eM, 0);
-	if($pass == 1){
-		$usrinpt['amount']=null;
-		$usrinpt['time1'] = null;
-		$usrinpt['time2']=null;
-		$usrinpt['err1'] = null;		
-		$eres = $connection->query("CALL editJobDetails('$jobId',null,null,'$amount','$pdate')") or die(mysqli_error());
-        if($timeupdate)
-        {
-        	$eres->free();
-			while ($connection->next_result()) {
-				//free each result.
-				$result = $connection->use_result();
-				if ($result instanceof mysqli_result) {
-					$result->free();
-				}
+	if($jobId != 'clear'){
+			//$workName = htmlspecialchars($_POST['workname'],ENT_QUOTES);   // marked out for security reasons 
+			$amount = htmlspecialchars($_POST['wage'],ENT_QUOTES);
+			if($amount !=null && (!is_numeric($amount) || (is_numeric($amount) && $amount < 0))){
+				$usrinpt['amount']="error";
+				$usrinpt['err1'] = 1;
+				$pass =0;
 			}
-			$res2 = $connection->query("CALL updateWorkingHours('$jobId','$startHour','$endHour',null)") or die(mysqli_error());
-        }
-		$_SESSION['update'] = 1;
-		header("location:addincome.php");
-	}
-	else {
-		$_SESSION['transfer'] = $usrinpt;
-		$pass = 1;
-		header("location:addincome.php");
-	}
+			$pday = htmlspecialchars($_POST['day1'],ENT_QUOTES);
+			$pmonth = htmlspecialchars($_POST['month1'],ENT_QUOTES);
+			$pyear = htmlspecialchars($_POST['year1'],ENT_QUOTES);
+			if(!checkdate(intval($pmonth),intval($pday),intval($pyear))){
+				$usrinpt['date'] = "error";
+				$usrinpt['err1'] = 1;
+				$pass = 0;
+			}
+			$pdate = sprintf('%4d-%02d-%02d', $pyear, $pmonth, $pday);
+			$sH = htmlspecialchars($_POST['starth'],ENT_QUOTES);
+			$sM = htmlspecialchars($_POST['startm'],ENT_QUOTES);
+			$eH = htmlspecialchars($_POST['endh'],ENT_QUOTES);
+			$eM = htmlspecialchars($_POST['endm'],ENT_QUOTES);
+			if($sH && $sM && $eH && $eM){
+				$timeupdate = 1;
+			}
+			if($timeupdate && (!chktimeH($sH) || !chktimeM($sM))){
+				$usrinpt['time1'] = "error";
+				$usrinpt['err1'] = 1;
+				$pass = 0;
+			}
+			if($timeupdate && (!chktimeH($eH) || !chktimeM($eM))){
+				$usrinpt['time2'] = "error";
+				$usrinpt['err1'] = 1;
+				$pass = 0;
+			}	
+			$cDay = htmlspecialchars($_POST['curday'],ENT_QUOTES);
+			$cMonth = htmlspecialchars($_POST['curmonth'],ENT_QUOTES);
+			$cYear = htmlspecialchars($_POST['curyear'],ENT_QUOTES);
+			$cDay2 = $cDay;
+			$cMonth2 = $cMonth;
+			$cYear2 = $cYear;
+			if($sH > $eH || (($sH == $eH) && ($sM > $eM)) ){
+				$newdate = nextdaydate($cYear, $cMonth, $cDay);
+				$cDay2 = $newdate[2];
+				$cMonth2 = $newdate[1];
+				$cYear2 = $newdate[0];
+			}
+			$startHour = sprintf('%4d-%02d-%02d %02d:%02d:%02d',$cYear, $cMonth, $cDay, $sH, $sM, 0);
+			$endHour = sprintf('%4d-%02d-%02d %02d:%02d:%02d',$cYear2, $cMonth2, $cDay2, $eH, $eM, 0);
+			if($pass == 1){
+				$usrinpt['amount']=null;
+				$usrinpt['time1'] = null;
+				$usrinpt['time2']=null;
+				$usrinpt['err1'] = null;
+				$usrinpt['notallowed'] = null;
+				$eres = $connection->query("CALL editJobDetails('$jobId',null,null,'$amount','$pdate')") or die(mysqli_error());
+		        if($timeupdate)
+		        {
+		        	$eres->free();
+					while ($connection->next_result()) {
+						//free each result.
+						$result = $connection->use_result();
+						if ($result instanceof mysqli_result) {
+							$result->free();
+						}
+					}
+					$res2 = $connection->query("CALL updateWorkingHours('$jobId','$startHour','$endHour',null)") or die(mysqli_error());
+		        }
+				$_SESSION['update'] = 1;
+				header("location:addincome.php");
+			}
+			else {
+				$_SESSION['transfer'] = $usrinpt;
+				$pass = 1;
+				header("location:addincome.php");
+			}
+	  }
+	  else {
+	  	$usrinpt['notallowed'] = "error";
+	  	$usrinpt['err1'] = 1;
+	  	$_SESSION['transfer'] = $usrinpt;
+	  	$pass = 1;
+	  	header("location:addincome.php");
+	  }
 }
 
 else if($formN == 2) //  add recuring income
@@ -134,7 +153,7 @@ else if($formN == 2) //  add recuring income
 	   else if($selected != 'New'){
 	   	      $period = htmlspecialchars($_POST['changeP'],ENT_QUOTES);
 	   	      
-	   	      $transdate = sprintf('%4d-%02d-%02d', $syear, $smonth, $sday);
+	   	      $transdate = sprintf('%4d-%02d-%02d', $syear2, $smonth2, $sday2);
 	   	      if(!$period){ $period = '3';}
 	   	      $res = $connection->query("CALL editRecurringTransDetails('$selected','$transcustomname','$description','$recurrance','$amount','$period','$transdate')") or die(mysqli_error());
 	   }

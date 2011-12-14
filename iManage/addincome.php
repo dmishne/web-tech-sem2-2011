@@ -157,7 +157,7 @@
 			             if((isset($_SESSION['transfer'])))
 			             {
 			             	$usrinpt = $_SESSION['transfer'];
-			             	echo "<div class=\"error\"> Input error! Please check values </div>";
+			             	echo "<div id=\"allerr\" class=\"error\"> Input error! Please check values </div>";
 			             }
 		             ?>	
 		            
@@ -183,15 +183,15 @@
 						               
 						               
 							           <select name="workid" id="uwi" class="inpt" style="width:131px" onchange="updtWorkinfo('uwi')">							                     
-						                  
+						                  <option value="clear"></option>
                                           <?php     
                                                if($jobs->num_rows > 0)
                                                {     
-                                               	$jobsarray = array();
+                                               	$jobsarray = array();                                              
 						                         while ($job = $jobs->fetch_array(MYSQLI_ASSOC)){
 						                            $jobsarray[] = $job;						                         	
 						                         	$name = $job["name"];						                         	
-						                        	$jobId =$job["recTrans"];
+						                        	$jobId =$job["recTrans"];						                        	
 						                         	echo "<option value=\"$jobId\">$name</option>";						                         	
 						                         }
                                                }
@@ -202,10 +202,12 @@
                                          </script>
 						              </td> 
 						           </tr>
+						           <?php if(isset($usrinpt['notallowed']) && $usrinpt['notallowed'] == "error"){
+		            			            echo "<tr id=\"workerr\"> <td colspan=\"2\"> <div class=\"error\"> You must choose your work first! </div> </td> </tr>";}?>
 							       <tr>
 							         <td width="45%" class="pfont">Work Name: </td>
 							         <td width="55%"><input type="text" id="wname" name="workname" class="inpt" size="20" maxlength="30" readonly="readonly"/></td>
-							       </tr>
+							       </tr>							       
 							       <tr>
 							         <td width="45%" class="pfont">Wage per Hour: </td>
 							         <td width="55%"><input type="text" id="jobwage" name="wage" class="inpt" size="20" maxlength="30" onchange="rDayWageTotal()"/></td>

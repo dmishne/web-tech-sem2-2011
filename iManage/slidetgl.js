@@ -118,35 +118,92 @@ function updtWorkinfo(id){
 	{
 		var selectObj = document.getElementById(id);  // <select> object
 	    var idx = selectObj.selectedIndex;   // selected index
-	    
+	    if(idx != 0){
+	        idx--;      // idx 0 of select is empty
 		    document.getElementById("wname").value = jobtable[idx]['name'];
 		    document.getElementById("jobwage").value = jobtable[idx]['wage'];
 		    document.getElementById("wday").value = jobtable[idx]['incomeDate'].substring(8,10);
         	document.getElementById("wmonth").value = jobtable[idx]['incomeDate'].substring(5,7);
         	document.getElementById("wyear").value = jobtable[idx]['incomeDate'].substring(0,4);
-		    var j = 0;
-		    
-		    while(j < htable.length && jobtable[idx]['name'] != htable[j]['transname'])
-		    {		    	
-		    	j++;		    	
-		    }
-		    if(j == htable.length)
+        	$("#workerr").hide();
+        	$("#allerr").hide();
+	    }
+	    else if (idx == 0){
+	    	document.getElementById("wname").value = '';
+		    document.getElementById("jobwage").value = '';
+		    document.getElementById("wday").value = '';
+        	document.getElementById("wmonth").value = '';
+        	document.getElementById("wyear").value = '';
+	    }
+	    var j = 0;	
+	    while(j < htable.length && jobtable[idx]['name'] != htable[j]['transname'])
+	    {		    	
+	    	j++;
+	    	
+	    }
+	    if(j == htable.length )
+	    {		
+	    	document.getElementById("rsh").value = '';	
+			document.getElementById("rsm").value = '';	
+		    document.getElementById("reh").value = '';	
+		    document.getElementById("rem").value = '';
+		    document.getElementById("rwt").value = '';
+        }
+        else
+    	{	 
+        	//alert(htable[j]['startHour']);
+		    document.getElementById("rsh").value = htable[j]['startHour'].substring(11,13);	
+			document.getElementById("rsm").value = htable[j]['startHour'].substring(14,16);	
+		    document.getElementById("reh").value = htable[j]['endHour'].substring(11,13);	
+		    document.getElementById("rem").value = htable[j]['endHour'].substring(14,16);
+		    $('#jobwage').trigger('change');
+    	}
+	}
+	
+	else if(id == "rtpay")
+	{		
+		var sel = document.getElementById(id);
+		var op = sel.options[sel.selectedIndex].value;
+		var selectObj = document.getElementById(id);   // <select> object
+	    var idx = selectObj.selectedIndex-1;   // selected index - New(index)
+		if(op == "New" && (document.getElementById("pname2").value) != null){
+			document.getElementById("pname2").value = '';
+		    document.getElementById("pamount2").value = '';
+		    document.getElementById("pdesc2").value = '';
+		    document.getElementById("prslct").selectedIndex = 0;
+		    document.getElementById("pupdtperiodl").style.display="none";
+		    document.getElementById("pupdtperiod").style.display="none";
+		    document.getElementById("pfirstDate").style.display="table-row";
+		    document.getElementById("psecondDate").style.display="none";
+		}
+		else {
+		    document.getElementById("pname2").value = prectable[idx]['recname'];
+		    document.getElementById("pamount2").value = prectable[idx]['amount'];
+		    document.getElementById("pdesc2").value = prectable[idx]['description'];
+		    document.getElementById("pupdtperiodl").style.display="table-cell";
+		    document.getElementById("pupdtperiod").style.display="table-cell";
+		    document.getElementById("pfirstDate").style.display="none";
+		    document.getElementById("psecondDate").style.display="table-row";
+		    rtype = prectable[idx]['recType'];
+		    switch (rtype)
 		    {
-		    	
-		    	document.getElementById("rsh").value = '';	
-				document.getElementById("rsm").value = '';	
-			    document.getElementById("reh").value = '';	
-			    document.getElementById("rem").value = '';
-			    document.getElementById("rwt").value = '';
-	        }
-	        else
-	    	{	   
-			    document.getElementById("rsh").value = htable[j]['startHour'].substring(11,13);	
-				document.getElementById("rsm").value = htable[j]['startHour'].substring(14,16);	
-			    document.getElementById("reh").value = htable[j]['endHour'].substring(11,13);	
-			    document.getElementById("rem").value = htable[j]['endHour'].substring(14,16);
-			    $('#jobwage').trigger('change');
-	    	}
+			    case '10':
+			    	document.getElementById("prslct").selectedIndex = 0;
+			    	break;
+			    case '1':
+			    	document.getElementById("prslct").selectedIndex = 1;
+			    	break;
+			    case '2':
+			    	document.getElementById("prslct").selectedIndex = 2;
+			    	break;
+			    case '4':
+			    	document.getElementById("prslct").selectedIndex = 3;
+			    	break;
+			    case '8':
+			    	document.getElementById("prslct").selectedIndex = 4;
+			    	break;
+		     }
+		   }
 	}
 }
 
