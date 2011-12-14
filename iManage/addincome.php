@@ -122,7 +122,7 @@
 	<script type="text/javascript"> 
          $(document).ready(function(){
            slidetgl();
-           initCalendar();
+           initCalendar('addincome.php');
        });
 	</script>
 </head>
