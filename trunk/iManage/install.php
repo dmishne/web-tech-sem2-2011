@@ -50,21 +50,14 @@
 		text-align: center;
 		height: 180px;
 		width: 100%;
-		background-image:url('images/logo.png');
+		//background-image:url('images/logo.png');
 		background-repeat:no-repeat;
 		background-position:40% 0%;
 		position: relative;
-		
-	}
-	#ins_title
-	{
 		text-align: center;
+		vertical-align: middle;
 		font:Arial, Helvetica, sans-serif;
 		font-size:100px;
-		padding: 35px 5px 0px 150px;
-		margin-left:auto;
-		margin-right:auto;	
-		height: 180px;
 		color: dodgerblue;
 	}
 	#ins_content
@@ -163,7 +156,7 @@ function verifyInformation()
 <div id="vertical"></div>
 <div id="hoz">
 	<div id="ins_logo">
-		<div id="ins_title">Install</div>
+		<img style="vertical-align:-30%; margin:0px 10px 0px -10px;" src='images/logo.png' />Install
 	</div>
 	<div id="ins_content">
 		<form id="ins_form" action="" method="get">
