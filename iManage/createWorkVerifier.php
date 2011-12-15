@@ -18,7 +18,7 @@ if(strlen($jobsname) < 3 || $jobsname != $_POST['creatework_jobsname'])
 }
 
 $wage=htmlspecialchars($_POST['creatework_wagehour'],ENT_QUOTES);
-if($wage != $_POST['creatework_wagehour'] && !is_numeric($wage))
+if($wage != $_POST['creatework_wagehour'] || !is_numeric($wage))
 {
 	$error['creatework_wagehour'] = 1;
 	$REG = 0;
@@ -27,7 +27,7 @@ if($wage != $_POST['creatework_wagehour'] && !is_numeric($wage))
 $day=htmlspecialchars($_POST['creatework_pDay'],ENT_QUOTES);
 if(!(is_numeric($day) && $day >=1 && $day <= 31))
 {
-	$error['creatework_date'] = 1;
+	$error['creatework_pDay'] = 1;
 	$REG = 0;
 }
 
@@ -54,24 +54,47 @@ if($REG == 1)
 	
 	if ($work_id == "")
 	{
-		$res = $connection->query("CALL insertJob('$username','$jobsname','$desc',$wage,'1970-01-$day')") or die(mysqli_error());
+		$year_mon_day = date("Y-m-d",mktime(0,0,0,date("m")+1,$day,date("Y")));
+		$res = $connection->query("CALL insertJob('$username','$jobsname','$desc',$wage,'$year_mon_day')") or die(mysqli_error());
+		$userDetails = $res->fetch_array(MYSQLI_NUM);
+		if($userDetails[0] == 0)
+		{
+			header("location:addincome.php");
+		}
+		else
+		{
+			$error['Reg'] = 1;
+			$REG = 0;
+		}
 	}
 	else {
-		///////
-		// 1. UPDATE JOB INFO editJobDetails - done
-		// 2. Check if work_id belongs to user.
-		///////
-		$res = $connection->query("CALL editJobDetails('$work_id','$jobsname','$desc',$wage,'1970-01-$day')") or die(mysqli_error());
-	}
-	$userDetails = $res->fetch_array(MYSQLI_NUM);
-	if($userDetails[0] == 0)
-	{
-		header("location:addincome.php");
-	}
-	else
-	{
-		$error['Reg'] = 1;
-		$REG = 0;
+		$jobsarray = $_SESSION["jobsarray"];
+		$isWorkIdCorrect = 0;
+		foreach ($jobsarray as &$job){
+			if ($job["recTrans"] == $work_id)
+			{
+				$isWorkIdCorrect = 1;
+				break;
+			}
+		}
+		if ($isWorkIdCorrect == 1) {
+			$year_mon_day = date("Y-m-d",mktime(0,0,0,date("m")+1,$day,date("Y")));
+			$res = $connection->query("CALL editJobDetails($work_id,'$jobsname','$desc',$wage,'$year_mon_day')") or die(mysqli_error());
+			$userDetails = $res->fetch_array(MYSQLI_NUM);
+			if($userDetails[0] == $year_mon_day)
+			{
+				header("location:addincome.php");
+			}
+			else
+			{
+				$error['Reg'] = 1;
+				$REG = 0;
+			}
+		}
+		else {
+			$errorp["Reg"] = 1;
+			$REG = 0;
+		}
 	}
 }
 
