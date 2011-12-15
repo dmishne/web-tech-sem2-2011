@@ -6,10 +6,10 @@
 			if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 				echo "<a style=\"float:left; margin:5px auto 5px 5px;\" class=\"blue buttonStyle medium\" href=\"login.php\"> Login </a>
 				      <br />
-					  <a style=\"float:left; margin:5px auto 5px 5px;\" class=\"blue buttonStyle medium\" href=\"signuppage.php\" style=\"margin-top:5px\"> Sign Up </a>";
+					  <a style=\"float:left; margin:5px auto 5px 5px; margin-top:5px;\" class=\"blue buttonStyle medium\" href=\"signuppage.php\"> Sign Up </a>";
 			}
 			else {
-				if ($_SESSION['update'])
+				if (isset($_SESSION['update']) && $_SESSION['update'])
 				{
 					$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
 					if (mysqli_connect_errno()) {

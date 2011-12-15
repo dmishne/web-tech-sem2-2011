@@ -22,9 +22,7 @@ if($wage != $_POST['creatework_wagehour'] && !is_numeric($wage))
 }
 
 $day=htmlspecialchars($_POST['creatework_pDay'],ENT_QUOTES);
-$month=htmlspecialchars($_POST['creatework_pMonth'],ENT_QUOTES);
-$year=htmlspecialchars($_POST['creatework_pYear'],ENT_QUOTES);
-if(!(is_numeric($day) && is_numeric($month) && is_numeric($year)) || (!checkdate(intval($month),intval($day),intval($year))))
+if(!(is_numeric($day) && $day >=1 && $day <= 31))
 {
 	$error['creatework_date'] = 1;
 	$REG = 0;
@@ -42,14 +40,24 @@ if($REG == 1)
 {
 	
 	//Connect to database from here
-	$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
+	$connection = new mysqli($serverInfo["address"], $serverInfo["username"], $serverInfo["password"]);
 	if (mysqli_connect_errno()) {
 		die('Could not connect: ' . mysqli_connect_error());
 	}
 	
-	$connection->select_db('webtech');
+	$connection->select_db($serverInfo["db"]);
 	$username = $_SESSION['username'];
-	$res = $connection->query("CALL insertJob('$username','$jobsname','$desc',$wage,'$year-$month-$day')") or die(mysqli_error());
+	$work_id = htmlspecialchars($_POST['create_work_id_selection'],ENT_QUOTES);
+	
+	if ($work_id == "")
+	{
+		$res = $connection->query("CALL insertJob('$username','$jobsname','$desc',$wage,'1970-01-$day')") or die(mysqli_error());
+	}
+	else {
+		///////
+		// UPDATE JOB INFO
+		///////
+	}
 	$userDetails = $res->fetch_array(MYSQLI_NUM);
 	if($userDetails[0] == 0)
 	{
