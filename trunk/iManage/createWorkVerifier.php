@@ -1,4 +1,7 @@
 <?php session_start();
+
+include "ini.php";
+
 // Verifies that user has logged in. Redirect to login page in case not logged in.
 if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 	header("location:login.php");
@@ -44,8 +47,8 @@ if($REG == 1)
 	if (mysqli_connect_errno()) {
 		die('Could not connect: ' . mysqli_connect_error());
 	}
-	
 	$connection->select_db($serverInfo["db"]);
+	
 	$username = $_SESSION['username'];
 	$work_id = htmlspecialchars($_POST['create_work_id_selection'],ENT_QUOTES);
 	
@@ -55,8 +58,10 @@ if($REG == 1)
 	}
 	else {
 		///////
-		// UPDATE JOB INFO
+		// 1. UPDATE JOB INFO editJobDetails - done
+		// 2. Check if work_id belongs to user.
 		///////
+		$res = $connection->query("CALL editJobDetails('$work_id','$jobsname','$desc',$wage,'1970-01-$day')") or die(mysqli_error());
 	}
 	$userDetails = $res->fetch_array(MYSQLI_NUM);
 	if($userDetails[0] == 0)
