@@ -12,7 +12,9 @@
 	
 	// validate user information
 	
-	
+	// Temporarily Disable PHP error message //
+	error_reporting(0);
+	///////////////////////////////////////////
 	
 	$connection = new mysqli($ms_add,$ms_user, $ms_pass);
 	if (!mysqli_connect_errno()) {
