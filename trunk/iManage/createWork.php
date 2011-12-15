@@ -30,9 +30,15 @@
 			while ($job = $jobs->fetch_array(MYSQLI_ASSOC)){
 				$jobsarray[] = $job;
 			}
+			$_SESSION["jobsarray"] = $jobsarray;
 			echo "<script type=\"text/javascript\">\n";
 			echo "var jobs = " . json_encode($jobsarray);
 			echo "</script>";
+		}
+		
+		if(isset($_SESSION['createWorkError']))
+		{
+			$error = $_SESSION['createWorkError'];
 		}
 	?>
 	
@@ -79,10 +85,15 @@
 			<div id="content-middle">
 				   <form  method="post" action="createWorkVerifier.php" id="createWork_form">
 			           <div id="createWork" class="greyCube">
-				           <table style="margin-left:auto; margin-right:auto; text-align:left;">
+				           <table style="margin-left:auto; margin-right:auto; text-align:left; display:inner-block;">
 				           		<tr style="text-align:center;"> 
 				           			<th colspan="2"> Job Information </th> 
 				           		</tr>
+				           		<?php 
+		            				if(isset($error['Reg']) && $error['Reg'] = 1){
+		            					echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Registration error! </div> </td> </tr>";
+		            				}
+		            			?>
 				           		<tr style="text-align:center;">
 				           			<td colspan="2">
 				           				<select id="create_work_id_selection" name="create_work_id_selection" onchange="showWorkInfo()" onkeyup="showWorkInfo()">
@@ -93,7 +104,7 @@
 					           					foreach ($jobsarray as &$job)
 					           					{
 					           						$name = $job["name"];
-					           						$jobId =$job["recTrans"];
+					           						$jobId = $job["recTrans"];
 					           						echo "<option value=\"$jobId\">$name</option>";
 					           					}
 				           					}
@@ -105,20 +116,40 @@
 				           			<td> Name: </td>
 				           			<td> <input type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="16" id="creatework_jobsname" name="creatework_jobsname" /> </td>
 				           		</tr>
+				           		<?php 
+		            				if(isset($error['creatework_jobsname']) && $error['creatework_jobsname'] = 1){
+		            					echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Error! At least 3 letters required without special letters. </div> </td> </tr>";
+		            				}
+		            			?>
 				           		<tr>
 				           			<td> Wage Per Hour: </td>
 				           			<td> <input type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="16" id="creatework_wagehour" name="creatework_wagehour" /> </td>
 				           		</tr>
+				           		<?php 
+				            		if(isset($error['creatework_wagehour']) && $error['creatework_wagehour'] = 1){
+				            			echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Error! Should be numeric and non negative! </div> </td> </tr>";
+				            		}
+		            			?>
 				           		<tr>
 				           			<td> Payment Day: </td>
 				           			<td style="text-align: justify;">
 			                   			<input type="text" size="30" maxlength="2" class="inpt" id="creatework_pDay"   name="creatework_pDay" />
 	 	            			    </td>
 				           		</tr>
+				           		<?php 
+		            				if(isset($error['creatework_pDay']) && $error['creatework_pDay'] = 1){
+		            					echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Error! Should be a number between 1-31. </div> </td> </tr>";
+		            				}
+		            			?>
 				           		<tr>
 				           			<td style="vertical-align: text-top "> Notes/Description: </td>
 				           			<td><textarea id="creatework_desc" name="creatework_desc" rows="8" cols="32" class="inpt"> </textarea></td>
 				           		</tr>
+				           		<?php 
+				            		if(isset($error['creatework_desc']) && $error['creatework_desc'] = 1){
+				            			echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Error! Don't use special characters. </div> </td> </tr>";
+				            		}
+		            			?>
 				           </table>
 			           </div>
 			           <div style="clear:both; width:100%; margin: 40px 0px 0px 0px; text-align:center;">
@@ -127,6 +158,9 @@
 		           </form>
 			</div>
 		</div>
+		<?php 
+			unset($_SESSION['createWorkError']);
+        ?>
 	</div>
 	
 	

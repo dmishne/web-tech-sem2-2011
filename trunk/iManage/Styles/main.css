@@ -221,6 +221,7 @@ textarea {
 	-webkit-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
 	-moz-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
 	box-shadow: 2px 5px 5px rgba(0,0,0,.2);
+	display:block;
 }
 
 #createWork{
@@ -228,7 +229,7 @@ textarea {
 	position:relative;
 	top:30px;
 	width: 500px;
-	height: 280px;
+	min-height: 280px;
 	margin-left: auto;
   	margin-right: auto;
   	text-align: center;
