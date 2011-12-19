@@ -34,6 +34,7 @@ if($which == "income")
     		}
     	}
     }
+    $_SESSION['update'] = 1;
     header("location:delincome.php");
 }
 
@@ -56,6 +57,7 @@ else if($which == "payout")
     		}
     	}
     }
+    $_SESSION['update'] = 1;
     header("location:delpayout.php");
 }
 
