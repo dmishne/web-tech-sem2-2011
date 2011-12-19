@@ -118,6 +118,17 @@
 			$date2 = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
 			$daySum = $connection->query("CALL getDailyTransactions('$username','$date2')") or die(mysqli_error());
 	?>
+	<?php 
+			$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
+			if (mysqli_connect_errno()) {
+				die('Could not connect: ' . mysqli_connect_error());
+			}
+				
+			$connection->select_db('webtech');
+			$username= $_SESSION['username'];
+			$date2 = sprintf('%4d-%02d-%02d', $curYear, $curMonth, 01);
+			$monthSum = $connection->query("CALL getTopMonthlyTransactions('$username','$date2')") or die(mysqli_error());
+	?>
 	
 	<script type="text/javascript"> 
          $(document).ready(function(){
@@ -500,9 +511,34 @@
 		         </div>
 		         <div id="monthsum">
 		             <?php // current month
-		                  $months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-						  if(isset($month) && isset($year)) echo  $months[$month-1] . ' ' . $year ;
-						  ?>
+				             if($monthSum->num_rows > 0){
+				             	  echo "<div class=\"daysumhead\" style=\"font-size:12px; width:85%;\">Top 5 incomes/payouts for: $curMonth</div>";
+				                  echo "<div style=\"min-height:170px; max-height:170px; overflow:auto;\"><table>";         
+											  while ($rowm = $monthSum->fetch_array(MYSQLI_ASSOC)){
+											      $transname = $rowm['transname'];
+											      $amnt = $rowm['amount'];
+											      $trnstype = $rowm['transtype'];
+											      $descript = $rowm['description'];
+											      echo "<tr>";
+												  if ($amnt < 0){
+												   	   $div1 = "<td class=\"redinc \" style=\"cursor:help float:left;\" title=\"$descript\">";
+												   	   $div2 = "<td class=\"redinc roundedinccntr\" style=\"cursor:help\" title=\"$descript\">";
+												   	   $div3 = "<td class=\"redinc \" style=\"cursor:help\" title=\"$descript\">";
+												      }
+												   else {
+												   	   $div1 = "<td  class=\"greeninc \" style=\"cursor:help float:left;\" title=\"$descript\">";
+												   	   $div2 = "<td  class=\"greeninc roundedinccntr\" style=\"cursor:help\" title=\"$descript\">";
+												   	   $div3 = "<td  class=\"greeninc\" style=\"cursor:help\" title=\"$descript\">";
+												      } 
+												   //echo "{$div1}$trnstype</td>";
+											       echo "{$div1}$transname</td>";
+											       echo "{$div3}$amnt$ </td>";  
+											       echo "</tr>";					  
+											      $total += $amnt;
+											    }
+										    echo "</table></div>";
+				             }
+						?>
 		         </div>
 			</div>
 		</div>

@@ -106,7 +106,7 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 			            <br style="clear:left;"/>   
 			   </div>
 			    </form>
-			   <form method="post" action="" id="deleteincomes">   		
+			   <form method="post" action="deleteVerifier.php" id="deleteincomes"> 			     		
 			   <div style="width:65%; float:left; min-height:260px; margin:auto 30px auto auto;">
 				   <ul id="mainul">
 			           <?php 
@@ -152,7 +152,7 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 								           	echo "
 								           	      <li class=\"noBullet pfont\" id=\"row$i\" style=\"clear:both; display:block\"><img id=\"i$i\" style=\"cursor: pointer;\"  src=\"images/chooserexpand.png\" onclick=\"collapseLst('ulexp$i');chngimg('#i$i')\"/>&nbsp;&nbsp;&nbsp;&nbsp;
 								           	        $transdate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$amount&nbsp;&nbsp;&nbsp;
-								           	        <input type=\"checkbox\" class=\"inpt\" id=\"del$j\" style=\"float:right\"/>  
+								           	        <input type=\"checkbox\" class=\"inpt\" name=\"formDelInc[]\" id=\"del$j\" style=\"float:right\" value=\"1-$recid,3,null\"/>  
 								           	       <ul style=\"display:none\" id=\"ulexp$i\"> 
 								           	  ";
 								           	$transdate = null;
@@ -166,7 +166,7 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 							           	    echo "
 							           	        <li class=\"noBullet pfont\" style=\"clear:both; display:block\"><img src=\"images/chooserempty.png\"/>&nbsp;&nbsp;
 								           	      $transdate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$amount&nbsp;&nbsp;
-								           	      <input type=\"checkbox\" class=\"inpt\" id=\"del$j\" style=\"float:right\"/></li>   
+								           	      <input type=\"checkbox\" class=\"inpt\" name=\"formDelInc[]\" id=\"del$j\" style=\"float:right\" value=\"2-$transid,1,$transdate\"/></li>   
 							           	      ";
 							           	    $j++;
 							           	    $tamnt+=$amount;
@@ -195,7 +195,7 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 							           		echo "
            									       <li class=\"noBullet pfont\" id=\"row$i\" style=\"clear:both; display:block\"><img id=\"i$i\" style=\"cursor: pointer;\"  src=\"images/chooserexpand.png\" onclick=\"collapseLst('ulexp$i');chngimg('#i$i')\"/>&nbsp;&nbsp;&nbsp;&nbsp;
            									          $transdate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$amount&nbsp;&nbsp;&nbsp;&nbsp;
-           									          <input type=\"checkbox\" class=\"inpt\" id=\"del$j\" style=\"float:right\"/>  
+           									          <input type=\"checkbox\" class=\"inpt\" name=\"formDelInc[]\" id=\"del$j\" style=\"float:right\" value=\"1-$recid,3,$transdate\"/>  
            									        <ul style=\"display:none\" id=\"ulexp$i\"> 
            									      ";
            									      $prevLi = 1;
@@ -208,7 +208,7 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 								           	echo "
 								           	      <li class=\"noBullet pfont\" style=\"clear:both; display:block\"><img src=\"images/chooserempty.png\"/>&nbsp;&nbsp;
 	           									    $transdate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$amount&nbsp;&nbsp;
-	           									    <input type=\"checkbox\" class=\"inpt\" id=\"del$j\" style=\"float:right\"/></li>   
+	           									    <input type=\"checkbox\" class=\"inpt\" name=\"formDelInc[]\" id=\"del$j\" style=\"float:right\" value=\"3-$jobhourid,1,$transdate\"/></li>   
 	           								     ";
 	           								     $j++;							             	
            								 }
@@ -240,7 +240,7 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 								            	echo "
 									           	      <li class=\"noBullet pfont\" style=\"clear:both; display:block\"><img id=\"i$i\" style=\"cursor: pointer;\"  src=\"images/chooserempty.png\"/>&nbsp;&nbsp;&nbsp;&nbsp;
 									           	      $transdate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$amount&nbsp;&nbsp;&nbsp;&nbsp;
-									           	      <input type=\"checkbox\" class=\"inpt\" id=\"del$j\" style=\"position:relative; float:right\"/> 
+									           	      <input type=\"checkbox\" class=\"inpt\" name=\"formDelInc[]\" id=\"del$j\" style=\"position:relative; float:right\" value=\"2-$transid,1,$transdate\"/> 
 								            	     "; 
 								            	$i++;
 								            	$j++;
@@ -276,7 +276,7 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 				              unset($_SESSION['deletedate']);
 				              unset($_SESSION['deletemonth']); 
 				              unset($_SESSION['deleteyear']);
-                              
+				              echo "<input type=\"hidden\" name=\"delete\" value=\"income+$j\" />";
 			               ?>
 			        </ul>
 			        
