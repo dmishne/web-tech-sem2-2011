@@ -1,16 +1,16 @@
-<?php session_start();
-/*  if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
-	header("location:login.php");
-}*/
-  // PREDEFINED DATA
-  // get GPC data:
-  if(isset($_REQUEST['date'])) $date = $_REQUEST['date'];
-  if(isset($_REQUEST['year'])) $year = $_REQUEST['year'];
-  if(isset($_REQUEST['month'])) $month = $_REQUEST['month'];
-  if(isset($_REQUEST['offset'])) $offset = $_REQUEST['offset'];
-  
-  // set PHP_SELF:
-  if(isset($_SERVER['PHP_SELF'])) $PHP_SELF = $_SERVER['PHP_SELF'];
+<?php
+	include "beforeLoadCheck.php";
+	include "sessionVerifier.php";
+	session_start();
+	// PREDEFINED DATA
+	// get GPC data:
+	if(isset($_REQUEST['date'])) $date = $_REQUEST['date'];
+	if(isset($_REQUEST['year'])) $year = $_REQUEST['year'];
+	if(isset($_REQUEST['month'])) $month = $_REQUEST['month'];
+	if(isset($_REQUEST['offset'])) $offset = $_REQUEST['offset'];
+	  
+	// set PHP_SELF:
+	if(isset($_SERVER['PHP_SELF'])) $PHP_SELF = $_SERVER['PHP_SELF'];
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

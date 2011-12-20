@@ -1,4 +1,7 @@
-<?php session_start();
+<?php
+include "beforeLoadCheck.php"; 
+include "sessionVerifier.php";
+session_start();
 
 /**
  * Get user's stock information!!!!!!!!

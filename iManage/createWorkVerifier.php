@@ -1,11 +1,9 @@
-<?php session_start();
+<?php 
+include "beforeLoadCheck.php";
+include "sessionVerifier.php";
+session_start();
 
 include "ini.php";
-
-// Verifies that user has logged in. Redirect to login page in case not logged in.
-if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
-	header("location:login.php");
-}
 
 $errors = array();
 $REG = 1;

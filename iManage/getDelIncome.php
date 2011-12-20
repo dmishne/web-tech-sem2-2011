@@ -1,8 +1,9 @@
-<?php session_start();
+<?php
 
-/*if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
-header("location:login.php");
-}*/
+include "beforeLoadCheck.php";
+include "sessionVerifier.php";
+session_start();
+
 $delmonth = htmlspecialchars($_POST['delMonth'],ENT_QUOTES);
 $delyear = htmlspecialchars($_POST['delYear'],ENT_QUOTES);
 $delDate = sprintf('%4d-%02d-%02d', $delyear, $delmonth, '01');
