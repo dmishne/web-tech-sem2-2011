@@ -19,8 +19,8 @@
 	</li>
 	<li class="toggleable"> Investments
 		<ul id="investmentsMenu">
-			<li> <a href="yahooStockInfo.php"> View Virtual Portfolio </a> </li>
-			<li> Manage Virtual Portfolio </li>
+			<li> <a href="stocksView.php"> View Virtual Portfolio </a> </li>
+			<li> <a href="stockManage.php"> Manage Virtual Portfolio </a> </li>
 		</ul>
 	</li>
 	<li class="toggleable"> Reports 

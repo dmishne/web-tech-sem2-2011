@@ -155,36 +155,37 @@ $stocks[4] = "F";
 				dataArray = jQuery.csv()(data);
 				stockData[name][0] = dataArray[0][1];
 				stockData[name][1] = parseFloat(dataArray[0][2]);
-				createTableRow(name);
-			});
-			
-			$.get('geturl.php',{url:'http://ichart.yahoo.com/table.csv?s='+ name +'&a=0&b=1&c=2009&g=d&ignore=.csv'}, function(to_do_data) {				
+				$.get('geturl.php',{url:'http://ichart.yahoo.com/table.csv?s='+ name +'&a=0&b=1&c=2009&g=d&ignore=.csv'}, function(to_do_data) {				
 
-				dataArray = jQuery.csv()(to_do_data);
-				data = [];
-				$.each(dataArray, function(k, value) {
-					if(k!=0)
-					{
-						sdate = value[0].split("-");
-						tdate = new Date(Date.UTC(sdate[0],sdate[1],sdate[2]));
-						data[k-1] = [tdate.getTime(),parseFloat(value[4])];
+					dataArray = jQuery.csv()(to_do_data);
+					data = [];
+					$.each(dataArray, function(k, value) {
+						if(k!=0)
+						{
+							sdate = value[0].split("-");
+							tdate = new Date(Date.UTC(sdate[0],sdate[1]-1,sdate[2]));
+							data[k-1] = [Math.round(tdate.getTime()),parseFloat(value[4])];
+						}
+					});
+					data.reverse();
+					stockData[name][2] = data;
+					seriesOptions[i] = {
+						name: name,
+						data: data
+					};
+					
+					// As we're loading the data asynchronously, we don't know what order it will arrive. So
+					// we keep a counter and create the chart when all the data is loaded.
+					createTableRow(name);
+					seriesCounter++;
+					if (seriesCounter == names.length) {
+						$('#stocksTable tr:last').after("<tr> <td colspan=9> <div class=\"blue buttonStyle medium\" onclick=\"createChart()\"> Compare </div></td></tr>");
+						createChart();
 					}
 				});
-				data.reverse();
-				stockData[name][2] = data;
-				seriesOptions[i] = {
-					name: name,
-					data: data
-				};
-				
-				// As we're loading the data asynchronously, we don't know what order it will arrive. So
-				// we keep a counter and create the chart when all the data is loaded.
-				seriesCounter++;
-				if (seriesCounter == names.length) {
-					$('#stocksTable tr:last').after("<tr> <td colspan=9> <div class=\"blue buttonStyle medium\" onclick=\"createChart()\"> Compare </div></td></tr>");
-					createChart();
-				}
 			});
+			
+			
 		});
 	});
 	</script>
@@ -207,8 +208,7 @@ $stocks[4] = "F";
 		           Virtual Portfolio
 			</div>
 			<div id="content-middle">
-				  <div id="stockInfo"></div>
-		                 
+	                 
 		          <div id="userStock">
 		          	<table class="stocksTablesStyle" id="stocksTable">
 		          		<tr style="background-color:#0099ff; display: table-row;">
@@ -217,7 +217,7 @@ $stocks[4] = "F";
 		          			<th>Amount Invested</th>
 		          			<th>Start Date</th>
 		          			<th>Start Value</th>
-		          			<th>Today Value</th>
+		          			<th>Last Value</th>
 		          			<th>Change</th>
 		          			<th>Profit</th>
 		          			<th></th>
