@@ -22,7 +22,8 @@
 		width:100%;
 		margin:0;
 		padding:0;
-		overflow:hidden;
+		overflow-y: auto;
+		overflow-x: hidden;
 	}
 	body{
 		text-align:center;
@@ -36,7 +37,7 @@
 		width:100%;
 	}
 	#hoz {
-	background: rgba(255,255,255,0.6);
+		background: rgba(255,255,255,0.6);
 		width:100%;
 		margin-left:auto;
 		margin-right:auto;
