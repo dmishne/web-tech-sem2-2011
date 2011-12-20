@@ -1,4 +1,6 @@
-<?php session_start();
+<?php 
+include "beforeLoadCheck.php";
+session_start();
 
 $errors = array();
 $REG = 1;

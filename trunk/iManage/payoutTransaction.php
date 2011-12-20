@@ -1,8 +1,7 @@
-<?php session_start();
-
-/*if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
-	header("location:login.php");
-}*/
+<?php 
+include "beforeLoadCheck.php";
+include "sessionVerifier.php";
+session_start();
 
 //Connect to database from here
 $connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678"); 

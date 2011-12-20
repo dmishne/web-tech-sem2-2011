@@ -1,4 +1,9 @@
-<?php session_start();
+<?php 
+
+include "beforeLoadCheck.php";
+include "sessionVerifier.php";
+
+session_start();
 
 /*if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 	header("location:login.php");

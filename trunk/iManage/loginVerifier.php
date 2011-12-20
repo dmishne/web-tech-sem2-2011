@@ -1,4 +1,6 @@
-<?php session_start();
+<?php 
+include "beforeLoadCheck.php";
+session_start();
 
 //Connect to database from here
 $connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678"); 
