@@ -21,16 +21,16 @@ include "ini.php";
 $error = 0;
 
 $symbol=htmlspecialchars($_POST['symbol'],ENT_QUOTES);
-$amount=htmlspecialchars($_POST['symbol'],ENT_QUOTES);
+$amount=htmlspecialchars($_POST['amount'],ENT_QUOTES);
 $curr_value=0;
 $username= $_SESSION['username'];
 
 $tempCsvString = file_get_contents("http://download.finance.yahoo.com/d/quotes.csv?s=". $symbol ."&f=snp");
 $stockData = csvToArray($tempCsvString);
 
-if(isset($stockData[2]) && is_numeric($stockData[2]))
+if(isset($stockData[0][2]) && is_numeric($stockData[0][2]))
 {
-	$curr_value = floatval($stockData[2]);
+	$curr_value = floatval($stockData[0][2]);
 }
 else
 {
@@ -55,7 +55,7 @@ if ($error == 0)
 	$year_mon_day = date("Y-m-d");
 	$res = $connection->query("CALL createInvestment('$username','$symbol',$amount,'$year_mon_day',$curr_value)") or die(mysqli_error());
 	$qres = $res->fetch_array(MYSQLI_NUM);
-	if ($qres == 0)
+	if ($qres[0] == "0")
 	{
 		echo "yes";
 	}

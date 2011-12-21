@@ -10,11 +10,6 @@ if (mysqli_connect_errno()) {
 
 $connection->select_db('webtech');
 
-/*
-$_POST['username'] = 'daniel';
-$_POST['password'] = '123123123';
-*/
-
 $username=htmlspecialchars($_POST['username'],ENT_QUOTES);
 $password=md5($_POST['password']);
 
