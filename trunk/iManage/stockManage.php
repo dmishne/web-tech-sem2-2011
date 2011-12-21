@@ -23,13 +23,14 @@ session_start();
 	<script type="text/javascript" src="jquery.csv.min.js"></script>	
 	
 	<script type="text/javascript">
-
+	var lc = 0;
 	var stockData = {};
 	var chart = null;
 	var names = ['MSFT', 'AAPL', 'GOOG', 'INTC'];
 
 	var createTableRow = function(stocksymbol) {
-		$('#stocksTable tr:last').after('<tr> <td>'+ stocksymbol +'</td> <td>' + stockData[stocksymbol][0] + '</td> <td> amount </td> <td> sdate </td> <td> svalue</td> <td>' + stockData[stocksymbol][1] + '</td> <td> Change </td> <td> Profit </td> <td> <div class=\"blue buttonStyle small\" onclick=\"createChartSingle(\'' + stocksymbol + '\')\"> View </div> </td> <td> <div class=\"redh buttonStyle small\"> Delete </div> </td> </tr>');
+		lc++;
+		$('#stocksTable tr:last').after('<tr id=\"SM_\"'+ lc +'> <td>'+ stocksymbol +'</td> <td>' + stockData[stocksymbol][0] + '</td> <td> amount </td> <td> sdate </td> <td> svalue</td> <td>' + stockData[stocksymbol][1] + '</td> <td> Change </td> <td> Profit </td> <td> <div class=\"blue buttonStyle small\" onclick=\"createChartSingle(\'' + stocksymbol + '\')\"> View </div> </td> <td> <div class=\"redh buttonStyle small\" onclick=\"createChartSingle(\'SM_' + lc + '\')\"> Delete </div> </td> </tr>');
 	}
 	
 	var emptyTableRow = function() {
@@ -47,22 +48,27 @@ session_start();
 		amount = document.getElementById("new_stock_amount").value;
 		if (amount!="" && !isNaN(amount) && symbol!="" &&(typeof symbol == "string"))
 		{
+			document.getElementById("container-stock").innerHTML="<img style=\"margin-top:200px;\" src=\"images/loading.gif\"></img>";
 			$.post('stockVerifier.php',{symbol : symbol , amount : amount}, function(res) {
 				if (res == "yes")
 				{
-					// add row
-					
 					addStockInformation(symbol, function () {
-						$('#stocksTable tr:last').before('<tr> <td>'+ stocksymbol +'</td> <td>' + stockData[stocksymbol][0] + '</td> <td> amount </td> <td> sdate </td> <td> svalue</td> <td>' + stockData[stocksymbol][1] + '</td> <td> Change </td> <td> Profit </td> <td> <div class=\"blue buttonStyle small\" onclick=\"createChartSingle(\'' + stocksymbol + '\')\"> View </div> </td> <td> <div class=\"redh buttonStyle small\"> Delete </div> </td> </tr>');
+						document.getElementById("error_msg").innerHTML = "";
+						$('#stocksTable tr:last').before('<tr> <td>'+ symbol +'</td> <td>' + stockData[symbol][0] + '</td> <td> amount </td> <td> sdate </td> <td> svalue</td> <td>' + stockData[symbol][1] + '</td> <td> Change </td> <td> Profit </td> <td> <div class=\"blue buttonStyle small\" onclick=\"createChartSingle(\'' + symbol + '\')\"> View </div> </td> <td> <div class=\"redh buttonStyle small\"> Delete </div> </td> </tr>');
+						document.getElementById("container-stock").innerHTML="";
+						document.getElementById("new_stock_symbol").value = "";
+						document.getElementById("new_stock_amount").value = "";
 					});
 				}
 				else
 				{
 					document.getElementById("error_msg").innerHTML = "Error, Temporarily can't add the stock. Please try again later.";
+					document.getElementById("container-stock").innerHTML="";
 				}
 			});
 		}
 		else {
+			document.getElementById("container-stock").innerHTML="";
 			document.getElementById("error_msg").innerHTML = "Error, Wrong input!";
 		}
 	}	
@@ -70,6 +76,7 @@ session_start();
 	var addStockInformation = function (symbol, f) {
 		if (typeof stockData[symbol]=="undefined")
 		{
+			stockData[symbol] = [];
 			$.get('geturl.php',{url:'http://download.finance.yahoo.com/d/quotes.csv?s=' + symbol +'&f=snp'}, function(data) {
 				dataArray = jQuery.csv()(data);
 				if (typeof(dataArray[0][2]) != "undefined" && !isNaN(dataArray[0][2]))
@@ -90,7 +97,6 @@ session_start();
 									data[k-1] = [tdate.getTime(),parseFloat(value[4])];
 								}
 							});
-							stockData[symbol] = [];
 							stockData[symbol][2] = data;
 							data.reverse();
 							if (typeof f == "function") 
