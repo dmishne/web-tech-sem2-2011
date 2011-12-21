@@ -31,9 +31,9 @@ session_start();
 	var createTableRow = function(stocksymbol) {
 		$('#stocksTable tr:last').after('<tr> <td>'+ stocksymbol +'</td> <td>' + stockData[stocksymbol][0] + '</td> <td> amount </td> <td> sdate </td> <td> svalue</td> <td>' + stockData[stocksymbol][1] + '</td> <td> Change </td> <td> Profit </td> <td> <div class=\"blue buttonStyle small\" onclick=\"createChartSingle(\'' + stocksymbol + '\')\"> View </div> </td> <td> <div class=\"redh buttonStyle small\"> Delete </div> </td> </tr>');
 	}
-
+	
 	var emptyTableRow = function() {
-		$('#stocksTable tr:last').after('<tr> <td colspan=8>'+ '<form id=\"new_stock_form\" action=\"\" method=\"get\"> \n <label for="new_stock_symbol">Symbol:</label> <input type="text" style="width:90px;" name="new_stock_symbol" id="new_stock_symbol" /> \n <label for="new_stock_amount">Amount to Invest:</label> <input type="text" style="width:90px;" name="new_stock_amount" id="new_stock_amount" /> \n <label for="curr_amount">Last Value:</label> <input type="text" style="width:90px;" name="curr_amount" id="curr_amount" readonly=\"readonly\" /> </form>' +'<td> <div class=\"blue buttonStyle small\" onclick=\"viewNewSymbol()\"> View </div> </td> <td> <div class=\"greenh buttonStyle small\"> Add </div> </td> </tr>');
+		$('#stocksTable tr:last').after('<tr> <td colspan=8>'+ '<form id=\"new_stock_form\" action=\"\" method=\"get\"> \n <label for="new_stock_symbol">Symbol:</label> <input type="text" style="width:90px;" name="new_stock_symbol" id="new_stock_symbol" /> \n <label for="new_stock_amount">Amount to Invest:</label> <input type="text" style="width:90px;" name="new_stock_amount" id="new_stock_amount" /> \n <label for="curr_amount">Last Value:</label> <input type="text" style="width:90px;" name="curr_amount" id="curr_amount" readonly=\"readonly\" /> </form>' +'<td> <div class=\"blue buttonStyle small\" onclick=\"viewNewSymbol()\"> View </div> </td> <td> <div class=\"greenh buttonStyle small\" onclick=\"addStockToUser()\"> Add </div> </td> </tr>');
 	}
 
 	var viewNewSymbol = function() {
@@ -42,36 +42,71 @@ session_start();
 		addStockInformation(symbol,createChartSingle);
 	}
 
+	var addStockToUser = function() {
+		symbol = document.getElementById("new_stock_symbol").value.toUpperCase();
+		amount = document.getElementById("new_stock_amount").value;
+		if (amount!="" && !isNaN(amount) && symbol!="" &&(typeof symbol == "string"))
+		{
+			$.post('stockVerifier.php',{symbol : symbol , amount : amount}, function(res) {
+				if (res == "yes")
+				{
+					// add row
+					
+					addStockInformation(symbol, function () {
+						$('#stocksTable tr:last').before('<tr> <td>'+ stocksymbol +'</td> <td>' + stockData[stocksymbol][0] + '</td> <td> amount </td> <td> sdate </td> <td> svalue</td> <td>' + stockData[stocksymbol][1] + '</td> <td> Change </td> <td> Profit </td> <td> <div class=\"blue buttonStyle small\" onclick=\"createChartSingle(\'' + stocksymbol + '\')\"> View </div> </td> <td> <div class=\"redh buttonStyle small\"> Delete </div> </td> </tr>');
+					});
+				}
+				else
+				{
+					document.getElementById("error_msg").innerHTML = "Error, Temporarily can't add the stock. Please try again later.";
+				}
+			});
+		}
+		else {
+			document.getElementById("error_msg").innerHTML = "Error, Wrong input!";
+		}
+	}	
+
 	var addStockInformation = function (symbol, f) {
 		if (typeof stockData[symbol]=="undefined")
 		{
-			$.get('geturl.php',{url:'http://ichart.yahoo.com/table.csv?s='+ symbol +'&a=0&b=1&c=2009&g=d&ignore=.csv'}, function(to_do_data) {				
-				dataArray = jQuery.csv()(to_do_data);
-				data = [];
-				if (dataArray[0].length == 7)
+			$.get('geturl.php',{url:'http://download.finance.yahoo.com/d/quotes.csv?s=' + symbol +'&f=snp'}, function(data) {
+				dataArray = jQuery.csv()(data);
+				if (typeof(dataArray[0][2]) != "undefined" && !isNaN(dataArray[0][2]))
 				{
-					document.getElementById("error_msg").innerHTML = "";
-					$.each(dataArray, function(k, value) {
-						if(k!=0)
+					stockData[symbol][0] = dataArray[0][1];
+					stockData[symbol][1] = parseFloat(dataArray[0][2]);
+					$.get('geturl.php',{url:'http://ichart.yahoo.com/table.csv?s='+ symbol +'&a=0&b=1&c=2009&g=d&ignore=.csv'}, function(to_do_data) {				
+						dataArray = jQuery.csv()(to_do_data);
+						data = [];
+						if (dataArray[0].length == 7)
 						{
-							sdate = value[0].split("-");
-							tdate = new Date(Date.UTC(sdate[0],sdate[1]-1,sdate[2]));
-							data[k-1] = [tdate.getTime(),parseFloat(value[4])];
+							document.getElementById("error_msg").innerHTML = "";
+							$.each(dataArray, function(k, value) {
+								if(k!=0)
+								{
+									sdate = value[0].split("-");
+									tdate = new Date(Date.UTC(sdate[0],sdate[1]-1,sdate[2]));
+									data[k-1] = [tdate.getTime(),parseFloat(value[4])];
+								}
+							});
+							stockData[symbol] = [];
+							stockData[symbol][2] = data;
+							data.reverse();
+							if (typeof f == "function") 
+							{
+								f(symbol);
+								document.getElementById("curr_amount").value = stockData[symbol][1];
+							}
 						}
+						else {
+							document.getElementById("error_msg").innerHTML = "Stock does not exist! Please try again!";
+						}			
 					});
-					stockData[symbol] = [];
-					stockData[symbol][1] = data[0][1];
-					stockData[symbol][2] = data;
-					data.reverse();
-					if (typeof f == "function") 
-					{
-						f(symbol);
-						document.getElementById("curr_amount").value = stockData[symbol][1];
-					}
 				}
 				else {
 					document.getElementById("error_msg").innerHTML = "Stock does not exist! Please try again!";
-				}			
+				}
 			});
 		}
 		else {
