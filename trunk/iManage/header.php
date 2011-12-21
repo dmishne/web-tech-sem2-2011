@@ -20,7 +20,7 @@
 					$newres = $connection->query("CALL getBalance('$username')") or die(mysqli_error());
 					$bal = $newres->fetch_array(MYSQLI_NUM);
 					if($newres->num_rows > 0) {
-						$_SESSION['balance'] = $bal[0];
+						$_SESSION['balance'] = round($bal[0],2);
 						$_SESSION['update'] = 0;
 					}
 				}
