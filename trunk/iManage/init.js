@@ -21,6 +21,22 @@ function setLogin()
 			  
 			});
 		  }
+		  else if(data=='locked') 
+		  {
+		  	$("#msgBox").fadeTo(200,0.1,function() //start fading the messagebox
+			{ 
+			  //add message and change the class of the box and start fading
+			  $(this).html('Your account has been lock. Please contact the administration.').addClass('messageboxerror').fadeTo(900,1);
+			});		
+          }
+		  else if(data=='deleted')
+		  {
+		  	$("#msgBox").fadeTo(200,0.1,function() //start fading the messagebox
+			{ 
+			  //add message and change the class of the box and start fading
+			  $(this).html('Your account has been deleted. Please contact the administration.').addClass('messageboxerror').fadeTo(900,1);
+			});		
+          }
 		  else 
 		  {
 		  	$("#msgBox").fadeTo(200,0.1,function() //start fading the messagebox
