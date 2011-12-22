@@ -74,7 +74,6 @@ session_start();
 		addStockInformation(symbol, function () {
 					createChartSingle(symbol);
 					document.getElementById("curr_amount").value = stockData[symbol][1];
-					document.getElementById("new_stock_amount").value = "";
 		});
 	}
 
@@ -93,7 +92,7 @@ session_start();
 						var month = currentTime.getMonth() + 1;
 						var day = currentTime.getDate();
 						var year = currentTime.getFullYear();
-						$('#stocksTable tr:last').before('<tr> <td>'+ symbol +'</td> <td>' + stockData[symbol][0] + '</td> <td>' + amount + '</td> <td>' + year + '-' + month + '-' + day + '</td> <td>' + stockData[symbol][1] + '</td> <td>' + stockData[symbol][1] + '</td> <td> 0.00 </td> <td> 0.00 </td> <td> <div class=\"blue buttonStyle small\" onclick=\"createChartSingle(\'' + symbol + '\')\"> View </div> </td> <td> <div class=\"redh buttonStyle small\"> Delete </div> </td> </tr>');
+						$('#stocksTable tr:last').before('<tr> <td>'+ symbol +'</td> <td>' + stockData[symbol][0] + '</td> <td>' + amount + '</td> <td>' + year + '-' + month + '-' + day + '</td> <td>' + stockData[symbol][1] + '</td> <td>' + stockData[symbol][1] + '</td> <td> 0.00% </td> <td> 0.00 </td> <td> <div class=\"blue buttonStyle small\" onclick=\"createChartSingle(\'' + symbol + '\')\"> View </div> </td> <td> <div class=\"redh buttonStyle small\"> Delete </div> </td> </tr>');
 						document.getElementById("container-stock").innerHTML="";
 						document.getElementById("new_stock_symbol").value = "";
 						document.getElementById("new_stock_amount").value = "";
@@ -192,6 +191,7 @@ session_start();
 	// create chart of single stock
 	var createChartSingle = function(symbol) {
 		document.getElementById("error_msg").innerHTML = "";
+		document.getElementById("curr_amount").value = "";
 		singlechart = new Highcharts.StockChart({
 			chart : {
 				renderTo : 'container-stock'
@@ -228,7 +228,7 @@ session_start();
 	}
 
 	function waitForElement(i,symbol){
-	    if(typeof (stockData[symbol][2]) !== "undefined"){
+	    if(typeof (stockData[symbol][2]) != "undefined"){
 	    	createTableRow(i);
 			counter++;
 			if (counter == getAssocArrayLength(userStockInfo))
