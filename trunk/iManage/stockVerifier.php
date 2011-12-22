@@ -74,33 +74,28 @@ if($action == "add")
 } 
 else if($action == "del") {
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	$id=htmlspecialchars($_POST['id'],ENT_QUOTES);	
+	if(is_numeric($id))
+	{
+		$connection = new mysqli($serverInfo["address"], $serverInfo["username"], $serverInfo["password"]);
+		if (mysqli_connect_errno()) {
+			die('Could not connect: ' . mysqli_connect_error());
+		}
+		$connection->select_db($serverInfo["db"]);
+		$res = $connection->query("CALL deleteInvestment($id)") or die(mysqli_error());
+		$qres = $res->fetch_array(MYSQLI_NUM);
+		if ($qres[0] == "0")
+		{
+			echo "yes";
+		}
+		else
+		{
+			echo "no";
+		}		
+	}
+	else {
+		echo "no";
+	}
 }
 else {
 	echo "no";
