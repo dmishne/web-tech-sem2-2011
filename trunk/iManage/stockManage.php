@@ -250,7 +250,7 @@ session_start();
 		var yAxisOptions = [],
 			colors = Highcharts.getOptions().colors,
 			datacount = 0;
-		length = getAssocArrayLength(userStockInfo);
+		var length = getAssocArrayLength(userStockInfo);
 		if(length != 0)
 		{
 			$.each(userStockInfo, function(i, stock) {
