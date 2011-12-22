@@ -36,7 +36,10 @@ session_start();
 		if($res->num_rows > 0)
 		{
 			while ($r = $res->fetch_array(MYSQLI_NUM)){
-				$userStockInformation[$r[0]] = $r;
+				if($r[0] != null)
+				{
+					$userStockInformation[$r[0]] = $r;
+				}
 			}
 		}
 		if (!empty($userStockInformation)) {
@@ -48,7 +51,7 @@ session_start();
 	?>
 	var stockData = {};
 	var chart = null;
-
+	var counter = 0;
 	var createTableRow = function(id) {
 		symbol = userStockInfo[id][1];
 		name = stockData[symbol][0];
@@ -57,8 +60,8 @@ session_start();
 		svalue = parseFloat(userStockInfo[id][4]).toFixed(2);
 		lvalue = (stockData[symbol][1]).toFixed(2);
 		change = (((lvalue-svalue)*100)/svalue).toFixed(2);
-		profit = ((svalue - lvalue)*amount_inv).toFixed(2);
-		$('#stocksTable tr:last').after('<tr> <td>'+ symbol +'</td> <td>' + name + '</td> <td>' + amount_inv + '</td> <td>' + sdate + '</td> <td>' + svalue + '</td> <td>' + lvalue + '</td> <td>' +  change   + '% </td> <td>' + profit + '</td> <td> <div class=\"blue buttonStyle small\" onclick=\"createChartSingle(\'' + symbol + '\')\"> View </div> </td> <td> <div class=\"redh buttonStyle small\" onclick=\"delStockFromUser()\"> Delete </div> </td> </tr>');
+		profit = ((lvalue - svalue )*amount_inv).toFixed(2);
+		$('#stocksTable tr:last').after('<tr id=SM_' + id +'> <td>'+ symbol +'</td> <td>' + name + '</td> <td>' + amount_inv + '</td> <td>' + sdate + '</td> <td>' + svalue + '</td> <td>' + lvalue + '</td> <td>' +  change   + '% </td> <td>' + profit + '</td> <td> <div class=\"blue buttonStyle small\" onclick=\"createChartSingle(\'' + symbol + '\')\"> View </div> </td> <td> <div class=\"redh buttonStyle small\" onclick=\"delStockFromUser('+ id +')\"> Delete </div> </td> </tr>');
 	}
 	
 	var emptyTableRow = function() {
@@ -69,12 +72,11 @@ session_start();
 		symbol = document.getElementById("new_stock_symbol").value.toUpperCase();
 		document.getElementById("container-stock").innerHTML="<img style=\"margin-top:200px;\" src=\"images/loading.gif\"></img>";
 		addStockInformation(symbol, function () {
-					createChartSingle();
+					createChartSingle(symbol);
 					document.getElementById("curr_amount").value = stockData[symbol][1];
 		});
 	}
 
-	
 	var addStockToUser = function() {
 		symbol = document.getElementById("new_stock_symbol").value.toUpperCase();
 		amount = document.getElementById("new_stock_amount").value;
@@ -82,7 +84,7 @@ session_start();
 		if (amount!="" && !isNaN(amount) && symbol!="" &&(typeof symbol == "string"))
 		{
 			document.getElementById("container-stock").innerHTML="<img style=\"margin-top:200px;\" src=\"images/loading.gif\"></img>";
-			$.post('stockVerifier.php',{symbol : symbol , amount : amount , action : add}, function(res) {
+			$.post('stockVerifier.php',{symbol : symbol , amount : amount , action : "add"}, function(res) {
 				if (res == "yes")
 				{
 					addStockInformation(symbol, function () {
@@ -110,28 +112,20 @@ session_start();
 		}
 	}	
 
-	
-/*
-	var delStockFromUser = function(lineID) {
-		symbol = document.getElementById("new_stock_symbol").value.toUpperCase();
-		amount = document.getElementById("new_stock_amount").value;
-		if (amount!="" && !isNaN(amount) && symbol!="" &&(typeof symbol == "string"))
+	var delStockFromUser = function(id) {
+		if (!isNaN(id))
 		{
 			document.getElementById("container-stock").innerHTML="<img style=\"margin-top:200px;\" src=\"images/loading.gif\"></img>";
-			$.post('stockVerifier.php',{symbol : symbol , amount : amount , action : add}, function(res) {
+			$.post('stockVerifier.php',{id : id , action : "del"}, function(res) {
 				if (res == "yes")
 				{
-					addStockInformation(symbol, function () {
-						document.getElementById("error_msg").innerHTML = "";
-						$('#stocksTable tr:last').before('<tr> <td>'+ symbol +'</td> <td>' + stockData[symbol][0] + '</td> <td> amount </td> <td> sdate </td> <td> svalue</td> <td>' + stockData[symbol][1] + '</td> <td> Change </td> <td> Profit </td> <td> <div class=\"blue buttonStyle small\" onclick=\"createChartSingle(\'' + symbol + '\')\"> View </div> </td> <td> <div class=\"redh buttonStyle small\"> Delete </div> </td> </tr>');
-						document.getElementById("container-stock").innerHTML="";
-						document.getElementById("new_stock_symbol").value = "";
-						document.getElementById("new_stock_amount").value = "";
-					});
+					$('#SM_' + id).remove();
+					document.getElementById("error_msg").innerHTML = "";
+					document.getElementById("container-stock").innerHTML="";
 				}
 				else
 				{
-					document.getElementById("error_msg").innerHTML = "Error, Temporarily can't add the stock. Please try again later.";
+					document.getElementById("error_msg").innerHTML = "Error, Temporarily can't delete the stock. Please try again later.";
 					document.getElementById("container-stock").innerHTML="";
 				}
 			});
@@ -141,7 +135,7 @@ session_start();
 			document.getElementById("error_msg").innerHTML = "Error, Wrong input!";
 		}
 	}	
-*/
+
 
 	
 	var addStockInformation = function (symbol, f) {
@@ -177,11 +171,13 @@ session_start();
 						}
 						else {
 							document.getElementById("error_msg").innerHTML = "Stock does not exist! Please try again!";
+							document.getElementById("container-stock").innerHTML="";
 						}			
 					});
 				}
 				else {
 					document.getElementById("error_msg").innerHTML = "Stock does not exist! Please try again!";
+					document.getElementById("container-stock").innerHTML="";
 				}
 			});
 		}
@@ -230,83 +226,51 @@ session_start();
 		}	
 		return result;
 	}
+
+	function waitForElement(i,symbol){
+	    if(typeof (stockData[symbol][2]) !== "undefined"){
+	    	createTableRow(i);
+			counter++;
+			if (counter == getAssocArrayLength(userStockInfo))
+			{
+				emptyTableRow();
+				document.getElementById("container-stock").innerHTML="";
+				document.getElementById("error_msg").innerHTML = "";
+			}
+	    }
+	    else{
+	        setTimeout(function(){
+	            waitForElement(i,symbol);
+	        },250);
+	    }
+	}
+	
 // onload
 	$(function() {
 		var yAxisOptions = [],
 			colors = Highcharts.getOptions().colors,
-			datacount = 0,
-			counter = 0;
+			datacount = 0;
 		length = getAssocArrayLength(userStockInfo);
-		$.each(userStockInfo, function(i, stock) {
-			symbol = stock[1];
-			addStockInformation(symbol);
-			datacount++;
+		if(length != 0)
+		{
+			$.each(userStockInfo, function(i, stock) {
+				symbol = stock[1];
+				addStockInformation(symbol);
+				datacount++;
+			});
 			if(datacount == length)
 			{
 				$.each(userStockInfo, function(i, stock) {
 					symbol = stock[1];
-					createTableRow(i);
-					counter++;
-					if (counter == length)
-					{
-						emptyTableRow();
-						document.getElementById("container-stock").innerHTML="";
-					}
+					waitForElement(i,symbol);
 				});	
-				datacount++;
 			}
-		});
-
-
-
-		/*
-		$.each(userStockInfo, function(i, stock) {
-			name = stock[1];
-			if (typeof(stockData[name])=="undefined")
-			{
-				stockData[name] = [];
-				$.get('geturl.php',{url:'http://download.finance.yahoo.com/d/quotes.csv?s=' + name +'&f=snp'}, function(data) {
-					dataArray = jQuery.csv()(data);
-					stockData[name][0] = dataArray[0][1];
-					stockData[name][1] = parseFloat(dataArray[0][2]);
-	
-					$.get('geturl.php',{url:'http://ichart.yahoo.com/table.csv?s='+ name +'&a=0&b=1&c=2009&g=d&ignore=.csv'}, function(to_do_data) {				
-						dataArray = jQuery.csv()(to_do_data);
-						data = [];
-						$.each(dataArray, function(k, value) {
-							if(k!=0)
-							{
-								sdate = value[0].split("-");
-								tdate = new Date(Date.UTC(sdate[0],sdate[1]-1,sdate[2]));
-								data[k-1] = [tdate.getTime(),parseFloat(value[4])];
-							}
-						});
-						data.reverse();
-						stockData[name][2] = data;
-						createTableRow(i);
-						counter++;
-						if (counter == userStockInfo.length)
-						{
-							emptyTableRow();
-							document.getElementById("container-stock").innerHTML="";
-						}
-					});				
-				});
-			}	
-			else 
-			{
-				createTableRow(i);
-				counter++;
-				if (counter == userStockInfo.length)
-				{
-					emptyTableRow();
-					document.getElementById("container-stock").innerHTML="";
-				}
-			}
-		});
-
-
-		*/
+		}
+		else {
+			emptyTableRow();
+			document.getElementById("container-stock").innerHTML="";
+			document.getElementById("error_msg").innerHTML = "";
+		}
 	});
 
 	
@@ -336,7 +300,7 @@ session_start();
 		          			<th>Symbol</th>
 		          			<th>Name</th>
 		          			<th>Amount Invested</th>
-		          			<th>Start Date</th>
+		          			<th style="width:85px;">Start Date</th>
 		          			<th>Start Value</th>
 		          			<th>Last Value</th>
 		          			<th>Change</th>
