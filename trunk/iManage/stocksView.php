@@ -1,32 +1,7 @@
 <?php
-include "beforeLoadCheck.php"; 
-include "sessionVerifier.php";
-session_start();
-
-/**
- * Get user's stock information!!!!!!!!
- * something like that:
- * 
- *  
- *  
-$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678"); 
-if (mysqli_connect_errno()) {
-    die('Could not connect: ' . mysqli_connect_error());
-}
-$connection->select_db('webtech');
-$username= $_SESSION['username'];  // from current user session submited on login
-res = $connection->query("CALL getUserStocksInformation('$username')") or die(mysqli_error());
-$stocks = $res->fetch_array(MYSQLI_NUM);
- *  
- *  
- * 
- */
-$stocks[0] = "GOOG";
-$stocks[1] = "AAPL";
-$stocks[2] = "INTC";
-$stocks[3] = "GE";
-$stocks[4] = "F";
-
+	include "beforeLoadCheck.php"; 
+	include "sessionVerifier.php";
+	session_start();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -47,14 +22,57 @@ $stocks[4] = "F";
 	<script type="text/javascript" src="chart/exporting.js"></script>
 	<script type="text/javascript" src="jquery.csv.min.js"></script>
 	<script type="text/javascript">
+	<?php 
+			$username= $_SESSION['username'];
+			$connection = new mysqli($serverInfo["address"], $serverInfo["username"], $serverInfo["password"]);
+			if (mysqli_connect_errno()) {
+				die('Could not connect: ' . mysqli_connect_error());
+			}
+			$connection->select_db($serverInfo["db"]);
+			
+			$res = $connection->query("CALL getAllInvestments('$username')") or die(mysqli_error());
+			$userStockInformation = array();
+			if($res->num_rows > 0)
+			{
+				while ($r = $res->fetch_array(MYSQLI_NUM)){
+					if($r[0] != null)
+					{
+						$userStockInformation[$r[0]] = $r;
+					}
+				}
+			}
+			if (!empty($userStockInformation)) {
+				echo "var userStockInfo = " . json_encode($userStockInformation, true) . ";";
+			}
+			else {
+				echo "var userStockInfo = {};";
+			}
+	?>
 	var seriesOptions = [];
+	var seriesCounter = 0;
 	var stockData = {};
+	var counter = 0;
 	var chart = null;
 	var names = ['MSFT', 'AAPL', 'GOOG', 'INTC'];
-	
+
+	/*
 	var createTableRow = function(stocksymbol) {
 		$('#stocksTable tr:last').after('<tr> <td>'+ stocksymbol +'</td> <td>' + stockData[stocksymbol][0] + '</td> <td> amount </td> <td> sdate </td> <td> svalue</td> <td>' + stockData[stocksymbol][1] + '</td> <td> Change </td> <td> Profit </td> <td> <div class=\"blue buttonStyle small\" onclick=\"createChartSingle(\'' + stocksymbol + '\')\"> View </div> </td> </tr>');
 	}
+	*/
+
+	var createTableRow = function(id) {
+		symbol = userStockInfo[id][1];
+		name = stockData[symbol][0];
+		amount_inv = (parseFloat(userStockInfo[id][2])).toFixed(2);
+		sdate = userStockInfo[id][3];
+		svalue = parseFloat(userStockInfo[id][4]).toFixed(2);
+		lvalue = (stockData[symbol][1]).toFixed(2);
+		change = (((lvalue-svalue)*100)/svalue).toFixed(2);
+		profit = ((lvalue - svalue )*amount_inv).toFixed(2);
+		$('#stocksTable tr:last').after('<tr> <td>'+ symbol +'</td> <td>' + name + '</td> <td>' + amount_inv + '</td> <td>' + sdate + '</td> <td>' + svalue + '</td> <td>' + lvalue + '</td> <td>' +  change   + '% </td> <td>' + profit + '</td> <td> <div class=\"blue buttonStyle small\" onclick=\"createChartSingle(\'' + symbol + '\')\"> View </div> </td> </tr>');
+	}
+	
 	
 	// create chart of single stock
 	var createChartSingle = function(stocksymbol) {
@@ -88,13 +106,23 @@ $stocks[4] = "F";
 	var createChart = function() {
 		if (chart != null)
 		{
-			
+			var scount = 0;
+			for( sdata in stockData )
+			{
+				seriesOptions[scount] = {
+					name: sdata,
+					data: stockData[sdata][2]
+				};
+				scount++
+			}
+			/*
 			$.each(names, function(i, name) {
 				seriesOptions[i] = {
-						name: name,
-						data: stockData[name][2]
-					};
+					name: name,
+					data: stockData[name][2]
+				};
 			});
+			*/
 		}
 		chart = new Highcharts.StockChart({
 		    chart: {
@@ -142,7 +170,7 @@ $stocks[4] = "F";
 		    series: seriesOptions
 		});
 	}	
-
+/*
 	$(function() {
 		var yAxisOptions = [],
 			seriesCounter = 0,
@@ -183,11 +211,126 @@ $stocks[4] = "F";
 						createChart();
 					}
 				});
-			});
-			
-			
+			});		
 		});
 	});
+*/
+function getAssocArrayLength(tempArray) 
+{
+	var result = 0;
+	for ( tempValue in tempArray ) {
+		result++;
+	}	
+	return result;
+}
+
+function waitForElement(i,symbol){
+    if(typeof (stockData[symbol][2]) != "undefined"){
+    	createTableRow(i);
+    	counter++;
+		if (counter == getAssocArrayLength(userStockInfo))
+		{
+			$('#stocksTable tr:last').after("<tr> <td colspan=9> <div class=\"blue buttonStyle medium\" onclick=\"createChart()\"> Compare </div></td></tr>");
+		}
+    }
+    else{
+        setTimeout(function(){
+            waitForElement(i,symbol);
+        },250);
+    }
+}
+ 
+var addStockInformation = function (symbol, f) {
+	if (typeof stockData[symbol]=="undefined")
+	{
+		stockData[symbol] = [];
+		$.get('geturl.php',{url:'http://download.finance.yahoo.com/d/quotes.csv?s=' + symbol +'&f=snp'}, function(data) {
+			dataArray = jQuery.csv()(data);
+			if (typeof(dataArray[0][2]) != "undefined" && !isNaN(dataArray[0][2]))
+			{
+				stockData[symbol][0] = dataArray[0][1];
+				stockData[symbol][1] = parseFloat(dataArray[0][2]);
+				$.get('geturl.php',{url:'http://ichart.yahoo.com/table.csv?s='+ symbol +'&a=0&b=1&c=2009&g=d&ignore=.csv'}, function(to_do_data) {				
+					dataArray = jQuery.csv()(to_do_data);
+					data = [];
+					if (dataArray[0].length == 7)
+					{
+						$.each(dataArray, function(k, value) {
+							if(k!=0)
+							{
+								sdate = value[0].split("-");
+								tdate = new Date(Date.UTC(sdate[0],sdate[1]-1,sdate[2]));
+								data[k-1] = [tdate.getTime(),parseFloat(value[4])];
+							}
+						});
+						stockData[symbol][2] = data;
+						data.reverse();
+						if (typeof f == "function") 
+						{
+							f(symbol,"new");
+						}
+					}
+					else {
+						document.getElementById("container-stock").innerHTML="";
+					}			
+				});
+			}
+			else {
+				document.getElementById("container-stock").innerHTML="";
+			}
+		});
+	}
+	else {
+		if (typeof f == "function") 
+		{
+			f(symbol,"exist");
+		}
+	}
+}
+
+$(function() {
+	var yAxisOptions = [],
+		colors = Highcharts.getOptions().colors,
+		colCounter = 0,
+		datacount = 0;
+	length = getAssocArrayLength(userStockInfo);
+	if(length != 0)
+	{
+		$.each(userStockInfo, function(i, stock) {
+			symbol = stock[1];
+			addStockInformation(symbol,function (symbol , isexist) { 
+				colCounter++;
+				if (isexist == "new")
+				{
+					seriesOptions[seriesCounter] = {
+						name: symbol,
+						data: stockData[symbol][2]
+					};
+					// As we're loading the data asynchronously, we don't know what order it will arrive. So
+					// we keep a counter and create the chart when all the data is loaded.
+					seriesCounter++;
+					if (colCounter == length) {
+						createChart();
+					}
+				}
+			});
+			datacount++;
+		});
+		if(datacount == length)
+		{
+			$.each(userStockInfo, function(i, stock) {
+				symbol = stock[1];
+				waitForElement(i,symbol);
+			});	
+		}
+	}
+	else {
+		emptyTableRow();
+		document.getElementById("container-stock").innerHTML="";
+	}
+});
+
+
 	</script>
 </head>
 
