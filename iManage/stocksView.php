@@ -235,7 +235,7 @@ $(function() {
 		colors = Highcharts.getOptions().colors,
 		colCounter = 0,
 		datacount = 0;
-	length = getAssocArrayLength(userStockInfo);
+	var length = getAssocArrayLength(userStockInfo);
 	if(length != 0)
 	{
 		$.each(userStockInfo, function(i, stock) {
