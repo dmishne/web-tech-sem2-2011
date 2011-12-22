@@ -55,12 +55,6 @@
 	var chart = null;
 	var names = ['MSFT', 'AAPL', 'GOOG', 'INTC'];
 
-	/*
-	var createTableRow = function(stocksymbol) {
-		$('#stocksTable tr:last').after('<tr> <td>'+ stocksymbol +'</td> <td>' + stockData[stocksymbol][0] + '</td> <td> amount </td> <td> sdate </td> <td> svalue</td> <td>' + stockData[stocksymbol][1] + '</td> <td> Change </td> <td> Profit </td> <td> <div class=\"blue buttonStyle small\" onclick=\"createChartSingle(\'' + stocksymbol + '\')\"> View </div> </td> </tr>');
-	}
-	*/
-
 	var createTableRow = function(id) {
 		symbol = userStockInfo[id][1];
 		name = stockData[symbol][0];
@@ -115,14 +109,6 @@
 				};
 				scount++
 			}
-			/*
-			$.each(names, function(i, name) {
-				seriesOptions[i] = {
-					name: name,
-					data: stockData[name][2]
-				};
-			});
-			*/
 		}
 		chart = new Highcharts.StockChart({
 		    chart: {
@@ -170,51 +156,7 @@
 		    series: seriesOptions
 		});
 	}	
-/*
-	$(function() {
-		var yAxisOptions = [],
-			seriesCounter = 0,
-			colors = Highcharts.getOptions().colors;
 
-	
-		$.each(names, function(i, name) {
-			stockData[name] = [];
-			$.get('geturl.php',{url:'http://download.finance.yahoo.com/d/quotes.csv?s=' + name +'&f=snp'}, function(data) {
-				dataArray = jQuery.csv()(data);
-				stockData[name][0] = dataArray[0][1];
-				stockData[name][1] = parseFloat(dataArray[0][2]);
-				$.get('geturl.php',{url:'http://ichart.yahoo.com/table.csv?s='+ name +'&a=0&b=1&c=2009&g=d&ignore=.csv'}, function(to_do_data) {				
-
-					dataArray = jQuery.csv()(to_do_data);
-					data = [];
-					$.each(dataArray, function(k, value) {
-						if(k!=0)
-						{
-							sdate = value[0].split("-");
-							tdate = new Date(Date.UTC(sdate[0],sdate[1]-1,sdate[2]));
-							data[k-1] = [Math.round(tdate.getTime()),parseFloat(value[4])];
-						}
-					});
-					data.reverse();
-					stockData[name][2] = data;
-					seriesOptions[i] = {
-						name: name,
-						data: data
-					};
-					
-					// As we're loading the data asynchronously, we don't know what order it will arrive. So
-					// we keep a counter and create the chart when all the data is loaded.
-					createTableRow(name);
-					seriesCounter++;
-					if (seriesCounter == names.length) {
-						$('#stocksTable tr:last').after("<tr> <td colspan=9> <div class=\"blue buttonStyle medium\" onclick=\"createChart()\"> Compare </div></td></tr>");
-						createChart();
-					}
-				});
-			});		
-		});
-	});
-*/
 function getAssocArrayLength(tempArray) 
 {
 	var result = 0;
