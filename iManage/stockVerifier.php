@@ -41,7 +41,7 @@ if($action == "add")
 		$error++;
 	}
 	
-	if (is_numeric($amount) && floatval($amount) > 0)
+	if (is_numeric($amount) && floatval($amount) > 0 && floatval($amount) < 1000000 && floatval($amount) > -1000000)
 	{
 		$amount = floatval($amount);
 	} 
@@ -59,9 +59,9 @@ if($action == "add")
 		$year_mon_day = date("Y-m-d");
 		$res = $connection->query("CALL createInvestment('$username','$symbol',$amount,'$year_mon_day',$curr_value)") or die(mysqli_error());
 		$qres = $res->fetch_array(MYSQLI_NUM);
-		if ($qres[0] == "0")
+		if ($qres[0] != "-1")
 		{
-			echo "yes";
+			echo $qres[0];
 		}
 		else
 		{

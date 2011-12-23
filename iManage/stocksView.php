@@ -64,7 +64,7 @@
 		svalue = parseFloat(userStockInfo[id][4]).toFixed(2);
 		lvalue = (stockData[symbol][1]).toFixed(2);
 		change = (((lvalue-svalue)*100)/svalue).toFixed(2);
-		profit = ((lvalue - svalue )*amount_inv).toFixed(2);
+		profit = (change*amount_inv/100).toFixed(2);
 		$('#stocksTable tr:last').after('<tr> <td>'+ symbol +'</td> <td>' + name + '</td> <td>' + amount_inv + '</td> <td>' + sdate + '</td> <td>' + svalue + '</td> <td>' + lvalue + '</td> <td>' +  change   + '% </td> <td>' + profit + '</td> <td> <div class=\"blue buttonStyle small\" onclick=\"createChartSingle(\'' + symbol + '\')\"> View </div> </td> </tr>');
 	}
 	
