@@ -206,9 +206,8 @@ textarea {
 	overflow:hidden;
 	width:23%;
 	min-height: 189px;
-	margin:auto 30px 15px auto;
+	margin:0px 30px 15px auto;
 	padding: 5px;
-	position:relative;
 	top: 30px;
 	background-color:rgb(228,228,228);
 	-webkit-box-shadow: 2px 5px 5px rgba(0,0,0,.2);
