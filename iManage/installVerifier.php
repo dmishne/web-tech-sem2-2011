@@ -1,14 +1,13 @@
 <?php
-// check if ini.php already exist
-
-//if(!file_exists("ini.php"))
-//{
-	
+function verifyInput($input)
+{
+	return stripslashes(htmlspecialchars($input));
+}
 	// verify inputs
-	$ms_add =  htmlspecialchars($_GET["mysql_address"],ENT_QUOTES);
-	$ms_user =  htmlspecialchars($_GET["mysql_username"],ENT_QUOTES);
-	$ms_pass =  htmlspecialchars($_GET["mysql_password"],ENT_QUOTES);
-	$ms_db =  htmlspecialchars($_GET["mysql_db"],ENT_QUOTES);
+	$ms_add =  verifyInput($_GET["mysql_address"]);
+	$ms_user =  verifyInput($_GET["mysql_username"]);
+	$ms_pass =  verifyInput($_GET["mysql_password"]);
+	$ms_db =  verifyInput($_GET["mysql_db"]);
 	
 	// validate user information
 	
@@ -23,7 +22,7 @@
 			// 1. clear database
 			// 2. update database
 			// 3. update admin user information
-			// 3. write ini.php file
+			// 3. write ini.php file (config.php)
 			echo "1";
 		}
 		else {
@@ -33,10 +32,4 @@
 	else {
 		echo "0";
 	}
-//}
-//else
-//{
-//	echo "-1";
-//}
-
 ?>

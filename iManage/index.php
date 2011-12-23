@@ -1,7 +1,8 @@
 <?php 
 include "beforeLoadCheck.php";
 session_start();
-if (isset($_GET['logout']) && $_GET['logout'] == 1) {
+include_once "ini.php";
+if (isset($_GET['logout']) && verifyInput($_GET['logout']) == 1) {
 	session_unset();
 }
 ?>
@@ -44,7 +45,6 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
 	<div id="footer">
 		<?php include "footer.php"; ?>
 	</div>
-	<?php /* include "bar.php"; */?> 
 </div> <!-- wrapper -->
 
 </body>

@@ -16,16 +16,16 @@ include "sessionVerifier.php";
 
 session_start();
 
-include "ini.php";
+include_once "ini.php";
 
-$action=htmlspecialchars($_POST['action'],ENT_QUOTES);
+$action=verifyInput($_POST['action']);
 
 if($action == "add")
 {
 	$error = 0;
 	
-	$symbol=htmlspecialchars($_POST['symbol'],ENT_QUOTES);
-	$amount=htmlspecialchars($_POST['amount'],ENT_QUOTES);
+	$symbol=verifyInput($_POST['symbol']);
+	$amount=verifyInput($_POST['amount']);
 	$curr_value=0;
 	$username= $_SESSION['username'];
 	
@@ -74,7 +74,7 @@ if($action == "add")
 } 
 else if($action == "del") {
 	
-	$id=htmlspecialchars($_POST['id'],ENT_QUOTES);	
+	$id=verifyInput($_POST['id']);	
 	if(is_numeric($id))
 	{
 		$connection = new mysqli($serverInfo["address"], $serverInfo["username"], $serverInfo["password"]);

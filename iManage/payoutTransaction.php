@@ -3,6 +3,8 @@ include "beforeLoadCheck.php";
 include "sessionVerifier.php";
 session_start();
 
+include_once "ini.php";
+
 //Connect to database from here
 $connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678"); 
 if (mysqli_connect_errno()) {
@@ -11,8 +13,8 @@ if (mysqli_connect_errno()) {
 
 $connection->select_db('webtech');
 $username= $_SESSION['username'];  // from current user session submited on login
-$formN = htmlspecialchars($_POST['panel'],ENT_QUOTES);
-$description = htmlspecialchars($_POST['desc'],ENT_QUOTES);
+$formN = verifyInput($_POST['panel']);
+$description = verifyInput($_POST['desc']);
 
 
 
@@ -20,9 +22,9 @@ if($formN == 4) //  add recuring payout
 {
 	$pass = 1;
 	$transtypeid = 6;
-	$selected = htmlspecialchars($_POST['rtPayout'],ENT_QUOTES);    // get values - "New" or jobId
-	$transcustomname = htmlspecialchars($_POST['pay2name'],ENT_QUOTES);
-	$amount = htmlspecialchars($_POST['p2amount'],ENT_QUOTES);
+	$selected = verifyInput($_POST['rtPayout']);    // get values - "New" or jobId
+	$transcustomname = verifyInput($_POST['pay2name']);
+	$amount = verifyInput($_POST['p2amount']);
 	if($amount !=null && (!is_numeric($amount))){
 		$usrinpt['amount']="error";
 		$usrinpt['err4'] = 1;
@@ -31,19 +33,19 @@ if($formN == 4) //  add recuring payout
 	if((is_numeric($amount) && $amount > 0)){
 		$amount = $amount * (-1);
 	}
-	$sday = htmlspecialchars($_POST['pday2'],ENT_QUOTES);
-	$smonth = htmlspecialchars($_POST['pmonth2'],ENT_QUOTES);
-	$syear = htmlspecialchars($_POST['pyear2'],ENT_QUOTES);
-	$sday2 = htmlspecialchars($_POST['pdayU'],ENT_QUOTES);
-	$smonth2 = htmlspecialchars($_POST['pmonthU'],ENT_QUOTES);
-	$syear2 = htmlspecialchars($_POST['pyearU'],ENT_QUOTES);
+	$sday = verifyInput($_POST['pday2']);
+	$smonth = verifyInput($_POST['pmonth2']);
+	$syear = verifyInput($_POST['pyear2']);
+	$sday2 = verifyInput($_POST['pdayU']);
+	$smonth2 = verifyInput($_POST['pmonthU']);
+	$syear2 = verifyInput($_POST['pyearU']);
 	if(!checkdate(intval($smonth),intval($sday),intval($syear))){
 		$usrinpt['date'] = "error";
 		$usrinpt['err4'] = 1;
 		$pass = 0;
 	}
 	$transdate = sprintf('%4d-%02d-%02d', $syear, $smonth, $sday);
-	$recurrance = htmlspecialchars($_POST['r_period'],ENT_QUOTES);
+	$recurrance = verifyInput($_POST['r_period']);
 	$sdate = sprintf('%02d.%02d.%4d', $sday, $smonth, $syear);
 	if($pass == 1){
 	   $usrinpt['date'] = null;
@@ -53,7 +55,7 @@ if($formN == 4) //  add recuring payout
 	          $res = $connection->query("CALL insertTransaction('$amount','$username','$transdate','$transcustomname','$recurrance','$transtypeid',null,'$description')") or die(mysqli_error());
 	   }
 	   else if($selected != 'New'){
-	   	      $period = htmlspecialchars($_POST['pchangeP'],ENT_QUOTES);
+	   	      $period = verifyInput($_POST['pchangeP']);
 	   	      $transdate = sprintf('%4d-%02d-%02d', $syear2, $smonth2, $sday2);
 	   	      if(!$period){
 	   	      	$period = '3';
@@ -73,9 +75,9 @@ else if($formN == 5)   // add one time payout
 {
 	$pass = 1;
 	$transtypeid = 5;
-	$selected = htmlspecialchars($_POST['rPayout'],ENT_QUOTES);    // get values - "New" or jobId
-	$transcustomname = htmlspecialchars($_POST['payname'],ENT_QUOTES);
-	$amount = htmlspecialchars($_POST['pamount'],ENT_QUOTES);
+	$selected = verifyInput($_POST['rPayout']);    // get values - "New" or jobId
+	$transcustomname = verifyInput($_POST['payname']);
+	$amount = verifyInput($_POST['pamount']);
 	if($amount !=null && (!is_numeric($amount))){
 		$usrinpt['pamount']="error";
 		$usrinpt['err5'] = 1;
@@ -84,9 +86,9 @@ else if($formN == 5)   // add one time payout
 	if((is_numeric($amount) && $amount > 0)){
 		$amount = $amount * (-1);
 	}
-	$tday = htmlspecialchars($_POST['pday3'],ENT_QUOTES);
-	$tmonth = htmlspecialchars($_POST['pmonth3'],ENT_QUOTES);
-	$tyear = htmlspecialchars($_POST['pyear3'],ENT_QUOTES);
+	$tday = verifyInput($_POST['pday3']);
+	$tmonth = verifyInput($_POST['pmonth3']);
+	$tyear = verifyInput($_POST['pyear3']);
 	if(!checkdate(intval($tmonth),intval($tday),intval($tyear))){
 		$usrinpt['date'] = "error";
 		$usrinpt['err5'] = 1;

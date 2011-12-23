@@ -2,6 +2,7 @@
 	include "beforeLoadCheck.php";
 	include "sessionVerifier.php";
 	session_start();
+	include_once "ini.php";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -12,9 +13,18 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=9" />
 	<link rel="icon" href="images/logo.ico" />
 	<link rel="apple-touch-icon" href="images/icon_apple.png" />
+
 	<?php include "include.php"; ?>
 	
+
+	<script type="text/javascript" src="JQueryUI/jquery-ui-1.8.16.custom.min.js"> </script>
+	<link rel="stylesheet" href="JQueryUI/jquery-ui-1.8.16.custom.css" type="text/css"/>
+	<style type="text/css">
 	
+		.ui-widget {
+			font-size: 0.8em;
+		}	
+	</style>
 	<?php 
 		$connection = new mysqli($serverInfo["address"], $serverInfo["username"], $serverInfo["password"]);
 		if (mysqli_connect_errno()) {
@@ -32,7 +42,7 @@
 			$_SESSION["jobsarray"] = $jobsarray;
 			echo "<script type=\"text/javascript\">\n";
 			echo "var jobs = " . json_encode($jobsarray);
-			echo "</script>";
+			echo "\n</script>";
 		}
 		
 		if(isset($_SESSION['createWorkError']))
@@ -43,6 +53,28 @@
 	
 	
 	<script type="text/javascript">
+	function validateDelete()
+	{
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+		
+		$( "#dialog-delete" ).dialog({
+			resizable: false,
+			height:'auto',
+			modal: true,
+			buttons: {
+				"Delete": function() {
+					document.getElementById("job_to_del").value = document.getElementById("create_work_id_selection").value;
+					$( this ).dialog( "close" );
+					document.forms["job_to_del_form"].submit();
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		});
+
+	}
+
 	function showWorkInfo() {
 		var sel = document.getElementById("create_work_id_selection");
 		if (sel.selectedIndex != 0) {
@@ -51,6 +83,7 @@
 			document.getElementById("creatework_pDay").value = jobs[sel.selectedIndex-1]["incomeDate"].split("-")[2];
 			document.getElementById("creatework_desc").value = jobs[sel.selectedIndex-1]["description"];
 			document.getElementById("creatework_submit").value = "Edit Work Information";
+			document.getElementById("creatework_del").innerHTML="<div style='clear:both;' class='redh button small' onclick='validateDelete()'> Delete Work Information </div>";
 		}
 		else {
 			document.getElementById("creatework_jobsname").value = "";
@@ -58,6 +91,7 @@
 			document.getElementById("creatework_pDay").value = "";
 			document.getElementById("creatework_desc").value = "";
 			document.getElementById("creatework_submit").value = "Add New Work Information";
+			document.getElementById("creatework_del").innerHTML= "";
 		}
 	}
 	</script>
@@ -84,7 +118,7 @@
 			<div id="content-middle">
 				   <form  method="post" action="createWorkVerifier.php" id="createWork_form">
 			           <div id="createWork" class="greyCube">
-				           <table style="margin-left:auto; margin-right:auto; text-align:left; display:inner-block;">
+				           <table id="create_work_table" style="margin-left:auto; margin-right:auto; text-align:left; display:inner-block;">
 				           		<tr style="text-align:center;"> 
 				           			<th colspan="2"> Job Information </th> 
 				           		</tr>
@@ -156,6 +190,14 @@
 			           </div>
 		           </form>
 			</div>
+			<div id="creatework_del" style="clear:both; text-align:right; width:100%;"></div>
+			<div id="dialog-delete" title="Action Required" style="display: none; font-size:14px; min-height:0;">
+				<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>You're about to delete the job information and all relevant entries. Are you sure?
+			</div>
+			<form method="post" action="createWorkVerifier.php" id="job_to_del_form" style="display:none;">
+				<input type="text" id="job_to_del" name="job_to_del" />
+				<input type="submit" id="job_to_del_clk" />
+			</form>
 		</div>
 		<?php 
 			unset($_SESSION['createWorkError']);

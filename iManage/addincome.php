@@ -3,7 +3,10 @@
 	include "sessionVerifier.php";
 	// PREDEFINED DATA
 	// get GPC data:
+	
+	include_once "ini.php";
 	session_start();
+	
 	if(isset($_REQUEST['date'])) $date = $_REQUEST['date'];
 	if(isset($_REQUEST['year'])) $year = $_REQUEST['year'];
 	if(isset($_REQUEST['month'])) $month = $_REQUEST['month'];

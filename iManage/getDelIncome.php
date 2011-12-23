@@ -3,15 +3,16 @@
 include "beforeLoadCheck.php";
 include "sessionVerifier.php";
 session_start();
+include_once "ini.php";
 
-$delmonth = htmlspecialchars($_POST['delMonth'],ENT_QUOTES);
-$delyear = htmlspecialchars($_POST['delYear'],ENT_QUOTES);
+$delmonth = verifyInput($_POST['delMonth']);
+$delyear = verifyInput($_POST['delYear']);
 $delDate = sprintf('%4d-%02d-%02d', $delyear, $delmonth, '01');
 
 $_SESSION['deletedate']=$delDate;
 $_SESSION['deletemonth']=$delmonth;
 $_SESSION['deleteyear']=$delyear;
-$formD = htmlspecialchars($_POST['deleteform'],ENT_QUOTES);
+$formD = verifyInput($_POST['deleteform']);
   if ( $formD == "deleteIncome")
       {$where = "location:delincome.php";}
   else if ( $formD == "deletePayout")

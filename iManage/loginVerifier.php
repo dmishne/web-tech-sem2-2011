@@ -2,6 +2,8 @@
 include "beforeLoadCheck.php";
 session_start();
 
+include_once "ini.php";
+
 //Connect to database from here
 $connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678"); 
 if (mysqli_connect_errno()) {
@@ -10,8 +12,8 @@ if (mysqli_connect_errno()) {
 
 $connection->select_db('webtech');
 
-$username=htmlspecialchars($_POST['username'],ENT_QUOTES);
-$password=md5($_POST['password']);
+$username=verifyInput($_POST['username']);
+$password=md5(verifyInput($_POST['password']));
 
 //now validating the username and password
 $res = $connection->query("CALL doLogin('$username', '$password')") or die(mysqli_error());
@@ -37,6 +39,7 @@ else if ($res->num_rows > 0)
 	$_SESSION['firstname'] = $userDetails[0];
 	$_SESSION['lastname'] = $userDetails[1];
 	$_SESSION['DOB'] = $userDetails[2];
+	$_SESSION['permissionid'] = $userDetails[4];
 	$_SESSION['email'] = $userDetails[5];
 	$res->free();
 	//Impossible to submit any quesry after a SP, cause of some mysql glitch - known issue, 
