@@ -24,7 +24,57 @@ include_once "ini.php";
 	<script type="text/javascript" src="chart/exporting.js"></script>
 	
 	<script type="text/javascript">
-		
+	<?php 
+			$username= $_SESSION['username'];
+			$connection = new mysqli($serverInfo["address"], $serverInfo["username"], $serverInfo["password"]);
+			if (mysqli_connect_errno()) {
+				die('Could not connect: ' . mysqli_connect_error());
+			}
+			$connection->select_db($serverInfo["db"]);
+			
+			$res = $connection->query("CALL balanceYearlyReport('$username')") or die(mysqli_error());
+			$userYearReport = array();
+			$months = array();
+			if($res->num_rows > 0)
+			{
+				$i = 0;
+				$j = 0;
+				$totalm = 0;
+				while ($r = $res->fetch_array(MYSQLI_NUM)){
+					$userYearReport[$i][$j] = is_null($r[1])?0:floatval($r[1]);
+					$months[$j] = substr($r[2],0,3);
+					$totalm+=$userYearReport[$i][$j];
+					$i++;
+					if( $i == 5 )
+					{
+						$userYearReport[$i][$j] = $totalm;
+						$i = 0;
+						$j++;
+					}
+				}
+				echo "var userYearReport = " . json_encode($userYearReport, true) . ";";
+				echo "var months = " . json_encode($months, true) . ";";
+			}
+			else {
+				echo "var userYearReport = {};";
+			}
+	?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
 		var chart;
 		$(document).ready(function() {
 			chart = new Highcharts.Chart({
@@ -35,11 +85,11 @@ include_once "ini.php";
 					marginBottom: 25
 				},
 				title: {
-					text: 'Monthly Income Report',
+					text: 'Yearly Report',
 					x: -20 //center
 				},
 				subtitle: {
-					text: '2011',
+					text: 'Last Twelve Months',
 					x: -20
 				},
 
@@ -48,8 +98,7 @@ include_once "ini.php";
 			    },
 			    
 				xAxis: {
-					categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
-						'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+					categories: months
 				},
 				yAxis: {
 					title: {
@@ -64,7 +113,7 @@ include_once "ini.php";
 				tooltip: {
 					formatter: function() {
 			                return '<b>'+ this.series.name +'</b><br/>'+
-							this.x +': '+ this.y +'°C';
+							this.x +': '+ this.y +'$';
 					}
 				},
 				legend: {
@@ -76,17 +125,23 @@ include_once "ini.php";
 					borderWidth: 0
 				},
 				series: [{
-					name: 'Tokyo',
-					data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+					name: 'Balance',
+					data: userYearReport[5]
+				},  {
+					name: 'One Time Income',
+					data: userYearReport[0]
 				}, {
-					name: 'New York',
-					data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+					name: 'Recurring Income',
+					data: userYearReport[1]
 				}, {
-					name: 'Berlin',
-					data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
+					name: 'Jobs',
+					data: userYearReport[2]
 				}, {
-					name: 'London',
-					data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+					name: 'One Time Payout',
+					data: userYearReport[3]
+				}, {
+					name: 'Recurring Payout',
+					data: userYearReport[4]
 				}]
 			});
 		});
@@ -115,7 +170,7 @@ include_once "ini.php";
 		           Income Report
 			</div>
 			<div id="content-middle">
-		          <div id="container" style="width: 700px; height: 350px; margin: 10px auto auto auto"></div>
+		          <div id="container" style="min-width: 500px; height: 500px; margin: 0px auto auto auto"></div>
 			</div>
 		</div>
 	</div>
