@@ -125,7 +125,7 @@ include_once "ini.php";
 					borderWidth: 0
 				},
 				series: [{
-					name: 'Balance',
+					name: 'Profit',
 					data: userYearReport[5]
 				},  {
 					name: 'One Time Income',
@@ -167,14 +167,13 @@ include_once "ini.php";
 				
 		<div id="content">
 			<div id="content-head">
-		           Income Report
+		           General Yealy Report
 			</div>
 			<div id="content-middle">
 		          <div id="container" style="min-width: 500px; height: 500px; margin: 0px auto auto auto"></div>
 			</div>
 		</div>
 	</div>
-	
 	
 	<div id="footer">
 		<?php include "footer.php"; ?>
