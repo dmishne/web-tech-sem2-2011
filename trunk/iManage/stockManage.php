@@ -61,7 +61,7 @@ include_once "ini.php";
 		svalue = parseFloat(userStockInfo[id][4]).toFixed(2);
 		lvalue = (stockData[symbol][1]).toFixed(2);
 		change = (((lvalue-svalue)*100)/svalue).toFixed(2);
-		profit = ((lvalue - svalue )*amount_inv).toFixed(2);
+		profit = (change*amount_inv/100).toFixed(2);
 		$('#stocksTable tr:last').after('<tr id=SM_' + id +'> <td>'+ symbol +'</td> <td>' + name + '</td> <td>' + amount_inv + '</td> <td>' + sdate + '</td> <td>' + svalue + '</td> <td>' + lvalue + '</td> <td>' +  change   + '% </td> <td>' + profit + '</td> <td> <div class=\"blue buttonStyle small\" onclick=\"createChartSingle(\'' + symbol + '\')\"> View </div> </td> <td> <div class=\"redh buttonStyle small\" onclick=\"delStockFromUser('+ id +')\"> Delete </div> </td> </tr>');
 	}
 	
@@ -85,7 +85,7 @@ include_once "ini.php";
 		{
 			document.getElementById("container-stock").innerHTML="<img style=\"margin-top:200px;\" src=\"images/loading.gif\"></img>";
 			$.post('stockVerifier.php',{symbol : symbol , amount : amount , action : "add"}, function(res) {
-				if (res == "yes")
+				if (res != "no")
 				{
 					addStockInformation(symbol, function () {
 						document.getElementById("error_msg").innerHTML = "";
@@ -93,7 +93,7 @@ include_once "ini.php";
 						var month = currentTime.getMonth() + 1;
 						var day = currentTime.getDate();
 						var year = currentTime.getFullYear();
-						$('#stocksTable tr:last').before('<tr> <td>'+ symbol +'</td> <td>' + stockData[symbol][0] + '</td> <td>' + amount + '</td> <td>' + year + '-' + month + '-' + day + '</td> <td>' + stockData[symbol][1] + '</td> <td>' + stockData[symbol][1] + '</td> <td> 0.00% </td> <td> 0.00 </td> <td> <div class=\"blue buttonStyle small\" onclick=\"createChartSingle(\'' + symbol + '\')\"> View </div> </td> <td> <div class=\"redh buttonStyle small\"> Delete </div> </td> </tr>');
+						$('#stocksTable tr:last').before('<tr id=SM_'+ res + '> <td>'+ symbol +'</td> <td>' + stockData[symbol][0] + '</td> <td>' + amount + '</td> <td>' + year + '-' + month + '-' + day + '</td> <td>' + stockData[symbol][1] + '</td> <td>' + stockData[symbol][1] + '</td> <td> 0.00% </td> <td> 0.00 </td> <td> <div class=\"blue buttonStyle small\" onclick=\"createChartSingle(\'' + symbol + '\')\"> View </div> </td> <td> <div class=\"redh buttonStyle small\" onclick=\"delStockFromUser('+ res +')\"> Delete </div> </td> </tr>');
 						document.getElementById("container-stock").innerHTML="";
 						document.getElementById("new_stock_symbol").value = "";
 						document.getElementById("new_stock_amount").value = "";
