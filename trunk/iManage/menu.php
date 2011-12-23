@@ -25,8 +25,7 @@
 	</li>
 	<li class="toggleable"> Reports 
 		<ul id="reportsMenu">
-			<li>  <a href="reportIncome.php"> Generate incomes report </a> </li>
-			<li> Generate payouts report </li>
+			<li>  <a href="report.php"> General Yealy Report </a> </li>
 			<li> Balance forecast report </li>
 		</ul>
 	</li>
