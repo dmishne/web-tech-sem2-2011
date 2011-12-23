@@ -41,6 +41,7 @@ else if ($res->num_rows > 0)
 	$_SESSION['DOB'] = $userDetails[2];
 	$_SESSION['permissionid'] = $userDetails[4];
 	$_SESSION['email'] = $userDetails[5];
+	$_SESSION["last_usage"] = time();
 	$res->free();
 	//Impossible to submit any quesry after a SP, cause of some mysql glitch - known issue, 
 	//this frees each row in the result of the SP

@@ -31,7 +31,7 @@
 				else {
 					$div = "<div style=\"white-space: nowrap; \" class=\"greenh roundedh meduim\" {$title}>";
 				}
-				echo "Hey {$_SESSION['firstname']},
+				echo "Hello {$_SESSION['firstname']},
 					  <br />
 					  {$div} {$_SESSION['balance']}$ </div>
 					  <a class=\"blue buttonStyle medium\" href=\"index.php?logout=1\"> Logout </a>";

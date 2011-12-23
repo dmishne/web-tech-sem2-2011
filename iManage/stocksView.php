@@ -19,8 +19,6 @@
 	<script type="text/javascript" src="chart/highstock.js"></script>
 	<!--  Highlight Charts Theme -->
  	<script type="text/javascript" src="chart/gray.js"></script>
-	<!--  Highlight Charts Exporting Module -->
-	<script type="text/javascript" src="chart/exporting.js"></script>
 	<script type="text/javascript" src="jquery.csv.min.js"></script>
 	<script type="text/javascript">
 	<?php 
