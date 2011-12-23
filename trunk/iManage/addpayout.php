@@ -2,6 +2,8 @@
 	include "beforeLoadCheck.php";
 	include "sessionVerifier.php";
 	session_start();
+	
+	include_once "ini.php";
 	// PREDEFINED DATA
 	// get GPC data:
 	if(isset($_REQUEST['date'])) $date = $_REQUEST['date'];

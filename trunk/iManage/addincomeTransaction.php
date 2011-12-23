@@ -5,6 +5,8 @@ include "sessionVerifier.php";
 
 session_start();
 
+include_once "ini.php";
+
 //Connect to database from here
 $connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678"); 
 if (mysqli_connect_errno()) {
@@ -13,36 +15,36 @@ if (mysqli_connect_errno()) {
 
 $connection->select_db('webtech');
 $username= $_SESSION['username'];  // from current user session submited on login
-$formN = htmlspecialchars($_POST['panel'],ENT_QUOTES);
-$description = htmlspecialchars($_POST['desc'],ENT_QUOTES);
+$formN = verifyInput($_POST['panel']);
+$description = verifyInput($_POST['desc']);
 
 if($formN == 1)  // Update working hours
 {
 	$pass = 1;
 	$timeupdate = 0;
 	$transtypeid = 3;  
-	$jobId = htmlspecialchars($_POST['workid'],ENT_QUOTES); 
+	$jobId = verifyInput($_POST['workid']); 
 	if($jobId != 'clear'){
-			//$workName = htmlspecialchars($_POST['workname'],ENT_QUOTES);   // marked out for security reasons 
-			$amount = htmlspecialchars($_POST['wage'],ENT_QUOTES);
+			//$workName = verifyInput($_POST['workname']);   // marked out for security reasons 
+			$amount = verifyInput($_POST['wage']);
 			if($amount !=null && (!is_numeric($amount) || (is_numeric($amount) && $amount < 0))){
 				$usrinpt['amount']="error";
 				$usrinpt['err1'] = 1;
 				$pass =0;
 			}
-			$pday = htmlspecialchars($_POST['day1'],ENT_QUOTES);
-			$pmonth = htmlspecialchars($_POST['month1'],ENT_QUOTES);
-			$pyear = htmlspecialchars($_POST['year1'],ENT_QUOTES);
+			$pday = verifyInput($_POST['day1']);
+			$pmonth = verifyInput($_POST['month1']);
+			$pyear = verifyInput($_POST['year1']);
 			if(!checkdate(intval($pmonth),intval($pday),intval($pyear))){
 				$usrinpt['date'] = "error";
 				$usrinpt['err1'] = 1;
 				$pass = 0;
 			}
 			$pdate = sprintf('%4d-%02d-%02d', $pyear, $pmonth, $pday);
-			$sH = htmlspecialchars($_POST['starth'],ENT_QUOTES);
-			$sM = htmlspecialchars($_POST['startm'],ENT_QUOTES);
-			$eH = htmlspecialchars($_POST['endh'],ENT_QUOTES);
-			$eM = htmlspecialchars($_POST['endm'],ENT_QUOTES);
+			$sH = verifyInput($_POST['starth']);
+			$sM = verifyInput($_POST['startm']);
+			$eH = verifyInput($_POST['endh']);
+			$eM = verifyInput($_POST['endm']);
 			if($sH && $sM && $eH && $eM){
 				$timeupdate = 1;
 			}
@@ -56,9 +58,9 @@ if($formN == 1)  // Update working hours
 				$usrinpt['err1'] = 1;
 				$pass = 0;
 			}	
-			$cDay = htmlspecialchars($_POST['curday'],ENT_QUOTES);
-			$cMonth = htmlspecialchars($_POST['curmonth'],ENT_QUOTES);
-			$cYear = htmlspecialchars($_POST['curyear'],ENT_QUOTES);
+			$cDay = verifyInput($_POST['curday']);
+			$cMonth = verifyInput($_POST['curmonth']);
+			$cYear = verifyInput($_POST['curyear']);
 			$cDay2 = $cDay;
 			$cMonth2 = $cMonth;
 			$cYear2 = $cYear;
@@ -79,7 +81,9 @@ if($formN == 1)  // Update working hours
 				$eres = $connection->query("CALL editJobDetails('$jobId',null,null,'$amount','$pdate')") or die(mysqli_error());
 		        if($timeupdate)
 		        {
-		        	$eres->free();
+		        	if(is_object($eres)) {
+		        		$eres->free(); 
+		        	}
 					while ($connection->next_result()) {
 						//free each result.
 						$result = $connection->use_result();
@@ -111,9 +115,9 @@ else if($formN == 2) //  add recuring income
 {
 	$pass = 1;
 	$transtypeid = 2;
-	$selected = htmlspecialchars($_POST['rtIncome'],ENT_QUOTES);    // get values - "New" or jobId
-	$transcustomname = htmlspecialchars($_POST['inname'],ENT_QUOTES);
-	$amount = htmlspecialchars($_POST['amount'],ENT_QUOTES);
+	$selected = verifyInput($_POST['rtIncome']);    // get values - "New" or jobId
+	$transcustomname = verifyInput($_POST['inname']);
+	$amount = verifyInput($_POST['amount']);
 	if($amount !=null && (!is_numeric($amount) || (is_numeric($amount) && $amount < 0))){
 		$usrinpt['amount']="error";
 		$usrinpt['err2'] = 1;
@@ -124,12 +128,12 @@ else if($formN == 2) //  add recuring income
 		$usrinpt['err2'] = 1;
 		$pass =0;
 	}
-	$sday = htmlspecialchars($_POST['day2'],ENT_QUOTES);
-	$smonth = htmlspecialchars($_POST['month2'],ENT_QUOTES);
-	$syear = htmlspecialchars($_POST['year2'],ENT_QUOTES);
-	$sday2 = htmlspecialchars($_POST['dayU'],ENT_QUOTES);
-	$smonth2 = htmlspecialchars($_POST['monthU'],ENT_QUOTES);
-	$syear2 = htmlspecialchars($_POST['yearU'],ENT_QUOTES);
+	$sday = verifyInput($_POST['day2']);
+	$smonth = verifyInput($_POST['month2']);
+	$syear = verifyInput($_POST['year2']);
+	$sday2 = verifyInput($_POST['dayU']);
+	$smonth2 = verifyInput($_POST['monthU']);
+	$syear2 = verifyInput($_POST['yearU']);
 	if(($selected != 'New') && (!checkdate(intval($smonth2),intval($sday2),intval($syear2))))  // it's UPDATE - check DATE2
 	{
 		$usrinpt['date'] = "error";
@@ -143,7 +147,7 @@ else if($formN == 2) //  add recuring income
 		$pass = 0;
 	}
 	$transdate = sprintf('%4d-%02d-%02d', $syear, $smonth, $sday);
-	$recurrance = htmlspecialchars($_POST['r_period'],ENT_QUOTES);
+	$recurrance = verifyInput($_POST['r_period']);
 	$sdate = sprintf('%02d.%02d.%4d', $sday, $smonth, $syear);
 	if($pass == 1){
 	   $usrinpt['date'] = null;
@@ -152,7 +156,7 @@ else if($formN == 2) //  add recuring income
 	   if($selected == 'New')
 	          $res = $connection->query("CALL insertTransaction('$amount','$username','$transdate','$transcustomname','$recurrance','$transtypeid',null,'$description')") or die(mysqli_error());
 	   else if($selected != 'New'){
-	   	      $period = htmlspecialchars($_POST['changeP'],ENT_QUOTES);
+	   	      $period = verifyInput($_POST['changeP']);
 	   	      
 	   	      $transdate = sprintf('%4d-%02d-%02d', $syear2, $smonth2, $sday2);
 	   	      if(!$period){ $period = '3';}
@@ -171,9 +175,9 @@ else if($formN == 3)   // add one time income
 {
 	$pass = 1;
 	$transtypeid = 1;
-	$selected = htmlspecialchars($_POST['rIncome'],ENT_QUOTES);    // get values - "New" or jobId
-	$transcustomname = htmlspecialchars($_POST['inname'],ENT_QUOTES);
-	$amount = htmlspecialchars($_POST['amount'],ENT_QUOTES);
+	$selected = verifyInput($_POST['rIncome']);    // get values - "New" or jobId
+	$transcustomname = verifyInput($_POST['inname']);
+	$amount = verifyInput($_POST['amount']);
 	if($amount !=null && (!is_numeric($amount) || (is_numeric($amount) && $amount < 0))){
 		$usrinpt['amount']="error";
 		$usrinpt['err3'] = 1;
@@ -184,9 +188,9 @@ else if($formN == 3)   // add one time income
 		$usrinpt['err3'] = 1;
 		$pass =0;
 	}	    
-	$tday = htmlspecialchars($_POST['day3'],ENT_QUOTES);
-	$tmonth = htmlspecialchars($_POST['month3'],ENT_QUOTES);
-	$tyear = htmlspecialchars($_POST['year3'],ENT_QUOTES);
+	$tday = verifyInput($_POST['day3']);
+	$tmonth = verifyInput($_POST['month3']);
+	$tyear = verifyInput($_POST['year3']);
 	if(!checkdate(intval($tmonth),intval($tday),intval($tyear))){
 		$usrinpt['date'] = "error";
 		$usrinpt['err3'] = 1;

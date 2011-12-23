@@ -2,33 +2,35 @@
 include "beforeLoadCheck.php";
 session_start();
 
+include_once "ini.php";
+
 $errors = array();
 $REG = 1;
 
-$firstname=htmlspecialchars($_POST['firstname'],ENT_QUOTES);
+$firstname=verifyInput($_POST['firstname']);
 if(strlen($firstname) < 3 || $firstname != $_POST['firstname'])
 {
 	$error['firstname'] = 1;
 	$REG = 0;
 }
 
-$lastname=htmlspecialchars($_POST['lastname'],ENT_QUOTES);
+$lastname=verifyInput($_POST['lastname']);
 if(strlen($lastname) < 3 || $lastname != $_POST['lastname'])
 {
 	$error['lastname'] = 1;
 	$REG = 0;
 }
 
-$username=htmlspecialchars($_POST['username'],ENT_QUOTES);
+$username=verifyInput($_POST['username']);
 if(strlen($username) < 3 || $username != $_POST['username'])
 {
 	$error['username'] = 1;
 	$REG = 0;
 }
 
-$day=htmlspecialchars($_POST['signUpDay'],ENT_QUOTES);
-$month=htmlspecialchars($_POST['signUpMonth'],ENT_QUOTES);
-$year=htmlspecialchars($_POST['signUpYear'],ENT_QUOTES);
+$day=verifyInput($_POST['signUpDay']);
+$month=verifyInput($_POST['signUpMonth']);
+$year=verifyInput($_POST['signUpYear']);
 if(!(is_numeric($day) && is_numeric($month) && is_numeric($year)) || (!checkdate(intval($month),intval($day),intval($year))))
 {
 	$error['date'] = 1;
@@ -43,7 +45,7 @@ if($password != $passwordconfirm)
 	$REG = 0;
 }
 
-$email=htmlspecialchars($_POST['email'],ENT_QUOTES);
+$email=verifyInput($_POST['email']);
 
 if($REG == 1)
 {

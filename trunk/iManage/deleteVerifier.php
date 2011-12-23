@@ -4,6 +4,8 @@ include "sessionVerifier.php";
 
 session_start();
 
+include_once "ini.php";
+
 //Connect to database from here
 $connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678"); 
 if (mysqli_connect_errno()) {
@@ -12,7 +14,7 @@ if (mysqli_connect_errno()) {
 
 $connection->select_db('webtech');
 $username= $_SESSION['username'];  // from current user session submited on login
-$form = htmlspecialchars($_POST['delete'],ENT_QUOTES);
+$form = verifyInput($_POST['delete']);
 list($which, $maxid) = explode('+', $form);
 
 if($which == "income") 
