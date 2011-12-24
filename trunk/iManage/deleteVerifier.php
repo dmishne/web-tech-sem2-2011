@@ -7,12 +7,12 @@ session_start();
 include_once "ini.php";
 
 //Connect to database from here
-$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678"); 
+$connection = new mysqli($serverInfo["address"], $serverInfo["username"], $serverInfo["password"]); 
 if (mysqli_connect_errno()) {
     die('Could not connect: ' . mysqli_connect_error());
 }
 
-$connection->select_db('webtech');
+$connection->select_db($serverInfo["db"]);
 $username= $_SESSION['username'];  // from current user session submited on login
 $form = verifyInput($_POST['delete']);
 list($which, $maxid) = explode('+', $form);

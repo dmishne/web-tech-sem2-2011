@@ -39,48 +39,48 @@
 	
 	
 	<?php
-		$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
+		$connection = new mysqli($serverInfo["address"], $serverInfo["username"], $serverInfo["password"]);
 		if (mysqli_connect_errno()) {
 			die('Could not connect: ' . mysqli_connect_error());
 		}
 		
-		$connection->select_db('webtech');
+		$connection->select_db($serverInfo["db"]);
 		$username= $_SESSION['username'];
 		$date2 = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
 		$pres = $connection->query("CALL getDailyOneTimePayouts('$username','$date2')") or die(mysqli_error());
 	?>
 	
 	<?php
-		$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
+		$connection = new mysqli($serverInfo["address"], $serverInfo["username"], $serverInfo["password"]);
 		if (mysqli_connect_errno()) {
 			die('Could not connect: ' . mysqli_connect_error());
 		}
 		
-		$connection->select_db('webtech');
+		$connection->select_db($serverInfo["db"]);
 		$username= $_SESSION['username'];
 		$date2 = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
 		$pres2 = $connection->query("CALL getDailyRecurringPayouts('$username','$date2')") or die(mysqli_error());
 	?>
 	
 	  <?php 
-			$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
+			$connection = new mysqli($serverInfo["address"], $serverInfo["username"], $serverInfo["password"]);
 			if (mysqli_connect_errno()) {
 				die('Could not connect: ' . mysqli_connect_error());
 			}
 			
-			$connection->select_db('webtech');
+			$connection->select_db($serverInfo["db"]);
 			$username= $_SESSION['username'];
 			$date2 = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
 			$daySum = $connection->query("CALL getDailyTransactions('$username','$date2')") or die(mysqli_error());
 	   ?>
 	   
 	   <?php 
-			$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
+			$connection = new mysqli($serverInfo["address"], $serverInfo["username"], $serverInfo["password"]);
 			if (mysqli_connect_errno()) {
 				die('Could not connect: ' . mysqli_connect_error());
 			}
 				
-			$connection->select_db('webtech');
+			$connection->select_db($serverInfo["db"]);
 			$username= $_SESSION['username'];
 			$date2 = sprintf('%4d-%02d-%02d', $curYear, $curMonth, 01);
 			$monthSum = $connection->query("CALL getTopMonthlyTransactions('$username','$date2')") or die(mysqli_error());

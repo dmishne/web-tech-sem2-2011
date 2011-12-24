@@ -11,11 +11,11 @@
 			else {
 				if (isset($_SESSION['update']) && $_SESSION['update'])
 				{
-					$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
+					$connection = new mysqli($serverInfo["address"], $serverInfo["username"], $serverInfo["password"]);
 					if (mysqli_connect_errno()) {
 						die('Could not connect: ' . mysqli_connect_error());
 					}
-					$connection->select_db('webtech');
+					$connection->select_db($serverInfo["db"]);
 					$username = $_SESSION['username'];
 					$newres = $connection->query("CALL getBalance('$username')") or die(mysqli_error());
 					$bal = $newres->fetch_array(MYSQLI_NUM);
