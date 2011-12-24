@@ -2,8 +2,6 @@
 	include "beforeLoadCheck.php";
 	include "sessionVerifier.php";
 	session_start();
-	
-	include_once "ini.php";
 	// PREDEFINED DATA
 	// get GPC data:
 	if(isset($_REQUEST['date'])) $date = $_REQUEST['date'];
@@ -25,28 +23,39 @@
 	<link rel="apple-touch-icon" href="images/icon_apple.png" />
 	<?php include "include.php" ?>
 	
-	<?php
-	echo "<script type=\"text/javascript\">
-		  $.mon_year = {};";
-	if(isset($_REQUEST['year']) && isset($_REQUEST['month']))
-	{
-		echo "$.mon_year.year = {$_REQUEST[year]} ;" . "
-		   	  $.mon_year.month =  {$_REQUEST[month]} ;";
-	}
-	else
-	{
-		echo "$.mon_year.year = " . date("Y") . ";
-			  $.mon_year.month = " . date("m") . ";
-		";
-	}
-	echo "</script>";
-	?>
 	
 	<?php
 			if(isset($date))
 			          { list($curDay, $curMonth, $curYear)= explode('.', $date,3);}
 			else
 			         {  list($curDay, $curMonth, $curYear) = explode('-', date('d-m-Y'),3);}
+	?>
+	
+	<?PHP
+		 list($realDay, $realMonth, $realYear) = explode('-', date('d-m-Y'),3);
+			echo "<script type=\"text/javascript\">
+					  $.mon_year = {};";
+			if(isset($_REQUEST['year']) && isset($_REQUEST['month']))
+			{
+				echo "$.mon_year.year = {$_REQUEST[year]} ;" . "
+				   	  $.mon_year.month =  {$_REQUEST[month]} ;" . "
+				      $.mon_year.day = " . '01' . ";
+			          $.mon_year.rday = " . $realDay . ";
+			          $.mon_year.rmonth = " . $realMonth . ";
+			          $.mon_year.ryear = " . $realYear . ";
+			          ";
+			}
+			else
+			{				
+			echo "$.mon_year.year = " . date("Y") . ";
+				  $.mon_year.month = " . date("m") . ";
+				  $.mon_year.day = " . '01' . ";
+				  $.mon_year.rday = " . $realDay . ";
+				  $.mon_year.rmonth = " . $realMonth . ";
+				  $.mon_year.ryear = " . $realYear . "; 
+				 ";
+				}
+			echo "</script>";	
 	?>
 	
 	
@@ -326,7 +335,7 @@
 					  include('calendar.php');
 					
 					  // create calendar:
-					  $cal = new CALENDAR($year, $month);
+					  $cal = new CALENDAR($year, $month, $curDay);
 					  //$cal->offset = $offset;
 					  $cal->link = $PHP_SELF;
 					  echo $cal->create($date);							  
@@ -337,6 +346,7 @@
 		                      $total = 0;
 							  if(!isset($date)){
 							  	 $date = sprintf('%02d.%02d.%4d', $curDay, $curMonth, $curYear);
+							  	 
 							     }	
 							  if($daySum->num_rows > 0){     
 							      echo "<div class=\"daysumhead\">Your balance for: $date</div>";	

@@ -10,7 +10,10 @@
 <script type="text/javascript" src="init.js"></script>
 <script type="text/javascript" src="slidetgl.js"></script>
 <script type="text/javascript" src="collapseList.js"></script>
+<script type="text/javascript" src="manageUserScrpt.js"></script>
+
 
 <?php
 include_once "ini.php";
 ?>
+
