@@ -4,12 +4,9 @@
 	session_start();
 	
 	include_once "ini.php";
-	// PREDEFINED DATA
-	// get GPC data:
-	if(isset($_REQUEST['date'])) $date = $_REQUEST['date'];
-	if(isset($_REQUEST['year'])) $year = $_REQUEST['year'];
-	if(isset($_REQUEST['month'])) $month = $_REQUEST['month'];
-	if(isset($_REQUEST['offset'])) $offset = $_REQUEST['offset'];
+	
+	// set date
+	if(isset($_REQUEST['date'])) $date = verifyInput($_REQUEST['date']);
 	  
 	// set PHP_SELF:
 	if(isset($_SERVER['PHP_SELF'])) $PHP_SELF = $_SERVER['PHP_SELF'];
@@ -25,22 +22,13 @@
 	<link rel="apple-touch-icon" href="images/icon_apple.png" />
 	<?php include "include.php" ?>
 	
-	<?php
-	echo "<script type=\"text/javascript\">
-		  $.mon_year = {};";
-	if(isset($_REQUEST['year']) && isset($_REQUEST['month']))
-	{
-		echo "$.mon_year.year = {$_REQUEST[year]} ;" . "
-		   	  $.mon_year.month =  {$_REQUEST[month]} ;";
+	<script type="text/javascript" src="JQueryUI/jquery-ui-1.8.16.custom.min.js"> </script>
+	<link rel="stylesheet" href="JQueryUI/jquery-ui-1.8.16.custom.css" type="text/css"/>
+	<style type="text/css">
+	.ui-widget {
+		font-size: 0.75em;
 	}
-	else
-	{
-		echo "$.mon_year.year = " . date("Y") . ";
-			  $.mon_year.month = " . date("m") . ";
-		";
-	}
-	echo "</script>";
-	?>
+	</style>
 	
 	<?php
 			if(isset($date))
@@ -85,11 +73,28 @@
 			$date2 = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
 			$daySum = $connection->query("CALL getDailyTransactions('$username','$date2')") or die(mysqli_error());
 	   ?>
+	   
+	   <?php 
+			$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
+			if (mysqli_connect_errno()) {
+				die('Could not connect: ' . mysqli_connect_error());
+			}
+				
+			$connection->select_db('webtech');
+			$username= $_SESSION['username'];
+			$date2 = sprintf('%4d-%02d-%02d', $curYear, $curMonth, 01);
+			$monthSum = $connection->query("CALL getTopMonthlyTransactions('$username','$date2')") or die(mysqli_error());
+	   ?>
 	
 	<script type="text/javascript"> 
          $(document).ready(function(){
            slidetgl();
-           initCalendar('addpayout.php');
+           $( "#datepicker" ).datepicker({defaultDate: <?php echo "\"$curMonth/$curDay/$curYear\""?> ,
+                   onSelect: function(dateText, inst) {
+						var date = dateText.split("/");
+						document.getElementById("cal_date").value = date[1] + '.' + date[0] + '.' + date[2]; 
+						document.forms["calendar_get_form"].submit();
+                   }});
        });
 	</script>
 </head>
@@ -146,10 +151,10 @@
 						             <td width="50%">
 						                 <select name="rtPayout" id="rtpay" class="inpt" style="width:131px" onchange="updtWorkinfo('rtpay')">
 						                   <option value="New">New</option>
-						                   <?php   
+						                   <?php
+						                   	   $recarray = array();
 							                   if($pres2->num_rows > 0)
 							                   {
-							                   	$recarray = array();
 						                         while ($row2 = $pres2->fetch_array(MYSQLI_ASSOC)){
 						                         	$recarray[] = $row2;
 						                         	$name = $row2["recname"];
@@ -244,9 +249,9 @@
 						                 <select name="rPayout" id="otislct" class="inpt" style="width:131px" onchange="updtWorkinfo('otislct')">
 						                 <option value="New">New</option>
 						                   <?php  
+						                   		$onetimearray = array();
 							                    if($pres->num_rows > 0)
-							                    {
-							                   	  $onetimearray = array();							                   	  						                   		  
+							                    {		                   	  						                   		  
 						                          while ($row = $pres->fetch_array(MYSQLI_ASSOC)){
 						                         	$onetimearray[] = $row;						                         
 						                         	$name = $row["transname"];
@@ -307,30 +312,14 @@
 		         
 		         
 		         <div id="calendar">
-		              <!-- Form POST for calendar.php -->
-		              <form action="<? echo $PHP_SELF; ?>" method="get">
-							<?php
-							  // if year is empty, set year to current year:
-							  if($year == '') $year = date('Y');
-							  // if month is empty, set month to current month:
-							  if($month == '') $month = date('n');
-							
-							  // if offset is empty, set offset to 1 (start with Sunday):
-							  if($offset == '') $offset = 1;
-							?>
+		            
+		             <form id="calendar_get_form" action="<?php echo $PHP_SELF; ?>" method="get" style="display:none;">
+							<input type="text" id="cal_date" name="date" />
+							<input type="submit" id="cal_clk" />
 					 </form>
 							
 					<!--  Calendar declaration & creation  -->		
-					 <?
-					  // include calendar class:
-					  include('calendar.php');
-					
-					  // create calendar:
-					  $cal = new CALENDAR($year, $month);
-					  //$cal->offset = $offset;
-					  $cal->link = $PHP_SELF;
-					  echo $cal->create($date);							  
-					 ?>		             
+					<div id="datepicker"></div> 
 		         </div>
 		         <div id="daysum">
 		            <?php  // if a day is clicked, view that date:
@@ -372,9 +361,34 @@
 		         </div>
 		         <div id="monthsum">
 		             <?php // current month
-		                  $months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-						  if(isset($month) && isset($year)) echo  $months[$month-1] . ' ' . $year ;
-						  ?>
+				             if($monthSum->num_rows > 0){
+				             	  echo "<div class=\"daysumhead\" style=\"font-size:12px; width:85%;\">Top 5 incomes/payouts for: $curMonth</div>";
+				                  echo "<div style=\"min-height:170px; max-height:170px; overflow:auto;\"><table>";         
+											  while ($rowm = $monthSum->fetch_array(MYSQLI_ASSOC)){
+											      $transname = $rowm['transname'];
+											      $amnt = $rowm['amount'];
+											      $trnstype = $rowm['transtype'];
+											      $descript = $rowm['description'];
+											      echo "<tr>";
+												  if ($amnt < 0){
+												   	   $div1 = "<td class=\"redinc \" style=\"cursor:help float:left;\" title=\"$descript\">";
+												   	   $div2 = "<td class=\"redinc roundedinccntr\" style=\"cursor:help\" title=\"$descript\">";
+												   	   $div3 = "<td class=\"redinc \" style=\"cursor:help\" title=\"$descript\">";
+												      }
+												   else {
+												   	   $div1 = "<td  class=\"greeninc \" style=\"cursor:help float:left;\" title=\"$descript\">";
+												   	   $div2 = "<td  class=\"greeninc roundedinccntr\" style=\"cursor:help\" title=\"$descript\">";
+												   	   $div3 = "<td  class=\"greeninc\" style=\"cursor:help\" title=\"$descript\">";
+												      } 
+												   //echo "{$div1}$trnstype</td>";
+											       echo "{$div1}$transname</td>";
+											       echo "{$div3}$amnt$ </td>";  
+											       echo "</tr>";					  
+											      $total += $amnt;
+											    }
+										    echo "</table></div>";
+				             }
+						?>
 		         </div>
 			</div>
 
@@ -382,8 +396,6 @@
 
 			</div>
 		</div>
-
-	
 	
 	<div id="footer">
 		<?php include "footer.php"; ?>

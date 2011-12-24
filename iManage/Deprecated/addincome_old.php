@@ -1,12 +1,16 @@
 <?
 	include "beforeLoadCheck.php";
 	include "sessionVerifier.php";
+	// PREDEFINED DATA
+	// get GPC data:
 	
-	session_start();
 	include_once "ini.php";
+	session_start();
 	
-	// set date
-	if(isset($_REQUEST['date'])) $date = verifyInput($_REQUEST['date']);
+	if(isset($_REQUEST['date'])) $date = $_REQUEST['date'];
+	if(isset($_REQUEST['year'])) $year = $_REQUEST['year'];
+	if(isset($_REQUEST['month'])) $month = $_REQUEST['month'];
+	if(isset($_REQUEST['offset'])) $offset = $_REQUEST['offset'];
 	  
 	// set PHP_SELF:
 	if(isset($_SERVER['PHP_SELF'])) $PHP_SELF = $_SERVER['PHP_SELF'];
@@ -21,13 +25,24 @@
 	<link rel="icon" href="images/logo.ico" />
 	<link rel="apple-touch-icon" href="images/icon_apple.png" />
 	<?php include "include.php" ?>
-	<script type="text/javascript" src="JQueryUI/jquery-ui-1.8.16.custom.min.js"> </script>
-	<link rel="stylesheet" href="JQueryUI/jquery-ui-1.8.16.custom.css" type="text/css"/>
-	<style type="text/css">
-	.ui-widget {
-		font-size: 0.75em;
+	
+	<?php
+	echo "<script type=\"text/javascript\">
+		  $.mon_year = {};";
+	if(isset($_REQUEST['year']) && isset($_REQUEST['month']))
+	{
+		echo "$.mon_year.year = {$_REQUEST[year]} ;" . "
+		   	  $.mon_year.month =  {$_REQUEST[month]} ;";
 	}
-	</style>
+	else
+	{
+		echo "$.mon_year.year = " . date("Y") . ";
+			  $.mon_year.month = " . date("m") . ";
+		";
+	}
+	echo "</script>";
+	?>
+	
 	
 	<?php  if(isset($date))
 				list($curDay, $curMonth, $curYear)= explode('.', $date,3);
@@ -69,7 +84,6 @@
 			$username= $_SESSION['username'];
 			$dateh = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
 			$hours = $connection->query("CALL getDailyWorkHours('$username','$dateh')") or die(mysqli_error());
-			$harray = array();
 			if($hours->num_rows > 0)
 			{
 				$harray = array();
@@ -122,12 +136,7 @@
 	<script type="text/javascript"> 
          $(document).ready(function(){
            slidetgl();
-           $( "#datepicker" ).datepicker({defaultDate: <?php echo "\"$curMonth/$curDay/$curYear\""?> ,
-                   onSelect: function(dateText, inst) {
-						var date = dateText.split("/");
-						document.getElementById("cal_date").value = date[1] + '.' + date[0] + '.' + date[2]; 
-						document.forms["calendar_get_form"].submit();
-                   }});
+           initCalendar('addincome.php');
        });
 	</script>
 </head>
@@ -190,9 +199,9 @@
 							           <select name="workid" id="uwi" class="inpt" style="width:131px" onchange="updtWorkinfo('uwi')">							                     
 						                  <option value="clear"></option>
                                           <?php     
-                                          	   $jobsarray = array();
                                                if($jobs->num_rows > 0)
-                                               {                                               
+                                               {     
+                                               	$jobsarray = array();                                              
 						                         while ($job = $jobs->fetch_array(MYSQLI_ASSOC)){
 						                            $jobsarray[] = $job;						                         	
 						                         	$name = $job["name"];						                         	
@@ -278,10 +287,10 @@
 						             <td width="50%">
 						                 <select name="rtIncome" id="rtinc" class="inpt" style="width:131px" onchange="updtWorkinfo('rtinc')">
 						                   <option value="New">New</option>
-						                   <?php
-						                   	   $recarray = array();
+						                   <?php   
 							                   if($res2->num_rows > 0)
 							                   {
+							                   	$recarray = array();
 						                         while ($row2 = $res2->fetch_array(MYSQLI_ASSOC)){
 						                         	$recarray[] = $row2;
 						                         	$name = $row2["recname"];
@@ -377,9 +386,9 @@
 						                 <select name="rIncome" id="otislct" class="inpt" style="width:131px" onchange="updtWorkinfo('otislct')">
 						                 <option value="New">New</option>
 						                   <?php  
-						                   		$onetimearray = array();
 							                    if($res->num_rows > 0)
 							                    {
+							                   	  $onetimearray = array();							                   	  						                   		  
 						                          while ($row = $res->fetch_array(MYSQLI_ASSOC)){
 						                         	$onetimearray[] = $row;						                         
 						                         	$name = $row["transname"];
@@ -440,14 +449,30 @@
 		         
 		         
 		         <div id="calendar">
-		             <!-- Form POST for calendar.php -->
-		             <form id="calendar_get_form" action="<?php echo $PHP_SELF; ?>" method="get" style="display:none;">
-							<input type="text" id="cal_date" name="date" />
-							<input type="submit" id="cal_clk" />
+		              <!-- Form POST for calendar.php -->
+		              <form action="<? echo $PHP_SELF; ?>" method="get">
+							<?php
+							  // if year is empty, set year to current year:
+							  if($year == '') $year = date('Y');
+							  // if month is empty, set month to current month:
+							  if($month == '') $month = date('n');
+							
+							  // if offset is empty, set offset to 1 (start with Sunday):
+							  if($offset == '') $offset = 1;
+							?>
 					 </form>
 							
 					<!--  Calendar declaration & creation  -->		
-					<div id="datepicker"></div> 
+					 <?
+					  // include calendar class:
+					  include('calendar.php');
+					
+					  // create calendar:
+					  $cal = new CALENDAR($year, $month);
+					  //$cal->offset = $offset;
+					  $cal->link = $PHP_SELF;
+					  echo $cal->create($date);							  
+					 ?>		             
 		         </div>
 		         <div id="daysum">
 		            <?php  // if a day is clicked, view that date:
