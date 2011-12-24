@@ -50,12 +50,12 @@ $email=verifyInput($_POST['email']);
 if($REG == 1)
 {
 	//Connect to database from here
-	$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
+	$connection = new mysqli($serverInfo["address"], $serverInfo["username"], $serverInfo["password"]);
 	if (mysqli_connect_errno()) {
 		die('Could not connect: ' . mysqli_connect_error());
 	}
 	
-	$connection->select_db('webtech');
+	$connection->select_db($serverInfo["db"]);
 	
 	$res = $connection->query("CALL register('$username','$firstname','$lastname','$year-$month-$day',1,'$email','$password')") or die(mysqli_error());
 	$userDetails = $res->fetch_array(MYSQLI_NUM);
