@@ -3,10 +3,7 @@
 	include "sessionVerifier.php";
 	// PREDEFINED DATA
 	// get GPC data:
-	
-	include_once "ini.php";
 	session_start();
-	
 	if(isset($_REQUEST['date'])) $date = $_REQUEST['date'];
 	if(isset($_REQUEST['year'])) $year = $_REQUEST['year'];
 	if(isset($_REQUEST['month'])) $month = $_REQUEST['month'];
@@ -26,29 +23,42 @@
 	<link rel="apple-touch-icon" href="images/icon_apple.png" />
 	<?php include "include.php" ?>
 	
-	<?php
-	echo "<script type=\"text/javascript\">
-		  $.mon_year = {};";
-	if(isset($_REQUEST['year']) && isset($_REQUEST['month']))
-	{
-		echo "$.mon_year.year = {$_REQUEST[year]} ;" . "
-		   	  $.mon_year.month =  {$_REQUEST[month]} ;";
-	}
-	else
-	{
-		echo "$.mon_year.year = " . date("Y") . ";
-			  $.mon_year.month = " . date("m") . ";
-		";
-	}
-	echo "</script>";
-	?>
 	
 	
-	<?php  if(isset($date))
+	<?php  if(isset($date))	              
 				list($curDay, $curMonth, $curYear)= explode('.', $date,3);
 				else
 				list($curDay, $curMonth, $curYear) = explode('-', date('d-m-Y'),3);
+				$months = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");			
 	?>
+	
+	<?php
+	         list($realDay, $realMonth, $realYear) = explode('-', date('d-m-Y'),3);
+			echo "<script type=\"text/javascript\">
+					  $.mon_year = {};";
+			if(isset($_REQUEST['year']) && isset($_REQUEST['month']))
+			{
+				echo "$.mon_year.year = {$_REQUEST[year]} ;" . "
+				   	  $.mon_year.month =  {$_REQUEST[month]} ;" . "
+				      $.mon_year.day = " . '01' . ";
+			          $.mon_year.rday = " . $realDay . ";
+			          $.mon_year.rmonth = " . $realMonth . ";
+			          $.mon_year.ryear = " . $realYear . ";
+			          ";
+			}
+			else
+			{				
+			echo "$.mon_year.year = " . date("Y") . ";
+				  $.mon_year.month = " . date("m") . ";
+				  $.mon_year.day = " . '01' . ";
+				  $.mon_year.rday = " . $realDay . ";
+				  $.mon_year.rmonth = " . $realMonth . ";
+				  $.mon_year.ryear = " . $realYear . "; 
+				 ";
+				}
+			echo "</script>";	
+	?>
+	
 	
 	<?php 
 			$connection = new mysqli("remote-mysql4.servage.net", "webtech", "12345678");
@@ -468,7 +478,7 @@
 					  include('calendar.php');
 					
 					  // create calendar:
-					  $cal = new CALENDAR($year, $month);
+					  $cal = new CALENDAR($year, $month, $curDay);
 					  //$cal->offset = $offset;
 					  $cal->link = $PHP_SELF;
 					  echo $cal->create($date);							  
@@ -514,8 +524,9 @@
 		         </div>
 		         <div id="monthsum">
 		             <?php // current month
-				             if($monthSum->num_rows > 0){
-				             	  echo "<div class=\"daysumhead\" style=\"font-size:12px; width:85%;\">Top 5 incomes/payouts for: $curMonth</div>";
+				             if($monthSum != null && $monthSum->num_rows > 0){
+				             	  $m = $months[$curMonth-1];
+				             	  echo "<div class=\"daysumhead\" style=\"font-size:12px; width:85%;\">Top transactions for: $m</div>";
 				                  echo "<div style=\"min-height:170px; max-height:170px; overflow:auto;\"><table>";         
 											  while ($rowm = $monthSum->fetch_array(MYSQLI_ASSOC)){
 											      $transname = $rowm['transname'];
@@ -524,25 +535,25 @@
 											      $descript = $rowm['description'];
 											      echo "<tr>";
 												  if ($amnt < 0){
-												   	   $div1 = "<td class=\"redinc \" style=\"cursor:help float:left;\" title=\"$descript\">";
-												   	   $div2 = "<td class=\"redinc roundedinccntr\" style=\"cursor:help\" title=\"$descript\">";
-												   	   $div3 = "<td class=\"redinc \" style=\"cursor:help\" title=\"$descript\">";
+												   	   $div1 = "<td class=\"redinc roundedincMleft\" style=\"cursor:help float:left;\" title=\"$descript\">";												   	  
+												   	   $div3 = "<td class=\"redinc roundedincMright\" style=\"cursor:help\" title=\"$descript\">";
 												      }
 												   else {
-												   	   $div1 = "<td  class=\"greeninc \" style=\"cursor:help float:left;\" title=\"$descript\">";
-												   	   $div2 = "<td  class=\"greeninc roundedinccntr\" style=\"cursor:help\" title=\"$descript\">";
-												   	   $div3 = "<td  class=\"greeninc\" style=\"cursor:help\" title=\"$descript\">";
+												   	   $div1 = "<td  class=\"greeninc roundedincMleft\" style=\"cursor:help float:left;\" title=\"$descript\">";												   	  
+												   	   $div3 = "<td  class=\"greeninc roundedincMright\" style=\"cursor:help\" title=\"$descript\">";
 												      } 
 												   //echo "{$div1}$trnstype</td>";
 											       echo "{$div1}$transname</td>";
 											       echo "{$div3}$amnt$ </td>";  
-											       echo "</tr>";					  
+											       echo "</tr>";	
+											       //echo "<br style=\"clear:left; clear:right;\"/>";
 											      $total += $amnt;
 											    }
 										    echo "</table></div>";
 				             }
 						?>
 		         </div>
+		         <br style="clear:left;"/>
 			</div>
 		</div>
 	</div>

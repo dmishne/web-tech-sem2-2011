@@ -151,7 +151,7 @@ textarea {
 #contentaddincome{
 	width:100%;
 	height:auto;
-	float:left;
+	
 }
 
 #contentaddpayout{
@@ -206,7 +206,7 @@ textarea {
 	overflow:hidden;
 	width:23%;
 	min-height: 189px;
-	margin:0px 30px 15px auto;
+	margin:0px 30px 25px auto;
 	padding: 5px;
 	top: 30px;
 	background-color:rgb(228,228,228);
@@ -486,7 +486,6 @@ z-index:9;
 	background: -webkit-gradient(linear, left top, left bottom, from(#ff5555), to(#ff9999));
 	background: -moz-linear-gradient(top,  #ff5555,  #ff9999);
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5555', endColorstr='#ff9999');
-	font:normal 14px serif;
 	text-align:left;
 	text-decoration: none;
 	padding:0px 3px;
@@ -500,7 +499,6 @@ z-index:9;
 	background: -webkit-gradient(linear, left top, left bottom, from(#90be50), to(#b1da7e));
 	background: -moz-linear-gradient(top,  #90be50,  #b1da7e);
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#90be50', endColorstr='#b1da7e');
-	font:normal 14px serif;
 	text-align:left;
 	text-decoration: none;
 	padding:0px 3px;
@@ -513,6 +511,7 @@ z-index:9;
 	max-height:17px;
 	overflow:hidden;
 	margin: auto;
+	font:normal 14px serif;
 	-webkit-border-bottom-left-radius: 0.9em;
 	-moz-border-radius-bottomleft: 0.9em;
 	border-bottom-left-radius: 0.9em;
@@ -531,6 +530,7 @@ z-index:9;
 	max-height:17px;
 	overflow:hidden;
 	margin:auto;
+	font:normal 14px serif;
 	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
 	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
 	box-shadow: 0 1px 2px rgba(0,0,0,.2);
@@ -543,6 +543,7 @@ z-index:9;
 	max-height:17px;
 	overflow:hidden;
 	margin: auto;
+	font:normal 14px serif;
 	-webkit-border-bottom-right-radius: 0.9em;
 	-moz-border-radius-bottomright: 0.9em;
 	border-bottom-right-radius: 0.9em;
@@ -575,6 +576,45 @@ z-index:9;
 	-webkit-box-shadow: 1px 3px 3px rgba(0,0,0,.2);
 	-moz-box-shadow: 1px 3px 3px rgba(0,0,0,.2);
 	box-shadow: 1px 3px 3px rgba(0,0,0,.2);
+}
+
+
+.roundedincMright{
+	float:right;
+	position:relative;
+	width:45px;
+	max-height:14px;
+	overflow:hidden;
+	margin: auto;
+	font:normal 12px serif;
+	-webkit-border-bottom-right-radius: 0.9em;
+	-moz-border-radius-bottomright: 0.9em;
+	border-bottom-right-radius: 0.9em;
+	-webkit-border-top-right-radius: 0.9em;
+	-moz-border-radius-topright: 0.9em;
+	border-top-right-radius: 0.9em;
+	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	box-shadow: 0 1px 2px rgba(0,0,0,.2);
+}
+
+.roundedincMleft{
+	float:left;
+	position:relative;
+	width:90px;
+	max-height:14px;
+	overflow:hidden;
+	margin: auto;
+	font:normal 12px serif;
+	-webkit-border-bottom-left-radius: 0.9em;
+	-moz-border-radius-bottomleft: 0.9em;
+	border-bottom-left-radius: 0.9em;
+	-webkit-border-top-left-radius: 0.9em;
+	-moz-border-radius-topleft: 0.9em;
+	border-top-left-radius: 0.9em;
+	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	box-shadow: 0 1px 2px rgba(0,0,0,.2);
 }
 
 
@@ -668,6 +708,82 @@ table.stocksTablesStyle td
 
 
 /*###################### user manager (start) ###########################*/
+
+table.ManageUserTablesStyle
+{
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 13px;
+	width: 100%;
+	border-width: 2px;
+	border-spacing: 2px;
+	border-style: groove;
+	border-collapse: collapse;
+}
+
+table.ManageUserTablesStyle th
+{
+	/*height:50px;*/
+	padding:12px;
+	border-width: 0px;
+	border-style: inset;
+	background: #b9c9fe;
+	background: -webkit-gradient(linear, left top, left bottom, from(#b9c9fe), to(#eff2fe));
+	background: -moz-linear-gradient(top,  #b9c9fe,  #eff2fe);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#b9c9fe', endColorstr='#eff2fe');
+	font-size: 18px;
+	color: #039;
+	white-space: pre-wrap; 
+	font-family:"Times New Roman",Times,serif; 
+	font-color:#004960;
+	text-shadow: 0 2px 2px rgba(0,0,0,.3);
+}
+table.ManageUserTablesStyle tr
+{
+	height:30px;
+	border-width:0px;	
+}
+
+
+table.ManageUserTablesStyle td
+{
+	border-width: 1px 0px 1px 0px;	
+	/*padding: 3px;*/
+	border-style:solid;
+    border-color:rgb(228,228,228);	
+	background:#eff2fe;	
+	color: #669;
+	font-size:14px; 
+	font-family:"Times New Roman",Times,serif; 
+	font-color:#004960;
+	text-shadow: 0 2px 2px rgba(0,0,0,.3);
+}
+
+table.ManageUserTablesStyleB
+{
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 13px;
+	width: 100%;
+	border-width: 2px;
+	border-spacing: 2px;
+	border-style: groove;
+	border-collapse: collapse;
+}
+
+table.ManageUserTablesStyleB td, #eot
+{
+	border-width: 1px 0px 1px 0px;	
+	/*padding: 3px;*/
+	border-style: inset;
+	background: #b9c9fe;
+	background: -webkit-gradient(linear, left top, left bottom, from(#eff2fe), to(#b9c9fe));
+	background: -moz-linear-gradient(top,  #eff2fe,  #b9c9fe);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#eff2fe', endColorstr='#b9c9fe');
+	color: #669;
+	font-size:14px; 
+	font-family:"Times New Roman",Times,serif; 
+	font-color:#004960;
+	text-shadow: 0 2px 2px rgba(0,0,0,.3);
+}
 
 
 /*###################### user manager (end) ###########################*/
