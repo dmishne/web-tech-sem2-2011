@@ -1,16 +1,12 @@
 <?
 	include "beforeLoadCheck.php";
 	include "sessionVerifier.php";
-	// PREDEFINED DATA
-	// get GPC data:
 	
-	include_once "ini.php";
 	session_start();
+	include_once "ini.php";
 	
+	// set date
 	if(isset($_REQUEST['date'])) $date = verifyInput($_REQUEST['date']);
-	if(isset($_REQUEST['year'])) $year = $_REQUEST['year'];
-	if(isset($_REQUEST['month'])) $month = $_REQUEST['month'];
-	if(isset($_REQUEST['offset'])) $offset = $_REQUEST['offset'];
 	  
 	// set PHP_SELF:
 	if(isset($_SERVER['PHP_SELF'])) $PHP_SELF = $_SERVER['PHP_SELF'];
@@ -32,26 +28,6 @@
 		font-size: 0.75em;
 	}
 	</style>
-	
-	
-	
-	<?php
-	echo "<script type=\"text/javascript\">
-		  $.mon_year = {};";
-	if(isset($_REQUEST['year']) && isset($_REQUEST['month']))
-	{
-		echo "$.mon_year.year = {$_REQUEST[year]} ;" . "
-		   	  $.mon_year.month =  {$_REQUEST[month]} ;";
-	}
-	else
-	{
-		echo "$.mon_year.year = " . date("Y") . ";
-			  $.mon_year.month = " . date("m") . ";
-		";
-	}
-	echo "</script>";
-	?>
-	
 	
 	<?php  if(isset($date))
 				list($curDay, $curMonth, $curYear)= explode('.', $date,3);
@@ -93,6 +69,7 @@
 			$username= $_SESSION['username'];
 			$dateh = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
 			$hours = $connection->query("CALL getDailyWorkHours('$username','$dateh')") or die(mysqli_error());
+			$harray = array();
 			if($hours->num_rows > 0)
 			{
 				$harray = array();
@@ -213,9 +190,9 @@
 							           <select name="workid" id="uwi" class="inpt" style="width:131px" onchange="updtWorkinfo('uwi')">							                     
 						                  <option value="clear"></option>
                                           <?php     
+                                          	   $jobsarray = array();
                                                if($jobs->num_rows > 0)
-                                               {     
-                                               	$jobsarray = array();                                              
+                                               {                                               
 						                         while ($job = $jobs->fetch_array(MYSQLI_ASSOC)){
 						                            $jobsarray[] = $job;						                         	
 						                         	$name = $job["name"];						                         	
@@ -301,10 +278,10 @@
 						             <td width="50%">
 						                 <select name="rtIncome" id="rtinc" class="inpt" style="width:131px" onchange="updtWorkinfo('rtinc')">
 						                   <option value="New">New</option>
-						                   <?php   
+						                   <?php
+						                   	   $recarray = array();
 							                   if($res2->num_rows > 0)
 							                   {
-							                   	$recarray = array();
 						                         while ($row2 = $res2->fetch_array(MYSQLI_ASSOC)){
 						                         	$recarray[] = $row2;
 						                         	$name = $row2["recname"];
@@ -400,9 +377,9 @@
 						                 <select name="rIncome" id="otislct" class="inpt" style="width:131px" onchange="updtWorkinfo('otislct')">
 						                 <option value="New">New</option>
 						                   <?php  
+						                   		$onetimearray = array();
 							                    if($res->num_rows > 0)
 							                    {
-							                   	  $onetimearray = array();							                   	  						                   		  
 						                          while ($row = $res->fetch_array(MYSQLI_ASSOC)){
 						                         	$onetimearray[] = $row;						                         
 						                         	$name = $row["transname"];
@@ -463,8 +440,8 @@
 		         
 		         
 		         <div id="calendar">
-		              <!-- Form POST for calendar.php -->
-		              <form id="calendar_get_form" action="<? echo $PHP_SELF; ?>" method="get" style="display:none;">
+		             <!-- Form POST for calendar.php -->
+		             <form id="calendar_get_form" action="<?php echo $PHP_SELF; ?>" method="get" style="display:none;">
 							<input type="text" id="cal_date" name="date" />
 							<input type="submit" id="cal_clk" />
 					 </form>
