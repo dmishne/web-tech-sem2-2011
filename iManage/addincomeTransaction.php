@@ -16,7 +16,10 @@ if (mysqli_connect_errno()) {
 $connection->select_db($serverInfo["db"]);
 $username= $_SESSION['username'];  // from current user session submited on login
 $formN = verifyInput($_POST['panel']);
-$description = verifyInput($_POST['desc']);
+if (isset($_POST['desc']))
+{
+	$description = verifyInput($_POST['desc']);
+}
 
 if($formN == 1)  // Update working hours
 {
