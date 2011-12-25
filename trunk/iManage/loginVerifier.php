@@ -20,7 +20,7 @@ $res = $connection->query("CALL doLogin('$username', '$password')") or die(mysql
 $userDetails = $res->fetch_array(MYSQLI_NUM);
 
 
-if($userDetails[0] == 'locked account')
+if($userDetails[0] == 'Locked account')
 {
 	echo "locked";
 }
