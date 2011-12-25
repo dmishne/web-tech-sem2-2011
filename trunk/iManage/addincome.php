@@ -57,7 +57,7 @@
 			
 			$connection->select_db($serverInfo["db"]);
 			$username= $_SESSION['username'];
-			$jobs = $connection->query("CALL getJobs('$username')") or die(mysqli_error());
+			$jobs = $connection->query("CALL getJobs('$username')") or die(mysqli_error());			
 	?>
 	
 	
@@ -70,7 +70,6 @@
 			$username= $_SESSION['username'];
 			$dateh = sprintf('%4d-%02d-%02d', $curYear, $curMonth, $curDay);
 			$hours = $connection->query("CALL getDailyWorkHours('$username','$dateh')") or die(mysqli_error());
-			$harray = array();
 			if($hours->num_rows > 0)
 			{
 				$harray = array();
@@ -464,22 +463,65 @@
 									      $amnt = $row2['amount'];
 									      $trnstype = $row2['transtype'];
 									      $descript = $row2['description'];
-									      echo "<tr>";
-										  if ($amnt < 0){
-										   	   $div1 = "<td class=\"redinc roundedincleft\" style=\"cursor:help\" title=\"$descript\">";
-										   	   $div2 = "<td class=\"redinc roundedinccntr\" style=\"cursor:help\" title=\"$descript\">";
-										   	   $div3 = "<td class=\"redinc roundedincright\" style=\"cursor:help\" title=\"$descript\">";
-										      }
-										   else {
-										   	   $div1 = "<td  class=\"greeninc roundedincleft\" style=\"cursor:help\" title=\"$descript\">";
-										   	   $div2 = "<td  class=\"greeninc roundedinccntr\" style=\"cursor:help\" title=\"$descript\">";
-										   	   $div3 = "<td  class=\"greeninc roundedincright\" style=\"cursor:help\" title=\"$descript\">";
-										      } 
-										   echo "{$div1}$trnstype</td>";
-									       echo "{$div2}$transname</td>";
-									       echo "{$div3}$amnt$ </td>";  
-									       echo "</tr>";					  
-									      $total += $amnt;
+									      if($amnt != null)
+									      {
+										      echo "<tr>";
+											  if ($amnt < 0){
+											   	   $div1 = "<td class=\"redinc roundedincleft\" style=\"cursor:help\" title=\"$descript\">";
+											   	   $div2 = "<td class=\"redinc roundedinccntr\" style=\"cursor:help\" title=\"$descript\">";
+											   	   $div3 = "<td class=\"redinc roundedincright\" style=\"cursor:help\" title=\"$descript\">";
+											      }
+											   else if ($amnt > 0) {
+											   	   $div1 = "<td  class=\"greeninc roundedincleft\" style=\"cursor:help\" title=\"$descript\">";
+											   	   $div2 = "<td  class=\"greeninc roundedinccntr\" style=\"cursor:help\" title=\"$descript\">";
+											   	   $div3 = "<td  class=\"greeninc roundedincright\" style=\"cursor:help\" title=\"$descript\">";
+		  
+											      }									     	
+											   echo "{$div1}$trnstype</td>";
+										       echo "{$div2}$transname</td>";
+										       echo "{$div3}$amnt$ </td>";  
+										       echo "</tr>";					  
+										      $total += $amnt;
+									      }
+									    }  // while
+									    // need to calculate this day salary
+									    $i = 0;
+									    $j = 0;
+									    if(isset($harray) && isset($jobsarray))
+									    {
+											    while($i < count($harray))
+											    {
+											    	$jName = $harray[$i]['transname'];
+											    	list($jsDate, $Jsh) = explode(' ', $harray[$i]['startHour'],2);
+											    	list($jeDate, $Jeh) = explode(' ', $harray[$i]['endHour'],2);
+											    	list($sHour, $sMin, $sSec) = explode(':', $Jsh,3);
+											    	list($eHour, $eMin, $eSec) = explode(':', $Jeh,3);
+											    	$tH = $eHour - $sHour;
+											    	$tM = $eMin - $sMin;
+											    	while($j < count($jobsarray))
+											    	      {
+											    	      	if($jobsarray[$j]['name'] == $jName)
+											    	      	     {
+											    	      	     	$jWage =  $jobsarray[$j]['wage'];
+											    	      	        $incDate = $jobsarray[$j]['incomeDate'];}
+											    	        $j++;									    	      	        
+											    	      }
+											    	$salary = ($tH * $jWage) + (($tM * 100 * $jWage)/6000);
+											    	$amnt = round($salary, 2);
+											    	list($yy, $mm, $dd) = explode('-', $incDate,3);
+											    	$incDate = sprintf('%02d.%02d.%4d', $dd, $mm, $yy);
+											    	if($incDate != date("d.m.Y") && $incDate != $date)	
+											    	{								    	
+												    	echo "<tr>";
+												    	echo "<td  class=\"greyinc roundedincleft\">(Expected $incDate)</td>";
+												    	echo "<td  class=\"greyinc roundedinccntr\">$jName</td>";
+												    	echo "<td  class=\"greyinc roundedincright\">$amnt$ </td>";
+												    	echo "</tr>";										    	
+											    	    $total += $amnt;
+											    	}
+											    	$i ++;
+											    	$j = 0;
+											    }  // while
 									    }
 								    echo "</table></div>";
 								    echo "<div class=\"daysumhead\" >TOTAL: $total$</div>";
@@ -501,23 +543,23 @@
 											      $amnt = $rowm['amount'];
 											      $trnstype = $rowm['transtype'];
 											      $descript = $rowm['description'];
-											      echo "<tr>";
-												  if ($amnt < 0){
-												  	   $div1 = "<td><img src=\"images/arrowDownRed.png\" class=\"MSImg\"/></td>";
-												   	   $div2 = "<td class=\"roundedincMleft\" style=\"cursor:help float:left;\" title=\"$descript\">";												   	  
-												   	   $div3 = "<td class=\"roundedincMright\" style=\"cursor:help\" title=\"$descript\">";
-												      }
-												   else {
-												   	   $div1 = "<td><img src=\"images/arrowUpGreen.png\" class=\"MSImg\"/></td>";
-												   	   $div2 = "<td  class=\"roundedincMleft\" style=\"cursor:help float:left;\" title=\"$descript\">";												   	  
-												   	   $div3 = "<td  class=\"roundedincMright\" style=\"cursor:help\" title=\"$descript\">";
-												      } 
-												   echo "{$div1}";
-											       echo "{$div2}$transname</td>";
-											       echo "{$div3}$amnt$ </td>";  
-											       echo "</tr>";	
-											       //echo "<br style=\"clear:left; clear:right;\"/>";
-											      $total += $amnt;
+											      if($amnt != null){
+											         echo "<tr>";											      
+														  if ($amnt < 0){
+														  	   $div1 = "<td><img src=\"images/arrowDownRed.png\" class=\"MSImg\"/></td>";
+														   	   $div2 = "<td class=\"roundedincMleft\" style=\"cursor:help float:left;\" title=\"$descript\">";												   	  
+														   	   $div3 = "<td class=\"roundedincMright\" style=\"cursor:help\" title=\"$descript\">";
+														      }
+														   else if ($amnt > 0){
+														   	   $div1 = "<td><img src=\"images/arrowUpGreen.png\" class=\"MSImg\"/></td>";
+														   	   $div2 = "<td  class=\"roundedincMleft\" style=\"cursor:help float:left;\" title=\"$descript\">";												   	  
+														   	   $div3 = "<td  class=\"roundedincMright\" style=\"cursor:help\" title=\"$descript\">";
+														      } 
+														   echo "{$div1}";
+													       echo "{$div2}$transname</td>";
+													       echo "{$div3}$amnt$ </td>";  
+													       echo "</tr>";														       													      
+											           }
 											  	 }
 											}
 										    echo "</table></div>";
