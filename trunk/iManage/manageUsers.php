@@ -59,9 +59,9 @@
 						            <td style="width:30%;">Edit Status:</td>
 						            <td colspan="2" style="width:50%;">
 						                <select name="usersStatus" id="UStatus_selector" class="delChooser" style="width:180px">
-							           		 <option value="0"> Regular</option>
-							           		 <option value="1"> Premium</option>
-							           		 <option value="2"> Admin</option>
+							           		 <option value="Regular"> Regular</option>
+							           		 <option value="Premium"> Premium</option>
+							           		 <option value="Admin"> Admin</option>
 							            </select>			                
 						            </td>
 						         </tr>
