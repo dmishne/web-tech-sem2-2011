@@ -58,7 +58,7 @@
 						         <tr>			            
 						            <td style="width:30%;">Edit Status:</td>
 						            <td colspan="2" style="width:50%;">
-						                <select name="usersStatus" id="UStatus_selector" class="delChooser" style="width:180px">
+						                <select name="Status" id="UStatusSelector" class="delChooser" style="width:180px">
 							           		 <option value="Regular"> Regular</option>
 							           		 <option value="Premium"> Premium</option>
 							           		 <option value="Admin"> Admin</option>
@@ -67,23 +67,23 @@
 						         </tr>
 						         <tr>
 						            <td style="width:30%;">Username:</td>
-						            <td colspan="2"><input id="Uusername" type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="16"></input></td>			   
+						            <td colspan="2"><input id="Uusername" name="Username" type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="16"></input></td>			   
 						         </tr>
 						         <tr>
 						            <td style="width:30%;">First Name:</td>
-						            <td colspan="2"><input id="UFirst_Name" type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="16"></input></td>
+						            <td colspan="2"><input id="UFirstName" name="FName" type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="16"></input></td>
 						         </tr>
 						         <tr>
 						            <td style="width:30%;">Last Name:</td>
-						            <td colspan="2"><input id="ULast_Name" type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="16"></input></td>
+						            <td colspan="2"><input id="ULastName" name="LName" type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="16"></input></td>
 						         </tr>
 						         <tr>
 						            <td style="width:30%;">Date of birth:</td>
-						            <td colspan="2"><input id="UBirthDate" type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="16"></input></td>
+						            <td colspan="2"><input id="UBirthDate" name="BD" type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="16"></input></td>
 						         </tr>
 						         <tr>
 						            <td style="width:30%;">Email Address:</td>
-						            <td colspan="2"><input id="UMail" type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="16"></input></td>
+						            <td colspan="2"><input id="UMail" name="EmailAdd" type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="16"></input></td>
 						         </tr>    					      
 						     </table> 
 						 </td> 
