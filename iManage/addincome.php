@@ -455,7 +455,7 @@
 							  if(!isset($date)){
 							  	 $date = sprintf('%02d.%02d.%4d', $curDay, $curMonth, $curYear);
 							     }	
-							  if($daySum->num_rows > 0){     
+							  if($daySum->num_rows > 0 || (isset($harray) && isset($jobsarray))){     
 							      echo "<div class=\"daysumhead\">Your balance for: $date</div>";	
 							      echo "<div style=\"min-height:83px; max-height:83px; overflow:auto;\"><table>";         
 									  while ($row2 = $daySum->fetch_array(MYSQLI_ASSOC)){

@@ -12,11 +12,11 @@ function MUSearch()
 		                    	     $.each(res, function(key, value){
 		                    	    	 switch (key)
 		                    	    	 {
-		                    	    	 case 'firstName':		                    	    		
-		                    	    		 $("#UFirst_Name").val(value);
+		                    	    	 case 'firstName':		                    	    		 
+		                    	    		 $("#UFirstName").val(value);
 		                    	    		 break;
 		                    	    	 case 'lastName':
-		                    	    		 $("#ULast_Name").val(value);
+		                    	    		 $("#ULastName").val(value);
 		                    	    		 break;
 		                    	    	 case 'dateOfBirth':
 		                    	    		 $("#UBirthDate").val(value);
@@ -25,7 +25,7 @@ function MUSearch()
 		                    	    		 $("#UMail").val(value);
 		                    	    		 break;
 		                    	    	 case 'name':
-		                    	    		 $("#UStatus_selector").val(value);
+		                    	    		 $("#UStatusSelector").val(value);
 		                    	    	 case 'statusChangeComment':
 		                    	    		 $("#manageUser_log").val(value);
 		                    	    	 }
@@ -50,11 +50,12 @@ function MUPost()
 {
 	$("#manageUser_form").submit(function()	
 			{
+		      // alert($('#UFirstName').val());
 				$.post("manageUsersForm.php",{ Username:$('#Uusername').val(),
-											   Fname:$('#UFirst_Name').val(),
-											   Lname:$('#ULast_Name').val(),
+											   FName:$('#UFirstName').val(),
+											   LName:$('#ULastName').val(),
 											   BD:$('#UBirthDate').val(),
-											   Status:$('#UStatus_selector').val(),
+											   Status:$('#UStatusSelector').val(),
 											   EmailAdd:$('#UMail').val(),
 					                           flag:2},
 		        		                       function(data)
