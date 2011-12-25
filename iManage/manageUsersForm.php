@@ -16,14 +16,14 @@ $flag = htmlspecialchars($_POST['flag'],ENT_QUOTES);
 if($flag == 1)   // search button
 {
 	$user = htmlspecialchars($_POST['search_username'],ENT_QUOTES);
-	//$res = $connection->query("CALL getUserInfo('$user')") or die(mysqli_error());
-	//if($res->num_rows > 0){
-		//$arr = new array();
-		//json...
-	/*}
+	$res = $connection->query("CALL getUserInfo('$user')") or die(mysqli_error());
+	if($res->num_rows > 0){		
+		$row = $res->fetch_array(MYSQLI_ASSOC);				
+		 echo json_encode($row, JSON_FORCE_OBJECT);					  
+	}
 	else  {
 	   echo "User Not Found!";
-	}*/
+	}
 }
 else if($flag == 2)   // save button
 {
@@ -47,13 +47,13 @@ else if($flag == 3)   // lock\unlock button
 {
 	$username = htmlspecialchars($_POST['Username'],ENT_QUOTES);
 	$comment = htmlspecialchars($_POST['log'],ENT_QUOTES);
-	//$res = $connection->query("CALL updateUserLock('$username','$comment')") or die(mysqli_error());
+	$res = $connection->query("CALL updateUserLock('$username','$comment')") or die(mysqli_error());
 	echo 0;
 }
 else if($flag == 4)   // delete button
 {
 	$username = htmlspecialchars($_POST['Username'],ENT_QUOTES);
-	//$res = $connection->query("CALL deleteUser('$username')") or die(mysqli_error());
+	$res = $connection->query("CALL deleteUser('$username')") or die(mysqli_error());
 	echo 0;
 }
 ?>

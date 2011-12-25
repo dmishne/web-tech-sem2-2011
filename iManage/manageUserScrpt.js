@@ -2,21 +2,36 @@
 function MUSearch()
 {
 	  $("#manageUser_search").submit(function()	
-			{			        		       
+			{	
 		        $.post("manageUsersForm.php",{ search_username:$('#search_username').val(), flag:1},
 		        		function(data)
 		        		{		        	         
 		                     if(data != "User Not Found!")
-		                    	 {
-		                    	     // after DB fix - insert data to the objects
-		                    	      $("#Uusername").val("me");
-		                    	      $("#UStatus_selector").val(2);
-		                    	      $("#UFirst_Name").val("Jek");
-		                    	      $("#ULast_Name").val("Jekjek");
-		                    	      $("#UBirthDate").val("13.12.1740");
-		                    	      $("#UMail").val("example@gmail.com");
-		                    	      $("#manageUser_log").val("no log, just testing");	    
-		                    	      
+		                    	 {		                    	   
+		                    	     var res = $.parseJSON(data);
+		                    	     $.each(res, function(key, value){
+		                    	    	 switch (key)
+		                    	    	 {
+		                    	    	 case 'firstName':		                    	    		
+		                    	    		 $("#UFirst_Name").val(value);
+		                    	    		 break;
+		                    	    	 case 'lastName':
+		                    	    		 $("#ULast_Name").val(value);
+		                    	    		 break;
+		                    	    	 case 'dateOfBirth':
+		                    	    		 $("#UBirthDate").val(value);
+		                    	    		 break;
+		                    	    	 case 'email':
+		                    	    		 $("#UMail").val(value);
+		                    	    		 break;
+		                    	    	 case 'name':
+		                    	    		 $("#UStatus_selector").val(value);
+		                    	    	 case 'statusChangeComment':
+		                    	    		 $("#manageUser_log").val(value);
+		                    	    	 }
+		                    	     });
+		                    	      $("#Uusername").val($('#search_username').val());
+   
 		                    	      $("#data_div").fadeIn(1500);
 		                    	      $("#buttons_div").fadeIn(1500);
 		                    	      $("#mail_div").fadeIn(2500);
@@ -35,7 +50,6 @@ function MUPost()
 {
 	$("#manageUser_form").submit(function()	
 			{
-		         alert("ok");
 				$.post("manageUsersForm.php",{ Username:$('#Uusername').val(),
 											   Fname:$('#UFirst_Name').val(),
 											   Lname:$('#ULast_Name').val(),
@@ -56,8 +70,7 @@ function MUPost()
 function L_U_D()
 {
     $("#unlock_user").click(function()	
-						{			
-    	                    alert("ok2");
+						{			   	                  
 					        $.post("manageUsersForm.php",{ Username:$('#Uusername').val(),log:$("#manageUser_log").val(),flag:3},
 					        		function(data)
      		                       {
@@ -74,7 +87,7 @@ function L_U_D()
                        });     // submit
    
     $("#lock_user").click(function()	
-			{   	        
+			{   	
 		        $.post("manageUsersForm.php",{ Username:$('#Uusername').val(),log:$("#manageUser_log").val(),flag:3},
 		        		function(data)
 	                       {
