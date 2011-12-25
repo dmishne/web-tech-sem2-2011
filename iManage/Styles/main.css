@@ -506,10 +506,23 @@ z-index:9;
 	padding:0px 3px;
 }
 
+.greyinc {
+	color: black;
+	border-style: groove;
+	border-width:3px;
+	background: #fbfbfb;
+	background: -webkit-gradient(linear, left top, left bottom, from(#7a7a7a), to(#fbfbfb));
+	background: -moz-linear-gradient(top,  #7a7a7a,  #fbfbfb);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#7a7a7a', endColorstr='#fbfbfb');
+	text-align:left;
+	text-decoration: none;
+	padding:0px 3px;
+}
+
 .roundedincleft{
 	float:left;
 	position:relative;
-	width:125px;
+	width:135px;
 	max-height:17px;
 	overflow:hidden;
 	margin: auto;
@@ -528,7 +541,7 @@ z-index:9;
 .roundedinccntr{
 	float:center;
 	position:relative;
-	width:220px;
+	width:210px;
 	max-height:17px;
 	overflow:hidden;
 	margin:auto;
