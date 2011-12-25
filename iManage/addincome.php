@@ -33,6 +33,7 @@
 				list($curDay, $curMonth, $curYear)= explode('.', $date,3);
 				else
 				list($curDay, $curMonth, $curYear) = explode('-', date('d-m-Y'),3);
+				$months = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
 	?>
 	
 	<?php 
@@ -449,7 +450,7 @@
 					<!--  Calendar declaration & creation  -->		
 					<div id="datepicker"></div> 
 		         </div>
-		         <div id="daysum">
+		        <div id="daysum">
 		            <?php  // if a day is clicked, view that date:
 		                      $total = 0;
 							  if(!isset($date)){
@@ -487,33 +488,38 @@
 							      echo "<div class=\"daysumhead\">You have no transactions for $date</div>"
 					  ?>
 		         </div>
-		         <div id="monthsum">
+		          <div id="monthsum">
 		             <?php // current month
-				             if($monthSum->num_rows > 0){
-				             	  echo "<div class=\"daysumhead\" style=\"font-size:12px; width:85%;\">Top 5 incomes/payouts for: $curMonth</div>";
-				                  echo "<div style=\"min-height:170px; max-height:170px; overflow:auto;\"><table>";         
+				             if($monthSum != null && $monthSum->num_rows > 0){
+				             	  $m = $months[$curMonth-1];
+				             	  echo "<div class=\"daysumhead\" style=\"font-size:12px; width:85%;\">Top transactions for: $m</div>";
+				                  echo "<div style=\"min-height:180px; overflow-y: scroll;\"><table>";         
 											  while ($rowm = $monthSum->fetch_array(MYSQLI_ASSOC)){
+											  	if($rowm != null && $rowm['transid'] != null)
+											  	{
 											      $transname = $rowm['transname'];
 											      $amnt = $rowm['amount'];
 											      $trnstype = $rowm['transtype'];
 											      $descript = $rowm['description'];
 											      echo "<tr>";
 												  if ($amnt < 0){
-												   	   $div1 = "<td class=\"redinc \" style=\"cursor:help float:left;\" title=\"$descript\">";
-												   	   $div2 = "<td class=\"redinc roundedinccntr\" style=\"cursor:help\" title=\"$descript\">";
-												   	   $div3 = "<td class=\"redinc \" style=\"cursor:help\" title=\"$descript\">";
+												  	   $div1 = "<td><img src=\"images/arrowDownRed.png\" class=\"MSImg\"/></td>";
+												   	   $div2 = "<td class=\"roundedincMleft\" style=\"cursor:help float:left;\" title=\"$descript\">";												   	  
+												   	   $div3 = "<td class=\"roundedincMright\" style=\"cursor:help\" title=\"$descript\">";
 												      }
 												   else {
-												   	   $div1 = "<td  class=\"greeninc \" style=\"cursor:help float:left;\" title=\"$descript\">";
-												   	   $div2 = "<td  class=\"greeninc roundedinccntr\" style=\"cursor:help\" title=\"$descript\">";
-												   	   $div3 = "<td  class=\"greeninc\" style=\"cursor:help\" title=\"$descript\">";
+												   	   $div1 = "<td><img src=\"images/arrowUpGreen.png\" class=\"MSImg\"/></td>";
+												   	   $div2 = "<td  class=\"roundedincMleft\" style=\"cursor:help float:left;\" title=\"$descript\">";												   	  
+												   	   $div3 = "<td  class=\"roundedincMright\" style=\"cursor:help\" title=\"$descript\">";
 												      } 
-												   //echo "{$div1}$trnstype</td>";
-											       echo "{$div1}$transname</td>";
+												   echo "{$div1}";
+											       echo "{$div2}$transname</td>";
 											       echo "{$div3}$amnt$ </td>";  
-											       echo "</tr>";					  
+											       echo "</tr>";	
+											       //echo "<br style=\"clear:left; clear:right;\"/>";
 											      $total += $amnt;
-											    }
+											  	 }
+											}
 										    echo "</table></div>";
 				             }
 						?>
