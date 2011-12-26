@@ -273,7 +273,7 @@ include_once "ini.php";
 			                   }		//   if($result->num_rows > 0)	 
 			                   if($cnt == 0 && isset($_SESSION['deletedate']))
 			                   {
-			                   	echo "<p  class=\"pfont\" style=\"font-size:14px\">No payout results for this month</p>";
+			                   	echo "<p  class=\"pfont\" style=\"font-size:14px\">No income results for this month</p>";
 			                   }   
 				              $_SESSION['deletedate']= null;
 				              unset($_SESSION['deletedate']);
