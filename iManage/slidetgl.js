@@ -84,6 +84,7 @@ function updtWorkinfo(id){
 		    document.getElementById("updtperiod").style.display="none";
 		    document.getElementById("firstDate").style.display="table-row";
 		    document.getElementById("secondDate").style.display="none";
+		    
 		}
 		else {
 		    document.getElementById("name2").value = rectable[idx]['recname'];
@@ -175,6 +176,7 @@ function updtWorkinfo(id){
 		    document.getElementById("pupdtperiod").style.display="none";
 		    document.getElementById("pfirstDate").style.display="table-row";
 		    document.getElementById("psecondDate").style.display="none";
+		    document.getElementById("pemail").checked = false;
 		}
 		else {
 		    document.getElementById("pname2").value = prectable[idx]['recname'];
@@ -203,6 +205,13 @@ function updtWorkinfo(id){
 			    	document.getElementById("prslct").selectedIndex = 4;
 			    	break;
 		     }
+		    if (prectable[idx]["noteDate"] != null)
+		    {
+		    	document.getElementById("pemail").checked = true;
+		    }
+		    else{
+		    	document.getElementById("pemail").checked = false;
+		    }
 		   }
 	}
 }
