@@ -39,6 +39,14 @@ if($formN == 4) //  add recuring payout
 	$sday2 = verifyInput($_POST['pdayU']);
 	$smonth2 = verifyInput($_POST['pmonthU']);
 	$syear2 = verifyInput($_POST['pyearU']);
+	if ( isset($_POST['pemail']))
+	{
+		$pemail = verifyInput($_POST['pemail']);
+	}
+	else {
+		$pemail = '0';
+	}
+	
 	if(!checkdate(intval($smonth),intval($sday),intval($syear))){
 		$usrinpt['date'] = "error";
 		$usrinpt['err4'] = 1;
@@ -52,7 +60,12 @@ if($formN == 4) //  add recuring payout
 	   $usrinpt['amount']=null;
 	   $usrinpt['err4'] = null;
 	   if($selected == 'New'){
-	          $res = $connection->query("CALL insertTransaction('$amount','$username','$transdate','$transcustomname','$recurrance','$transtypeid',null,'$description')") or die(mysqli_error());
+	   		if($pemail == '0'){
+	   		  	$year_mon_day = null;
+	   		  } else {
+	   		  	$year_mon_day = "'$transdate'";
+	   		  } 
+	   		  $res = $connection->query("CALL insertTransaction('$amount','$username','$transdate','$transcustomname','$recurrance','$transtypeid',$year_mon_day,'$description')") or die(mysqli_error());
 	   }
 	   else if($selected != 'New'){
 	   	      $period = verifyInput($_POST['pchangeP']);
@@ -60,7 +73,8 @@ if($formN == 4) //  add recuring payout
 	   	      if(!$period){
 	   	      	$period = '3';
 	   	      }
-	   	      $res = $connection->query("CALL editRecurringTransDetails('$selected','$transcustomname','$description','$recurrance','$amount','$period','$transdate')") or die(mysqli_error());
+	   	      $pemaili  = intval($pemail);
+	   	      $res = $connection->query("CALL editRecurringTransDetails('$selected','$transcustomname','$description','$recurrance','$amount','$period','$transdate',$pemaili)") or die(mysqli_error());
 	   }
 	   
 	   $_SESSION['update'] = 1;

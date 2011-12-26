@@ -249,13 +249,12 @@
 								          <b>/</b><input type="text" name="pmonthU" size="1" maxlength="2" class="inpt" value="<?php echo $curMonth; ?>"/>
 								          <b>/</b><input type="text" name="pyearU" size="2" maxlength="4" class="inpt" value="<?php echo $curYear; ?>"/></td>
 							          </tr>
+							          <tr><td class="pfont"><label for="pemail"> Send Reminder Email </label></td><td><input type="checkbox" id="pemail" name="pemail" value="1"/></td></tr>
 							          <tr><td colspan="2" class="pfont" id="pupdtperiod" style="display:none">
 							          <input type="radio" id="td" value="1" name="pchangeP"/><label for="td" style="margin-right:20px">This date</label>
                                       <input type="radio" id="fn" value="2" name="pchangeP"/><label for="fn" style="margin-right:20px">From now</label>
                                       <input type="radio" id="fa" value="3" name="pchangeP"/><label for="fa" >For all </label>
                                       </td></tr>
-							     
-							       
 							     </table>  
 						     </td>
 						     <td width="35%">
