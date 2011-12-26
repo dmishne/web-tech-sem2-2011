@@ -19,13 +19,11 @@
 	</script>
 	<script type="text/javascript" src="JQueryUI/jquery-ui-1.8.16.custom.min.js"> </script>
 	<link rel="stylesheet" href="JQueryUI/jquery-ui-1.8.16.custom.css" type="text/css"/>
-	<style type="text/css">
-	
+	<style type="text/css">	
 		.ui-widget {
 			font-size: 0.8em;
 		}	
-	</style>
-	
+	</style>	
 </head>
 
 <body>
@@ -58,6 +56,7 @@
 					 </tr>
 				   </table>
 			     </div>
+			     </form>
 			     <div id="delete-confirm" title="Delete User" style="display: none; font-size:14px; min-height:0;">
 	               <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This user will be deleted from the system,
 	                                                                                                       but his data will still available for search!. 
@@ -75,6 +74,12 @@
                  <div id="UEditFail" title="User Info Update" style="display: none; font-size:14px; min-height:0;">
 	               <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Fail to update user!</p>
                  </div>
+                 <div id="UunlockFail" title="User Unlock" style="display: none; font-size:14px; min-height:0;">
+	               <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Fail to unlock user!</p>
+                 </div>
+                 <div id="UlockFail" title="User Lock" style="display: none; font-size:14px; min-height:0;">
+	               <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Fail to lock user!</p>
+                 </div>
 			     <div id="uStatus" style="display:none;">
 			          <table class="ManageUserTablesStyle" style="width:100%;">
 			             <tr align="center"> 
@@ -83,8 +88,7 @@
 			                  </td>
 			             </tr>
 				      </table>  
-			     </div>
-			     </form>
+			     </div>		     
 			     <form method="post" action="" id="manageUser_form">
 			     <div id="data_div" style="display:none">
 			        <table style="width:100%;">
