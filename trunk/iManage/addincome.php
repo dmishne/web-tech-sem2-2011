@@ -529,7 +529,7 @@
 							  else 
 							      echo "<div class=\"daysumhead\">You have no transactions for $date</div>"
 					  ?>
-		         </div>
+		          </div>
 		          <div id="monthsum">
 		             <?php // current month
 				             if($monthSum != null && $monthSum->num_rows > 0){

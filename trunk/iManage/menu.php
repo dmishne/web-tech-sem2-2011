@@ -29,10 +29,5 @@
 			<li> Balance forecast report </li>
 		</ul>
 	</li>
-	<li class="toggleable"> User Management
-		<ul id="userManagementMenu">
-			<li> Promote user </li>
-			<li> <a href="manageUsers.php">Lock/Unlock user </a></li>
-		</ul>
-	</li>
+	<li class="noBullet"><a href="manageUsers.php"> User Management</a></li>
 </ul>

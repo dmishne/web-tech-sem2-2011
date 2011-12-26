@@ -15,7 +15,17 @@
 		$(document).ready(function(){MUSearch();});
 		$(document).ready(function(){MUPost();});
 		$(document).ready(function(){L_U_D();});
+		$(document).ready(function(){eMail();});
 	</script>
+	<script type="text/javascript" src="JQueryUI/jquery-ui-1.8.16.custom.min.js"> </script>
+	<link rel="stylesheet" href="JQueryUI/jquery-ui-1.8.16.custom.css" type="text/css"/>
+	<style type="text/css">
+	
+		.ui-widget {
+			font-size: 0.8em;
+		}	
+	</style>
+	
 </head>
 
 <body>
@@ -48,6 +58,32 @@
 					 </tr>
 				   </table>
 			     </div>
+			     <div id="delete-confirm" title="Delete User" style="display: none; font-size:14px; min-height:0;">
+	               <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This user will be deleted from the system,
+	                                                                                                       but his data will still available for search!. 
+	                                                                                                       Are you sure?</p>
+                 </div>
+                 <div id="Udeleted" title="Delete User" style="display: none; font-size:14px; min-height:0;">
+	               <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>User Deleted!</p>
+                 </div>
+                 <div id="Udeletefail" title="Delete User" style="display: none; font-size:14px; min-height:0;">
+	               <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Fail to delete user!</p>
+                 </div>
+                 <div id="UEditSucc" title="User Info Update" style="display: none; font-size:14px; min-height:0;">
+	               <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>User information updated!</p>
+                 </div>
+                 <div id="UEditFail" title="User Info Update" style="display: none; font-size:14px; min-height:0;">
+	               <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Fail to update user!</p>
+                 </div>
+			     <div id="uStatus" style="display:none;">
+			          <table class="ManageUserTablesStyle" style="width:100%;">
+			             <tr align="center"> 
+			                  <td><h2 id="message1" style="display:none; margin:0px; color:red; font-family:Arial Rounded MT Bold’, Helvetica, Arial, sans-serif;">User Locked</h2>
+			                      <h2 id="message2" style="display:none; margin:0px; color:red; font-family:Arial Rounded MT Bold’, Helvetica, Arial, sans-serif;">User Deleted</h2>
+			                  </td>
+			             </tr>
+				      </table>  
+			     </div>
 			     </form>
 			     <form method="post" action="" id="manageUser_form">
 			     <div id="data_div" style="display:none">
@@ -67,23 +103,23 @@
 						         </tr>
 						         <tr>
 						            <td style="width:30%;">Username:</td>
-						            <td colspan="2"><input id="Uusername" name="Username" type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="16"></input></td>			   
+						            <td colspan="2"><input id="Uusername" name="Username" type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="30"></input></td>			   
 						         </tr>
 						         <tr>
 						            <td style="width:30%;">First Name:</td>
-						            <td colspan="2"><input id="UFirstName" name="FName" type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="16"></input></td>
+						            <td colspan="2"><input id="UFirstName" name="FName" type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="30"></input></td>
 						         </tr>
 						         <tr>
 						            <td style="width:30%;">Last Name:</td>
-						            <td colspan="2"><input id="ULastName" name="LName" type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="16"></input></td>
+						            <td colspan="2"><input id="ULastName" name="LName" type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="40"></input></td>
 						         </tr>
 						         <tr>
 						            <td style="width:30%;">Date of birth:</td>
-						            <td colspan="2"><input id="UBirthDate" name="BD" type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="16"></input></td>
+						            <td colspan="2"><input id="UBirthDate" name="BD" type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="10"></input></td>
 						         </tr>
 						         <tr>
 						            <td style="width:30%;">Email Address:</td>
-						            <td colspan="2"><input id="UMail" name="EmailAdd" type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="16"></input></td>
+						            <td colspan="2"><input id="UMail" name="EmailAdd" type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="100"></input></td>
 						         </tr>    					      
 						     </table> 
 						 </td> 
@@ -115,6 +151,12 @@
 			    </div>
 			    </form>
 			    <div style="min-height:20px;"><p id="spn" style="display:none; font-color:green;"></p></div> 
+			    <div id="mailSended" title="Email Response" style="display: none; font-size:14px; min-height:0;">
+	               <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Email succesfuly sended to user!</p>
+                 </div>
+                 <div id="mailNotSended" title="Email Response" style="display: none; font-size:14px; min-height:0;">
+	               <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Email sending failed!</p>
+                 </div>
 			    <div id="mail_div" style="display:none">
 			        <table class="ManageUserTablesStyle" style="width:100%;">
 			             <tr style="text-align:center;"> 
@@ -125,10 +167,10 @@
 				              <td><input id="Mail_subject" type="text" class="inpt" style="position:relative; top:0px;" size="125" maxlength="150"></input></td>
 				         </tr>			           					           						           					           						           		
 				         <tr>				           		   
-				           	  <td colspan="2" align="center"><textarea rows="8" cols="145" class="inpt"></textarea> </td>
+				           	  <td colspan="2" align="center"><textarea id="mailBody" rows="8" cols="145" class="inpt"></textarea> </td>
 				         </tr>
 				         <tr align="left">
-				           	  <td id="eot" colspan="2" style="padding-left:25px"><input type="submit" style="display:table-cell;" value="Send" class="blue button small bround"></input></td>
+				           	  <td id="eot" colspan="2" style="padding-left:25px"><input id="sendMail" type="button" style="display:table-cell;" value="Send" class="blue button small bround"></input></td>
 				         </tr>	
 
 			        </table>

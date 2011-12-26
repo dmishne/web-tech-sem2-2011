@@ -368,7 +368,7 @@
 							  if(!isset($date)){
 							  	 $date = sprintf('%02d.%02d.%4d', $curDay, $curMonth, $curYear);
 							     }	
-							  if($daySum->num_rows > 0){     
+							  if($daySum->num_rows > 0 || (isset($harray) && isset($jobsarray))){     
 							      echo "<div class=\"daysumhead\">Your balance for: $date</div>";	
 							      echo "<div style=\"min-height:83px; max-height:83px; overflow:auto;\"><table>";         
 									  while ($row2 = $daySum->fetch_array(MYSQLI_ASSOC)){
@@ -376,64 +376,73 @@
 									      $amnt = $row2['amount'];
 									      $trnstype = $row2['transtype'];
 									      $descript = $row2['description'];
-									      echo "<tr>";
-										  if ($amnt < 0){
-										   	   $div1 = "<td class=\"redinc roundedincleft\" style=\"cursor:help\" title=\"$descript\">";
-										   	   $div2 = "<td class=\"redinc roundedinccntr\" style=\"cursor:help\" title=\"$descript\">";
-										   	   $div3 = "<td class=\"redinc roundedincright\" style=\"cursor:help\" title=\"$descript\">";
-										      }
-										   else if ($amnt > 0 || $amnt == null) {
-										   	   $div1 = "<td  class=\"greeninc roundedincleft\" style=\"cursor:help\" title=\"$descript\">";
-										   	   $div2 = "<td  class=\"greeninc roundedinccntr\" style=\"cursor:help\" title=\"$descript\">";
-										   	   $div3 = "<td  class=\"greeninc roundedincright\" style=\"cursor:help\" title=\"$descript\">";
-	  
-										      }									     	
-										   echo "{$div1}$trnstype</td>";
-									       echo "{$div2}$transname</td>";
-									       echo "{$div3}$amnt$ </td>";  
-									       echo "</tr>";					  
-									      $total += $amnt;
+									      if($amnt != null)
+									      {
+										      echo "<tr>";
+											  if ($amnt < 0){
+											   	   $div1 = "<td class=\"redinc roundedincleft\" style=\"cursor:help\" title=\"$descript\">";
+											   	   $div2 = "<td class=\"redinc roundedinccntr\" style=\"cursor:help\" title=\"$descript\">";
+											   	   $div3 = "<td class=\"redinc roundedincright\" style=\"cursor:help\" title=\"$descript\">";
+											      }
+											   else if ($amnt > 0) {
+											   	   $div1 = "<td  class=\"greeninc roundedincleft\" style=\"cursor:help\" title=\"$descript\">";
+											   	   $div2 = "<td  class=\"greeninc roundedinccntr\" style=\"cursor:help\" title=\"$descript\">";
+											   	   $div3 = "<td  class=\"greeninc roundedincright\" style=\"cursor:help\" title=\"$descript\">";
+		  
+											      }									     	
+											   echo "{$div1}$trnstype</td>";
+										       echo "{$div2}$transname</td>";
+										       echo "{$div3}$amnt$ </td>";  
+										       echo "</tr>";					  
+										      $total += $amnt;
+									      }
 									    }  // while
 									    // need to calculate this day salary
 									    $i = 0;
 									    $j = 0;
-									    while($i < count($harray))
+									    if(isset($harray) && isset($jobsarray))
 									    {
-									    	$jName = $harray[$i]['transname'];
-									    	list($jsDate, $Jsh) = explode(' ', $harray[$i]['startHour'],2);
-									    	list($jeDate, $Jeh) = explode(' ', $harray[$i]['endHour'],2);
-									    	list($sHour, $sMin, $sSec) = explode(':', $Jsh,3);
-									    	list($eHour, $eMin, $eSec) = explode(':', $Jeh,3);
-									    	$tH = $eHour - $sHour;
-									    	$tM = $eMin - $sMin;
-									    	while($j < count($jobsarray))
-									    	      {
-									    	      	if($jobsarray[$j]['name'] == $jName)
-									    	      	     {
-									    	      	     	$jWage =  $jobsarray[$j]['wage'];
-									    	      	        $incDate = $jobsarray[$j]['incomeDate'];}
-									    	        $j++;									    	      	        
-									    	      }
-									    	$salary = ($tH * $jWage) + (($tM * 100 * $jWage)/6000);
-									    	$amnt = round($salary, 2);
-									    	list($yy, $mm, $dd) = explode('-', $incDate,3);
-									    	$incDate = sprintf('%02d.%02d.%4d', $dd, $mm, $yy);									    	
-									    	echo "<tr>";
-									    	echo "<td  class=\"greyinc roundedincleft\">(Expected $incDate)</td>";
-									    	echo "<td  class=\"greyinc roundedinccntr\">$jName</td>";
-									    	echo "<td  class=\"greyinc roundedincright\">$amnt$ </td>";
-									    	echo "</tr>";
-									    	$total += $amnt;
-									    	$i ++;
-									    	$j = 0;
-									    }  // while
+											    while($i < count($harray))
+											    {
+											    	$jName = $harray[$i]['transname'];
+											    	list($jsDate, $Jsh) = explode(' ', $harray[$i]['startHour'],2);
+											    	list($jeDate, $Jeh) = explode(' ', $harray[$i]['endHour'],2);
+											    	list($sHour, $sMin, $sSec) = explode(':', $Jsh,3);
+											    	list($eHour, $eMin, $eSec) = explode(':', $Jeh,3);
+											    	$tH = $eHour - $sHour;
+											    	$tM = $eMin - $sMin;
+											    	while($j < count($jobsarray))
+											    	      {
+											    	      	if($jobsarray[$j]['name'] == $jName)
+											    	      	     {
+											    	      	     	$jWage =  $jobsarray[$j]['wage'];
+											    	      	        $incDate = $jobsarray[$j]['incomeDate'];}
+											    	        $j++;									    	      	        
+											    	      }
+											    	$salary = ($tH * $jWage) + (($tM * 100 * $jWage)/6000);
+											    	$amnt = round($salary, 2);
+											    	list($yy, $mm, $dd) = explode('-', $incDate,3);
+											    	$incDate = sprintf('%02d.%02d.%4d', $dd, $mm, $yy);
+											    	if($incDate != date("d.m.Y") && $incDate != $date)	
+											    	{								    	
+												    	echo "<tr>";
+												    	echo "<td  class=\"greyinc roundedincleft\">(Expected $incDate)</td>";
+												    	echo "<td  class=\"greyinc roundedinccntr\">$jName</td>";
+												    	echo "<td  class=\"greyinc roundedincright\">$amnt$ </td>";
+												    	echo "</tr>";										    	
+											    	    $total += $amnt;
+											    	}
+											    	$i ++;
+											    	$j = 0;
+											    }  // while
+									    }
 								    echo "</table></div>";
 								    echo "<div class=\"daysumhead\" >TOTAL: $total$</div>";
 							   }
 							  else 
 							      echo "<div class=\"daysumhead\">You have no transactions for $date</div>"
 					  ?>
-		         </div>
+		          </div>
 		         <div id="monthsum">
 		             <?php // current month
 				             if($monthSum != null && $monthSum->num_rows > 0){
