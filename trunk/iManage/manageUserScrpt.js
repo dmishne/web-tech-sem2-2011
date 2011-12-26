@@ -2,7 +2,7 @@
 function MUSearch()
 {
 	  $("#manageUser_search").submit(function()	
-			{	
+			{
 		        $.post("manageUsersForm.php",{ search_username:$('#search_username').val(), flag:1},
 		        		function(data)
 		        		{		        	         
@@ -127,18 +127,28 @@ function MUPost()
 function L_U_D()
 {
     $("#unlock_user").click(function()	
-						{			   	                  
+						{			
+					    	  /* var d = new Date(year, month, day, hours, minutes);
+						       var old_comment = $("#manageUser_log").val();
+						       var new_comment = old_comment + "\nUpdateLock" + d;
+						       $("#manageUser_log").val(new_comment);*/
 					        $.post("manageUsersForm.php",{ Username:$('#Uusername').val(),log:$("#manageUser_log").val(),flag:3},
 					        		function(data)
      		                       {
-					        	       if(data == 0)
-					        	    	   {
-					        	    	       var d = new Date(year, month, day, hours, minutes);
-					        	    	       var old_comment = $("#manageUser_log").val();
-					        	    	       var new_comment = old_comment + "\nUpdateLock" + d;
-					        	    	       $("#manageUser_log").val(new_comment);
-					        	    	   }
-					        	       else{alert("Fail to unlock user...")}
+						        	if(data == "fail")
+				        	           {
+				        	    	   $(function() {					        	    			
+				        	    			$( "#dialog:ui-dialog" ).dialog( "destroy" );							        	    		
+				        	    			$( "#UunlockFail" ).dialog({
+				        	    				modal: true,
+				        	    				buttons: {
+				        	    					Ok: function() {
+				        	    						$( this ).dialog( "close" );
+				        	    					}
+				        	    				}
+				        	    			});
+				        	    		});
+				        	           }
 					             });  // post
 					        $('#search_username').val($('#Uusername').val());  // set search field to new username
 					        $("#manageUser_search").trigger('submit');
@@ -146,17 +156,27 @@ function L_U_D()
    
     $("#lock_user").click(function()	
 			{   	
+    	    /*var d = new Date(year, month, day, hours, minutes);
+	        var old_comment = $("#manageUser_log").val();
+	        var new_comment = old_comment + "\nUpdateLock" + d;
+	       $("#manageUser_log").val(new_comment);*/
 		        $.post("manageUsersForm.php",{ Username:$('#Uusername').val(),log:$("#manageUser_log").val(),flag:3},
 		        		function(data)
-	                       {
-		        	       if(data == 0)
-		        	    	   {
-		        	    	       var d = new Date(year, month, day, hours, minutes);
-		        	    	       var old_comment = $("#manageUser_log").val();
-		        	    	       var new_comment = old_comment + "\nUpdateLock" + d;
-		        	    	       $("#manageUser_log").val(new_comment);
-		        	    	   }
-		        	       else{alert("Fail to lock user...")}
+	                       {		        	       
+		        	       if(data == "fail")
+		        	           {
+		        	    	   $(function() {					        	    			
+		        	    			$( "#dialog:ui-dialog" ).dialog( "destroy" );							        	    		
+		        	    			$( "#UlockFail" ).dialog({
+		        	    				modal: true,
+		        	    				buttons: {
+		        	    					Ok: function() {
+		        	    						$( this ).dialog( "close" );
+		        	    					}
+		        	    				}
+		        	    			});
+		        	    		});
+		        	           }
 		                });    // post
 		        $('#search_username').val($('#Uusername').val());  // set search field to new username
 		        $("#manageUser_search").trigger('submit');
