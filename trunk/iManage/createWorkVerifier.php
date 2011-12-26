@@ -55,7 +55,13 @@ if (!isset($_POST["job_to_del"]))
 		
 		if ($work_id == "")
 		{
-			$year_mon_day = date("Y-m-d",mktime(0,0,0,date("m")+1,$day,date("Y")));
+			If ($day < intval(date("d")) )
+			{
+				$year_mon_day = date("Y-m-d",mktime(0,0,0,date("m")+1,$day,date("Y")));
+			} 
+			else {
+				$year_mon_day = date("Y-m-d",mktime(0,0,0,date("m"),$day,date("Y")));
+			}
 			$res = $connection->query("CALL insertJob('$username','$jobsname','$desc',$wage,'$year_mon_day')") or die(mysqli_error());
 			$userDetails = $res->fetch_array(MYSQLI_NUM);
 			if($userDetails[0] == 0)
@@ -79,7 +85,13 @@ if (!isset($_POST["job_to_del"]))
 				}
 			}
 			if ($isWorkIdCorrect == 1) {
-				$year_mon_day = date("Y-m-d",mktime(0,0,0,date("m")+1,$day,date("Y")));
+				If ($day < intval(date("d")) )
+				{
+					$year_mon_day = date("Y-m-d",mktime(0,0,0,date("m")+1,$day,date("Y")));
+				} 
+				else {
+					$year_mon_day = date("Y-m-d",mktime(0,0,0,date("m"),$day,date("Y")));
+				}
 				$res = $connection->query("CALL editJobDetails($work_id,'$jobsname','$desc',$wage,'$year_mon_day')") or die(mysqli_error());
 				$userDetails = $res->fetch_array(MYSQLI_NUM);
 				if($userDetails[0] == $year_mon_day)
