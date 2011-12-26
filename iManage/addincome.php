@@ -235,14 +235,14 @@
 							                 <b>:</b><input type="text" name="startm" class="inpt" size="6" maxlength="2" id="rsm" onchange="rDayWageTotal()"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['time1']) && $usrinpt['time1'] == "error"){
-		            			            echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Incorect time </div> </td> </tr>";}?>
+		            			            echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Incorrect time </div> </td> </tr>";}?>
 							       <tr>
 							         <td width="45%" class="pfont">End Hour(hh:mm): </td>
 							         <td width="55%"><input type="text" name="endh" class="inpt" size="6" maxlength="2" id="reh" onchange="rDayWageTotal()"/>
 							                 <b>:</b><input type="text" name="endm" class="inpt" size="6" maxlength="2" id="rem" onchange="rDayWageTotal()"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['time2']) && $usrinpt['time2'] == "error"){
-		            			            echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Incorect time </div> </td> </tr>";}?>
+		            			            echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Incorrect time </div> </td> </tr>";}?>
 							       
 							       <tr>
 							         <td width="45%" class="pfont">Total per Day: </td>
