@@ -36,7 +36,7 @@ function MUSearch()
 					       	    			});
 					       	    		});		                    	 
 					               	 }
-							        else if(data != "User Not Found!")
+							        else if(data != "UserNotFound")
 				                    	 {		                    	   
 				                    	     var res = $.parseJSON(data);
 				                    	     $.each(res, function(key, value){
@@ -165,7 +165,7 @@ function L_U_D()
 						       var new_comment = old_comment + "\nUpdateLock" + d;
 						       $("#manageUser_log").val(new_comment);*/
 					        $.post("manageUsersForm.php",{ Username:$('#Uusername').val(),log:$("#manageUser_log").val(),flag:3},
-					        		function(data)
+					        	   function(data)
      		                       {
 						        	if(data == "fail")
 				        	           {
