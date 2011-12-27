@@ -21,7 +21,7 @@ function MUSearch()
 		        	{
 				        $.post("manageUsersForm.php",{ search_username:$('#search_username').val(), flag:1},
 				        		function(data)
-				        		{				        	
+				        		{					        	      
 							       if(data == "AccessDenied")
 					               	 {
 					               	 $(function() {					        	    			
@@ -68,6 +68,9 @@ function MUSearch()
 				                    	    			 $("#uStatus").hide();
 				                    	    			 $("#message").val("");
 				                    	    			 $("#delete_user").attr('disabled', false);
+				                    	    			 $("#unlock_user").attr('disabled', true);
+				                    	    			 $("#unlock_user").attr('class','liteblue button small bround');
+				                    	    			 $("#lock_user").attr('class','blue button small bround');
 				                    	    			 }
 				                    	    		 else if(value == 2)
 				                    	    			 {
@@ -79,6 +82,9 @@ function MUSearch()
 				                    	    			 $("#message1").show();
 				                    	    			 $("#message2").hide();
 				                    	    			 $("#delete_user").attr('disabled', false);
+				                    	    			 $("#lock_user").attr('disabled', true);
+				                    	    			 $("#lock_user").attr('class','liteblue button small bround');
+				                    	    			 $("#unlock_user").attr('class','blue button small bround');
 				                    	    			 }
 				                    	    		 else if(value == 3)
 				                    	    			 {
@@ -86,6 +92,7 @@ function MUSearch()
 				                    	    			 $("#message2").show();
 				                    	    			 $("#message1").hide();
 				                    	    			 $("#delete_user").attr('disabled', true);
+				                    	    			 $("#delete_user").attr('class','liteblue button small bround');
 				                    	    			 }
 				                    	    	 }
 				                    	     });
@@ -98,7 +105,27 @@ function MUSearch()
 				                     
 							        else
 				                    	 {
-				                    	     alert("User not found!");
+							        	 $(function() {					        	    			
+					        	    			$( "#dialog:ui-dialog" ).dialog( "destroy" );							        	    		
+					        	    			$( "#USearchFail" ).dialog({
+					        	    				modal: true,
+					        	    				buttons: {
+					        	    					Ok: function() {
+					        	    						$( this ).dialog( "close" );
+					        	    					}
+					        	    				}
+					        	    			});
+					        	    		});				                    		                    	    		 
+		                    	    		 $("#UFirstName").val("");		                    	    		
+		                    	    		 $("#ULastName").val("");		                    	    		
+		                    	    		 $("#UBirthDate").val("");		                    	    		
+		                    	    		 $("#UMail").val("");		                    	    		
+		                    	    		 $("#Uusername").val("");		                    	    	 
+		                    	    		 $("#manageUser_log").val("");
+		                    	    		 $("#data_div").fadeOut(2000);
+					                 	     $("#buttons_div").fadeOut(1500);
+					                 	     $("#mail_div").fadeOut(1000);
+					                 	     $("#uStatus").hide();
 				                    	 }
 				        		});    //   post
 		        	}
@@ -111,7 +138,6 @@ function MUPost()
 {
 	$("#manageUser_form").submit(function()	
 			{
-		      // alert($('#UFirstName').val());
 				$.post("manageUsersForm.php",{ Username:$('#Uusername').val(),
 											   FName:$('#UFirstName').val(),
 											   LName:$('#ULastName').val(),
@@ -159,12 +185,9 @@ function MUPost()
 function L_U_D()
 {
     $("#unlock_user").click(function()	
-						{			
-					    	  /* var d = new Date(year, month, day, hours, minutes);
-						       var old_comment = $("#manageUser_log").val();
-						       var new_comment = old_comment + "\nUpdateLock" + d;
-						       $("#manageUser_log").val(new_comment);*/
-					        $.post("manageUsersForm.php",{ Username:$('#Uusername').val(),log:$("#manageUser_log").val(),flag:3},
+						{	
+    	                    var stu = $("#uStatus").css('display');	                    
+					        $.post("manageUsersForm.php",{ Username:$('#Uusername').val(),log:$("#manageUser_log").val(),userStatus:stu,flag:3},
 					        	   function(data)
      		                       {
 						        	if(data == "fail")
@@ -188,11 +211,8 @@ function L_U_D()
    
     $("#lock_user").click(function()	
 			{   	
-    	    /*var d = new Date(year, month, day, hours, minutes);
-	        var old_comment = $("#manageUser_log").val();
-	        var new_comment = old_comment + "\nUpdateLock" + d;
-	       $("#manageUser_log").val(new_comment);*/
-		        $.post("manageUsersForm.php",{ Username:$('#Uusername').val(),log:$("#manageUser_log").val(),flag:3},
+    	          var stl = $("#uStatus").css('display');
+		        $.post("manageUsersForm.php",{ Username:$('#Uusername').val(),log:$("#manageUser_log").val(),userStatus:stl,flag:3},
 		        		function(data)
 	                       {		        	       
 		        	       if(data == "fail")

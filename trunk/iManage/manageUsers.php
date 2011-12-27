@@ -71,6 +71,9 @@
                  <div id="nullSearch" title="User Search" style="display: none; font-size:14px; min-height:0;">
 	               <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Please, insert loginname to search... </p>
                  </div>
+                 <div id="USearchFail" title="User Search" style="display: none; font-size:14px; min-height:0;">
+	               <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>User not found </p>
+                 </div>
 			     <div id="delete-confirm" title="Delete User" style="display: none; font-size:14px; min-height:0;">
 	               <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This user will be deleted from the system,
 	                                                                                                       but his data will still available for search!. 
