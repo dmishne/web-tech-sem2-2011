@@ -813,5 +813,13 @@ table.ManageUserTablesStyleB td, #eot
 	text-shadow: 0 2px 2px rgba(0,0,0,.3);
 }
 
+.liteblue {
+    color: #d9eef7;
+    border: solid 1px #bcbcbe;
+    background: #f9f9f7;
+    background: -webkit-gradient(linear, left top, left bottom, from(#f9f9f7), to(#b2b2b2));
+    background: -moz-linear-gradient(top,  #f9f9f7,  #b2b2b2);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f7', endColorstr='#b2b2b2');
+
 
 /*###################### user manager (end) ###########################*/

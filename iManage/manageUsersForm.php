@@ -24,8 +24,8 @@ else {
 			$user = verifyInput($_POST['search_username'],ENT_QUOTES);
 			$res = $connection->query("CALL getUserInfo('$user')") or die(mysqli_error());
 			if($res->num_rows > 0){						
-				$row = $res->fetch_array(MYSQLI_ASSOC);
-				if(isset($row["-1"]) && $row["-1"] == -1){							     
+				$row = $res->fetch_array(MYSQLI_BOTH);				
+				if($row[0] == -1){							     
 				     echo "UserNotFound";
 				 }
 			    else {
@@ -55,7 +55,17 @@ else {
 		{
 			$username = verifyInput($_POST['Username'],ENT_QUOTES);
 			$comment = verifyInput($_POST['log'],ENT_QUOTES);
-			$res3 = $connection->query("CALL updateUserLock('$username','$comment')") or die(mysqli_error());
+			$userStatus = verifyInput($_POST['userStatus'],ENT_QUOTES);
+			$currentDate = date("d.m.Y H:i");
+			if($userStatus == "block")  // was locked
+			{
+			    $newComment = "$comment \nUser Unlocked - $currentDate";
+			}
+			else if($userStatus == "none")  // was unlocked
+			{
+				$newComment = "$comment \nUser Locked - $currentDate";
+			}
+			$res3 = $connection->query("CALL updateUserLock('$username','$newComment')") or die(mysqli_error());
 			if($res3->num_rows > 0)
 			{
 				$row3 = $res3->fetch_array(MYSQLI_NUM);
