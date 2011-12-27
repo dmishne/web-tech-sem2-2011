@@ -1,5 +1,9 @@
 <?php
 // don't cache this page
+
+include "beforeLoadCheck.php";
+include "sessionVerifier.php";
+
 header("Cache-Control: no-cache");
 function geturl($url){
   $ch = curl_init();

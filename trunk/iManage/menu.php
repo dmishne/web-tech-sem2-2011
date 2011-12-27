@@ -1,3 +1,4 @@
+<?php include "beforeLoadCheck.php"; ?>
 <script type="text/javascript">
 		$(document).ready(function(){setMenu();});
 </script>
@@ -30,7 +31,7 @@
 		</ul>
 	</li>
 	<?php 
-	     if(isset($_SESSION['permissionid']) && 3 == $_SESSION['permissionid'])
+	     if(isset($_SESSION['login']) && $_SESSION['login'] != '0' && isset($_SESSION['permissionid']) && '3' == $_SESSION['permissionid'])
 	     {
 	     	echo "<li class=\"noBullet\"><a href=\"manageUsers.php\"> User Management</a></li>";
 	     }

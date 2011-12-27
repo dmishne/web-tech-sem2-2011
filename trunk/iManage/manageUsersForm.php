@@ -12,7 +12,7 @@ $connection = new mysqli($serverInfo["address"], $serverInfo["username"], $serve
 		}
 $connection->select_db($serverInfo["db"]);
 $isAdmin = $_SESSION['permissionid'];
-$flag = verifyInput($_POST['flag'],ENT_QUOTES);
+$flag = verifyInput($_POST['flag']);
 
 if($isAdmin != 3)
 {
@@ -21,7 +21,7 @@ if($isAdmin != 3)
 else {
 		if($flag == 1)   // search button
 		{
-			$user = verifyInput($_POST['search_username'],ENT_QUOTES);
+			$user = verifyInput($_POST['search_username']);
 			$res = $connection->query("CALL getUserInfo('$user')") or die(mysqli_error());
 			if($res->num_rows > 0){						
 				$row = $res->fetch_array(MYSQLI_BOTH);				
@@ -35,12 +35,12 @@ else {
 		}
 		else if($flag == 2)   // save button
 		{
-			$username = verifyInput($_POST['Username'],ENT_QUOTES);
-			$firstname = verifyInput($_POST['FName'],ENT_QUOTES);
-			$lastname = verifyInput($_POST['LName'],ENT_QUOTES);
-			$bdate = verifyInput($_POST['BD'],ENT_QUOTES);
-			$status = verifyInput($_POST['Status'],ENT_QUOTES);
-			$emailAddress = verifyInput($_POST['EmailAdd'],ENT_QUOTES);
+			$username = verifyInput($_POST['Username']);
+			$firstname = verifyInput($_POST['FName']);
+			$lastname = verifyInput($_POST['LName']);
+			$bdate = verifyInput($_POST['BD']);
+			$status = verifyInput($_POST['Status']);
+			$emailAddress = verifyInput($_POST['EmailAdd']);
 			$res2 = $connection->query("CALL editUser('$username','$firstname','$lastname','$bdate','$emailAddress','$status')") or die(mysqli_error());
 			if($res2->num_rows > 0)
 			{
@@ -53,9 +53,9 @@ else {
 		}
 		else if($flag == 3)   // lock\unlock button
 		{
-			$username = verifyInput($_POST['Username'],ENT_QUOTES);
-			$comment = verifyInput($_POST['log'],ENT_QUOTES);
-			$userStatus = verifyInput($_POST['userStatus'],ENT_QUOTES);
+			$username = verifyInput($_POST['Username']);
+			$comment = verifyInput($_POST['log']);
+			$userStatus = verifyInput($_POST['userStatus']);
 			$currentDate = date("d.m.Y H:i");
 			if($userStatus == "block")  // was locked
 			{
@@ -80,7 +80,7 @@ else {
 		}
 		else if($flag == 4)   // delete button
 		{
-			$username = verifyInput($_POST['Username'],ENT_QUOTES);
+			$username = verifyInput($_POST['Username']);
 			$res4 = $connection->query("CALL deleteUser('$username')") or die(mysqli_error());
 			if($res4->num_rows > 0)
 			{
@@ -93,9 +93,9 @@ else {
 		else if($flag == 5)
 		{
 			
-			$mailAdd = verifyInput($_POST['MailAddress'],ENT_QUOTES);
-			$mailSubj = verifyInput($_POST['MailSubject'],ENT_QUOTES);
-			$mailBody = verifyInput($_POST['MailBody'],ENT_QUOTES);
+			$mailAdd = verifyInput($_POST['MailAddress']);
+			$mailSubj = verifyInput($_POST['MailSubject']);
+			$mailBody = verifyInput($_POST['MailBody']);
 			// spamcheck
 			//address using FILTER_SANITIZE_EMAIL
 			$CheckedMailAdd=filter_var($mailAdd, FILTER_SANITIZE_EMAIL);	
