@@ -50,6 +50,7 @@ include_once "ini.php";
 						$userYearReport[$i][$j] = $totalm;
 						$i = 0;
 						$j++;
+						$totalm=0;
 					}
 				}
 				echo "var userYearReport = " . json_encode($userYearReport, true) . ";";
