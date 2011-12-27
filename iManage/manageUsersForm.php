@@ -12,22 +12,18 @@ $connection->select_db('webtech');
 $isAdmin = $_SESSION['permissionid'];
 $flag = htmlspecialchars($_POST['flag'],ENT_QUOTES);
 
-if($isAdmin == 3)
+if($isAdmin != 3)
 {
+	echo "AccessDenied";
+}
+else {
 		if($flag == 1)   // search button
 		{
 			$user = htmlspecialchars($_POST['search_username'],ENT_QUOTES);
 			$res = $connection->query("CALL getUserInfo('$user')") or die(mysqli_error());
 			if($res->num_rows > 0){		
-				$row = $res->fetch_array(MYSQLI_ASSOC);
-				if($row[0] == null)
-				{
-					echo "User Not Found!";
-				}	
-				else
-				{
-				 echo json_encode($row, JSON_FORCE_OBJECT);	
-				}				  
+				$row = $res->fetch_array(MYSQLI_ASSOC);				
+				 echo json_encode($row, JSON_FORCE_OBJECT);					  
 			}
 			else  {
 			   echo "User Not Found!";
@@ -104,8 +100,5 @@ if($isAdmin == 3)
 				echo "sended";
 			}
 		}
-		echo "<script type=\"text/javascript\">
-		        alert(\"Access denied!\nYou have no Admin permissions..\");
-		      </script>";
 }
 ?>

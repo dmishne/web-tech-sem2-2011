@@ -408,6 +408,8 @@
 											    	list($jeDate, $Jeh) = explode(' ', $harray[$i]['endHour'],2);
 											    	list($sHour, $sMin, $sSec) = explode(':', $Jsh,3);
 											    	list($eHour, $eMin, $eSec) = explode(':', $Jeh,3);
+											    	if($eHour == 0)
+											    	{   $eHour = 24;   }
 											    	$tH = $eHour - $sHour;
 											    	$tM = $eMin - $sMin;
 											    	while($j < count($jobsarray))

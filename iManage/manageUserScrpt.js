@@ -3,73 +3,105 @@ function MUSearch()
 {
 	  $("#manageUser_search").submit(function()	
 			{
-		        $.post("manageUsersForm.php",{ search_username:$('#search_username').val(), flag:1},
-		        		function(data)
-		        		{		        	         
-		                     if(data != "User Not Found!")
-		                    	 {		                    	   
-		                    	     var res = $.parseJSON(data);
-		                    	     $.each(res, function(key, value){
-		                    	    	 switch (key)
-		                    	    	 {
-		                    	    	 case 'firstName':		                    	    		 
-		                    	    		 $("#UFirstName").val(value);
-		                    	    		 break;
-		                    	    	 case 'lastName':
-		                    	    		 $("#ULastName").val(value);
-		                    	    		 break;
-		                    	    	 case 'dateOfBirth':
-		                    	    		 $("#UBirthDate").val(value);
-		                    	    		 break;
-		                    	    	 case 'email':
-		                    	    		 $("#UMail").val(value);
-		                    	    		 break;
-		                    	    	 case 'name':
-		                    	    		 $("#UStatusSelector").val(value);
-		                    	    	 case 'statusChangeComment':
-		                    	    		 $("#manageUser_log").val(value);
-		                    	    	 case 'statusId':
-		                    	    		 if(value == 1)
-		                    	    			 {
-		                    	    			 $("#unlock_user").css('color','green');
-		                    	    			 $("#unlock_user").val("User Unlocked");
-		                    	    			 $("#lock_user").val("Lock User");
-		                    	    			 $("#lock_user").css('color','#d9eef7');
-		                    	    			 $("#uStatus").hide();
-		                    	    			 $("#message").val("");
-		                    	    			 $("#delete_user").attr('disabled', false);
-		                    	    			 }
-		                    	    		 else if(value == 2)
-		                    	    			 {
-		                    	    			 $("#lock_user").css('color','red');
-		                    	    			 $("#lock_user").val("User Locked");
-		                    	    			 $("#unlock_user").val("Unlock User");
-		                    	    			 $("#unlock_user").css('color','#d9eef7');
-		                    	    			 $("#uStatus").show();
-		                    	    			 $("#message1").show();
-		                    	    			 $("#message2").hide();
-		                    	    			 $("#delete_user").attr('disabled', false);
-		                    	    			 }
-		                    	    		 else if(value == 3)
-		                    	    			 {
-		                    	    			 $("#uStatus").show();
-		                    	    			 $("#message2").show();
-		                    	    			 $("#message1").hide();
-		                    	    			 $("#delete_user").attr('disabled', true);
-		                    	    			 }
-		                    	    	 }
-		                    	     });
-		                    	      $("#Uusername").val($('#search_username').val());
-   
-		                    	      $("#data_div").fadeIn(1500);
-		                    	      $("#buttons_div").fadeIn(1500);
-		                    	      $("#mail_div").fadeIn(2500);
-		                    	 }
-		                     else
-		                    	 {
-		                    	     alert("User not found!");
-		                    	 }
-		        		});    //   post
+		        if($('#search_username').val() == "")
+		        	{
+		        	$(function() {					        	    			
+       	    			$( "#dialog:ui-dialog" ).dialog( "destroy" );							        	    		
+       	    			$( "#nullSearch" ).dialog({
+       	    				modal: true,
+       	    				buttons: {
+       	    					Ok: function() {
+       	    						$( this ).dialog( "close" );
+       	    					}
+       	    				}
+       	    			});
+       	    		});		
+		        	}
+		        else 
+		        	{
+				        $.post("manageUsersForm.php",{ search_username:$('#search_username').val(), flag:1},
+				        		function(data)
+				        		{				        	
+							       if(data == "AccessDenied")
+					               	 {
+					               	 $(function() {					        	    			
+					       	    			$( "#dialog:ui-dialog" ).dialog( "destroy" );							        	    		
+					       	    			$( "#access" ).dialog({
+					       	    				modal: true,
+					       	    				buttons: {
+					       	    					Ok: function() {
+					       	    						$( this ).dialog( "close" );
+					       	    					}
+					       	    				}
+					       	    			});
+					       	    		});		                    	 
+					               	 }
+							        else if(data != "User Not Found!")
+				                    	 {		                    	   
+				                    	     var res = $.parseJSON(data);
+				                    	     $.each(res, function(key, value){
+				                    	    	 switch (key)
+				                    	    	 {
+				                    	    	 case 'firstName':		                    	    		 
+				                    	    		 $("#UFirstName").val(value);
+				                    	    		 break;
+				                    	    	 case 'lastName':
+				                    	    		 $("#ULastName").val(value);
+				                    	    		 break;
+				                    	    	 case 'dateOfBirth':
+				                    	    		 $("#UBirthDate").val(value);
+				                    	    		 break;
+				                    	    	 case 'email':
+				                    	    		 $("#UMail").val(value);
+				                    	    		 break;
+				                    	    	 case 'name':
+				                    	    		 $("#UStatusSelector").val(value);
+				                    	    	 case 'statusChangeComment':
+				                    	    		 $("#manageUser_log").val(value);
+				                    	    	 case 'statusId':
+				                    	    		 if(value == 1)
+				                    	    			 {
+				                    	    			 $("#unlock_user").css('color','green');
+				                    	    			 $("#unlock_user").val("User Unlocked");
+				                    	    			 $("#lock_user").val("Lock User");
+				                    	    			 $("#lock_user").css('color','#d9eef7');
+				                    	    			 $("#uStatus").hide();
+				                    	    			 $("#message").val("");
+				                    	    			 $("#delete_user").attr('disabled', false);
+				                    	    			 }
+				                    	    		 else if(value == 2)
+				                    	    			 {
+				                    	    			 $("#lock_user").css('color','red');
+				                    	    			 $("#lock_user").val("User Locked");
+				                    	    			 $("#unlock_user").val("Unlock User");
+				                    	    			 $("#unlock_user").css('color','#d9eef7');
+				                    	    			 $("#uStatus").show();
+				                    	    			 $("#message1").show();
+				                    	    			 $("#message2").hide();
+				                    	    			 $("#delete_user").attr('disabled', false);
+				                    	    			 }
+				                    	    		 else if(value == 3)
+				                    	    			 {
+				                    	    			 $("#uStatus").show();
+				                    	    			 $("#message2").show();
+				                    	    			 $("#message1").hide();
+				                    	    			 $("#delete_user").attr('disabled', true);
+				                    	    			 }
+				                    	    	 }
+				                    	     });
+				                    	      $("#Uusername").val($('#search_username').val());
+		   
+				                    	      $("#data_div").fadeIn(1500);
+				                    	      $("#buttons_div").fadeIn(1500);
+				                    	      $("#mail_div").fadeIn(2500);
+				                    	 }		                      
+				                     
+							        else
+				                    	 {
+				                    	     alert("User not found!");
+				                    	 }
+				        		});    //   post
+		        	}
 		        return false;
 			});   // submit
 }
@@ -259,6 +291,8 @@ function eMail()
 		        	    				}
 		        	    			});
 		        	    		});
+		        	    	   MailBody:$("#mailBody").val("");
+		        	    	   $("#Mail_subject").val("");
 		        	    	   }
 		        	       else if(data == "fail")
 		        	    	   {
