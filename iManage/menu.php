@@ -26,8 +26,8 @@
 	</li>
 	<li class="toggleable"> Reports 
 		<ul id="reportsMenu">
-			<li>  <a href="report.php"> General Yealy Report </a> </li>
-			<li> Balance forecast report </li>
+			<li> <a href="report.php"> General Yealy Report </a> </li>
+			<li> <a href="reportf.php"> Balance Forecast Report </a> </li>
 		</ul>
 	</li>
 	<?php 
