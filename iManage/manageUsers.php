@@ -65,7 +65,7 @@
 			     </div>
 			     </form>
 			     <div id="access" title="Alert!" style="display: none; font-size:14px; min-height:0;">
-	               <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Access Denied!</br>
+	               <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Access Denied!<br />
 	                                                                                                       You have no permission to access this area...</p>
                  </div>
                  <div id="nullSearch" title="User Search" style="display: none; font-size:14px; min-height:0;">

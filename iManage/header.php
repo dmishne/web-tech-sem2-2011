@@ -1,3 +1,4 @@
+<?php include "beforeLoadCheck.php"; ?>
 <div id="transBlackbox">
 		<div id="logo"> </div> 
 		<div id="logoHeading">Imanage </div>
