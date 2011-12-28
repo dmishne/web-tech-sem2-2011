@@ -270,8 +270,7 @@ $(function() {
 		}
 	}
 	else {
-		emptyTableRow();
-		document.getElementById("container-stock").innerHTML="";
+		document.getElementById("container-stock").innerHTML="No Stock Information Available";
 	}
 });
 
