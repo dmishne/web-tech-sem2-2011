@@ -59,13 +59,14 @@ if($formN == 4) //  add recuring payout
 	   $usrinpt['date'] = null;
 	   $usrinpt['amount']=null;
 	   $usrinpt['err4'] = null;
+	   $amount = floatval($amount);
 	   if($selected == 'New'){
 	   		if($pemail == '0'){
-	   		  	$year_mon_day = null;
+	   		  	$year_mon_day = 'null';
 	   		  } else {
 	   		  	$year_mon_day = "'$transdate'";
 	   		  } 
-	   		  $res = $connection->query("CALL insertTransaction((double)$amount,'$username','$transdate','$transcustomname','$recurrance',$transtypeid,$year_mon_day,'$description')") or die(mysqli_error());
+	   		  $res = $connection->query("CALL insertTransaction($amount,'$username','$transdate','$transcustomname','$recurrance',$transtypeid,$year_mon_day,'$description')") or die(mysqli_error());
 	   }
 	   else if($selected != 'New'){
 	   	      $period = verifyInput($_POST['pchangeP']);
@@ -74,7 +75,7 @@ if($formN == 4) //  add recuring payout
 	   	      	$period = '3';
 	   	      }
 	   	      $pemaili  = intval($pemail);
-	   	      $res = $connection->query("CALL editRecurringTransDetails($selected,'$transcustomname','$description',$recurrance,(doble)$amount,$period,'$transdate',$pemaili)") or die(mysqli_error());
+	   	      $res = $connection->query("CALL editRecurringTransDetails($selected,'$transcustomname','$description',$recurrance,$amount,$period,'$transdate',$pemaili)") or die(mysqli_error());
 	   }
 	   
 	   $_SESSION['update'] = 1;
