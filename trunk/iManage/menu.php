@@ -18,12 +18,17 @@
 			<li> <a href="delpayout.php"> Delete Payout </a> </li>
 		</ul>
 	</li>
-	<li class="toggleable"> Investments
-		<ul id="investmentsMenu">
-			<li> <a href="stocksView.php"> View Virtual Portfolio </a> </li>
-			<li> <a href="stockManage.php"> Manage Virtual Portfolio </a> </li>
-		</ul>
-	</li>
+	<?php
+	if(!isset($_SESSION['login']) || $_SESSION['login'] == '0' || ($_SESSION['login'] == '1' && ($_SESSION['permissionid']== '3' || $_SESSION['permissionid']=='2' )))
+	{
+		echo "<li class='toggleable'> Investments";
+		echo	 "<ul id='investmentsMenu'>";
+		echo 		"<li> <a href='stocksView.php'> View Virtual Portfolio </a> </li>";
+		echo 		"<li> <a href='stockManage.php'> Manage Virtual Portfolio </a> </li>";
+		echo 	"</ul>";
+		echo "</li>";
+	}
+	?>
 	<li class="toggleable"> Reports 
 		<ul id="reportsMenu">
 			<li> <a href="report.php"> General Yealy Report </a> </li>
