@@ -311,7 +311,7 @@ $(function() {
 		          		</tr>
 		          	</table>		                   
 		          </div>       
-		          <div id="container-stock"> 
+		          <div id="container-stock" style="color:white;"> 
 						<img style="margin-top:200px;" src="images/loading.gif"></img>
 				  </div>		
 			</div>
