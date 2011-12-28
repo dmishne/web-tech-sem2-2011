@@ -26,7 +26,7 @@ function setLogin()
 		  	$("#msgBox").fadeTo(200,0.1,function() //start fading the messagebox
 			{ 
 			  //add message and change the class of the box and start fading
-			  $(this).html('Your account has been lock.<br/> Please contact the administration.').addClass('messageboxerror').fadeTo(900,1);
+			  $(this).html('Your account has been locked.<br/> Please contact the administration.').addClass('messageboxerror').fadeTo(900,1);
 			});		
           }
 		  else if(data=='deleted')

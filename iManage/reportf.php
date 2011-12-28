@@ -2,7 +2,7 @@
 
 include "beforeLoadCheck.php";
 include "sessionVerifier.php";
-session_start();
+
 include_once "ini.php";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -41,7 +41,7 @@ include_once "ini.php";
 				$j = 0;
 				$totalm = 0;
 				while ($r = $res->fetch_array(MYSQLI_NUM)){
-					$userYearReport[$i][$j] = is_null($r[1])?0:floatval($r[1]);
+					$userYearReport[$i][$j] = is_null($r[1])?0:round(floatval($r[1]),2);
 					$months[$j] = substr($r[2],0,3);
 					$totalm+=$userYearReport[$i][$j];
 					$i++;
@@ -53,29 +53,14 @@ include_once "ini.php";
 						$totalm = 0;
 					}
 				}
-				echo "var userYearReport = " . json_encode($userYearReport, true) . ";";
-				echo "var months = " . json_encode($months, true) . ";";
+				echo "var userYearReport = " . json_encode((object)$userYearReport) . ";";
+				echo "var months = " . json_encode((object)$months) . ";";
 			}
 			else {
 				echo "var userYearReport = {};";
 			}
 	?>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
 		var chart;
 		$(document).ready(function() {
 			chart = new Highcharts.Chart({
@@ -143,9 +128,6 @@ include_once "ini.php";
 		});
 			
 	</script>
-	
-	
-	
 	
 </head>
 

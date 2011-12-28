@@ -1,7 +1,7 @@
 <?php
 	include "beforeLoadCheck.php"; 
 	include "sessionVerifier.php";
-	session_start();
+
 	if('3' != $_SESSION['permissionid'] && '2' != $_SESSION['permissionid'])
 	{
 		header("location:index.php");
@@ -45,7 +45,7 @@
 				}
 			}
 			if (!empty($userStockInformation)) {
-				echo "var userStockInfo = " . json_encode($userStockInformation, true) . ";";
+				echo "var userStockInfo = " . json_encode((object)$userStockInformation) . ";";
 			}
 			else {
 				echo "var userStockInfo = {};";

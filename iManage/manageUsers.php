@@ -1,7 +1,7 @@
 <?php 
 		include "beforeLoadCheck.php";
 		include "sessionVerifier.php";
-		session_start();
+		
 		if(3 != $_SESSION['permissionid'])
 		{
 			header("location:index.php");

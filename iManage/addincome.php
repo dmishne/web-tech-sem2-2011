@@ -1,8 +1,7 @@
-<?
+<?php
 	include "beforeLoadCheck.php";
 	include "sessionVerifier.php";
 	
-	session_start();
 	include_once "ini.php";
 	
 	// set date

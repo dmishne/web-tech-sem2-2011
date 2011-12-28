@@ -1,9 +1,3 @@
-<?php 
-include "beforeLoadCheck.php";
-include "sessionVerifier.php";
-
-include_once "ini.php";
-?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -23,19 +17,15 @@ include_once "ini.php";
 		<?php include "header.php"; ?>
 	</div>
 	
-	<div id="middle">
-		<div class="menu">
-			<?php include "menu.php"; ?>
-		</div>
-				
-		<div id="content">
+	<div id="middle" style="width:100%;">	
+		<div id="content" style="width:100%; text-align:center;">
 			<div id="content-head">
-		           Content Head
+		           Under Construction
 			</div>
 			<div id="content-middle">
-		           Content Here <br />
-		           more content <br />
-		           even more content
+				   Website hasn't been installed yet. <br/>
+				   For further information please contact site administration. <br/>
+				   <?php echo phpversion(); ?>
 			</div>
 		</div>
 	</div>

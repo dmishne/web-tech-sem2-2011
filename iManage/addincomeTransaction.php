@@ -3,8 +3,6 @@
 include "beforeLoadCheck.php";
 include "sessionVerifier.php";
 
-session_start();
-
 include_once "ini.php";
 
 //Connect to database from here
