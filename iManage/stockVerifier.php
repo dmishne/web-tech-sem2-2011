@@ -15,7 +15,10 @@ include "beforeLoadCheck.php";
 include "sessionVerifier.php";
 
 session_start();
-
+if('3' != $_SESSION['permissionid'] && '2' != $_SESSION['permissionid'])
+{
+	header("location:index.php");
+}
 include_once "ini.php";
 
 $action=verifyInput($_POST['action']);

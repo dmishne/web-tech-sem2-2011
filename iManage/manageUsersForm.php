@@ -2,7 +2,10 @@
 include "beforeLoadCheck.php";
 include "sessionVerifier.php";
 session_start();
-
+if('3' != $_SESSION['permissionid'])
+{
+	header("location:index.php");
+}
 include_once "ini.php";
 
 //Connect to database from here
