@@ -2,7 +2,7 @@
 
 include "beforeLoadCheck.php";
 include "sessionVerifier.php";
-session_start();
+
 include_once "ini.php";
 
 $delmonth = verifyInput($_POST['delMonth']);

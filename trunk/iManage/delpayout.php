@@ -1,7 +1,6 @@
 <?php
 	include "beforeLoadCheck.php";
 	include "sessionVerifier.php";
-	session_start();
 	
 	include_once "ini.php";
 ?>
@@ -115,7 +114,7 @@
 			              $i = 1;                           //img[i],<ul id="ulexp[i]>
 			              $j = 1;                           //checkbox[j]
 			              $tamnt =0;                        // for income findout				              
-			              if($result->num_rows > 0 && mysqli_num_fields($result) == 7){                           
+			              if(isset($result) && $result->num_rows > 0 && mysqli_num_fields($result) == 7){                           
 			                  while ($row = $result->fetch_array(MYSQLI_ASSOC))
 			                  {
 					                  $recid = $row['recid'];
@@ -241,7 +240,7 @@
 		      </div>
 		      <div style="width:25%; float:left; min-height:260px; margin:auto auto auto 30px;">
 		         <?php 
-			           if($result->num_rows > 0 && $cnt > 0){
+			           if(isset($result) && $result->num_rows > 0 && $cnt > 0){
 			               echo "
 						          <p style=\"color:red; border:solid 1px red; position:relative; padding-left:70px;\"><b>Warning!</b></p>
 						          <p  style=\"font-size:12px\">Deletion of the entire income label, will also delete all occurrences of this label </p>
@@ -251,14 +250,17 @@
 		      <br style="clear:left;"/>
 		      <div style="margin:15px auto 30px 30px;">
 		          <?php 
-			            if($result->num_rows > 0 && $cnt > 0){
+			            if(isset($result) && $result->num_rows > 0 && $cnt > 0){
 			               echo "<input type=\"submit\" value=\"Delete\" class=\"blue button small bround\" style=\"position:relative; align:bottom;\"></input>";
 			            }
 			        ?>
 			        <?php 
+			        if(isset($result))
+			        {
 				        if ($result instanceof mysqli_result && $result->num_rows > 0) {
 				        	$result->free();
 				        }
+			        }
 			        ?>
 		      </div>
 		      </form> 
