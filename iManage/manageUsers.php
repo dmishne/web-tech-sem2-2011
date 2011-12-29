@@ -74,6 +74,15 @@
                  <div id="USearchFail" title="User Search" style="display: none; font-size:14px; min-height:0;">
 	               <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>User not found </p>
                  </div>
+                 <div id="selfUnlock" title="Delete User" style="display: none; font-size:14px; min-height:0;">
+	               <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>You can not "Unlock" yourself!</p>
+                 </div>
+                 <div id="selfLock" title="Delete User" style="display: none; font-size:14px; min-height:0;">
+	               <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>You can not "Lock" yourself!</p>
+                 </div>
+                 <div id="selfDelete" title="Delete User" style="display: none; font-size:14px; min-height:0;">
+	               <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>You can not "Delete" yourself!</p>
+                 </div>
 			     <div id="delete-confirm" title="Delete User" style="display: none; font-size:14px; min-height:0;">
 	               <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This user will be deleted from the system,
 	                                                                                                       but his data will still available for search!. 
