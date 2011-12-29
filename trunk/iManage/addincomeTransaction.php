@@ -24,7 +24,21 @@ if($formN == 1)  // Update working hours
 	$pass = 1;
 	$timeupdate = 0;
 	$transtypeid = 3;  
+	$chckId = -1;
 	$jobId = verifyInput($_POST['workid']); 
+	foreach ($_SESSION['jobhours'] as $valH)
+	{
+		foreach ($_SESSION['jobs'] as $valJ)
+		{
+			if($valH['transname'] == $valJ['name'] && $valJ['recTrans'] == $jobId)
+			{
+				$usrinpt['hours']="error";
+		        $usrinpt['err1'] = 1;
+		        $pass =0;
+				break;
+			}
+		}
+	}
 	if($jobId != 'clear'){
 			//$workName = verifyInput($_POST['workname']);   // marked out for security reasons 
 			$amount = verifyInput($_POST['wage']);
