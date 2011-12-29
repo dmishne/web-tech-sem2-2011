@@ -1,4 +1,6 @@
-<?php 
+<?php
+include "beforeLoadCheck.php";
+
 function csvstring_to_array($string, $separatorChar = ',', $enclosureChar = '"', $newlineChar = "\n") {
 	// @author: Klemen Nagode
 	$array = array();
