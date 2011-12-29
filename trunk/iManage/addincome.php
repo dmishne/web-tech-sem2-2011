@@ -120,6 +120,11 @@
 	
 	<script type="text/javascript"> 
          $(document).ready(function(){
+        	$('.specialscroll').jScrollPane(
+        	{
+        		autoReinitialise: true,
+        		showArrows:true
+        	});
            slidetgl();
            $( "#datepicker" ).datepicker({defaultDate: <?php echo "\"$curMonth/$curDay/$curYear\""?> ,
                    onSelect: function(dateText, inst) {
@@ -456,7 +461,7 @@
 							     }	
 							  if($daySum->num_rows > 0 || (isset($harray) && isset($jobsarray))){     
 							      echo "<div class=\"daysumhead\">Your balance for: $date</div>";	
-							      echo "<div style=\"min-height:83px; max-height:83px; overflow:auto;\"><table>";         
+							      echo "<div class='specialscroll' style=\"min-height:83px; max-height:83px; overflow:auto;\"><table>";         
 									  while ($row2 = $daySum->fetch_array(MYSQLI_ASSOC)){
 									      $transname = $row2['transname'];
 									      $amnt = $row2['amount'];
@@ -536,7 +541,7 @@
 				             if($monthSum != null && $monthSum->num_rows > 0){
 				             	  $m = $months[$curMonth-1];
 				             	  echo "<div class=\"daysumhead\" style=\"font-size:12px; width:85%;\">Top transactions for: $m</div>";
-				                  echo "<div style=\"min-height:180px; overflow-y: scroll;\"><table>";         
+				                  echo "<div class='specialscroll' style=\"min-height:180px; overflow-y: scroll;\"><table>";         
 											  while ($rowm = $monthSum->fetch_array(MYSQLI_ASSOC)){
 											  	if($rowm != null && $rowm['transid'] != null)
 											  	{
