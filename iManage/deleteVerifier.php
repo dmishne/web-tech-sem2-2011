@@ -17,7 +17,7 @@ list($which, $maxid) = explode('+', $form);
 
 if($which == "income") 
 {
-    $checkedArr = $_POST['formDelInc'];   // arrey of checked checkboxes values
+    $checkedArr = verifyInput($_POST['formDelInc']);   // arrey of checked checkboxes values
     foreach ($checkedArr as $value)
     {
     	list($idtypeid, $deltypeS, $deldate) = explode(',', $value);
@@ -40,7 +40,7 @@ if($which == "income")
 
 else if($which == "payout")   
 {
-	$checkedArr = $_POST['formDelPay'];   // arrey of checked checkboxes values
+	$checkedArr = verifyInput($_POST['formDelPay']);   // arrey of checked checkboxes values
     foreach ($checkedArr as $value)
     {
     	list($idtypeid, $deltype, $deldate) = explode(',', $value);
