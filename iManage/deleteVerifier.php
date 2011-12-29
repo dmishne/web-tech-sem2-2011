@@ -37,14 +37,13 @@ if($which == "income")
     $_SESSION['update'] = 1;
     header("location:delincome.php");
 }
-
 else if($which == "payout")   
 {
 	$checkedArr = verifyInput($_POST['formDelPay']);   // arrey of checked checkboxes values
     foreach ($checkedArr as $value)
     {
     	list($idtypeid, $deltype, $deldate) = explode(',', $value);
-    	    list($idtype, $id) = explode('-', $idtypeid); 
+    	    list($idtype, $id) = explode('-', $idtypeid);
     	    (int)$id;
     	    (int)$deltype;
     	    (int)$idtype;
