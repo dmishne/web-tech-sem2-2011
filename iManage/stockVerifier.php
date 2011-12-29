@@ -1,15 +1,5 @@
 <?php
-
-function csvToArray($csvString)
-{
-	$csv_data = str_getcsv($csvString, "\n"); // split to csv rows
-	foreach ($csv_data as &$row)
-	{
-		$row = str_getcsv($row);
-	}
-	return $csv_data;
-}
-
+include "str_getcsv.php";
 
 include "beforeLoadCheck.php";
 include "sessionVerifier.php";
@@ -32,7 +22,8 @@ if($action == "add")
 	$username= $_SESSION['username'];
 	
 	$tempCsvString = file_get_contents("http://download.finance.yahoo.com/d/quotes.csv?s=". $symbol ."&f=snp");
-	$stockData = csvToArray($tempCsvString);
+	$stockData=explode("\r\n",$tempCsvString);
+	$stockData = csvstring_to_array($stockData[0]);
 	
 	if(isset($stockData[0][2]) && is_numeric($stockData[0][2]))
 	{
