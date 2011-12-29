@@ -74,7 +74,8 @@
 				$harray = array();
 				while ($r = $hours->fetch_array(MYSQLI_ASSOC)){
 					$harray[] = $r;
-				}				
+				}
+				$_SESSION['jobhours'] = $harray;								
 			}
 	?>
 	
@@ -203,6 +204,7 @@
 						                        	$jobId =$job["recTrans"];						                        	
 						                         	echo "<option value=\"$jobId\">$name</option>";						                         	
 						                         }
+						                         $_SESSION['jobs'] = $jobsarray;
                                                }
 						                   ?>
 						                 </select>
@@ -239,7 +241,7 @@
 							                 <b>:</b><input type="text" name="startm" class="inpt" size="6" maxlength="2" id="rsm" onchange="rDayWageTotal()"/></td>
 							       </tr>
 							       <?php if(isset($usrinpt['time1']) && $usrinpt['time1'] == "error"){
-		            			            echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Incorrect time </div> </td> </tr>";}?>
+		            			            echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Incorrect time </div> </td> </tr>";}?>		            			   
 							       <tr>
 							         <td width="45%" class="pfont">End Hour(hh:mm): </td>
 							         <td width="55%"><input type="text" name="endh" class="inpt" size="6" maxlength="2" id="reh" onchange="rDayWageTotal()"/>
@@ -247,7 +249,8 @@
 							       </tr>
 							       <?php if(isset($usrinpt['time2']) && $usrinpt['time2'] == "error"){
 		            			            echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Incorrect time </div> </td> </tr>";}?>
-							       
+							       <?php if(isset($usrinpt['hours']) && $usrinpt['hours'] == "error"){
+		            			            echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Update hours unavailable! Please delete and insert as new occurence... </div> </td> </tr>";}?>
 							       <tr>
 							         <td width="45%" class="pfont">Total per Day: </td>
 							         <td width="55%"><input type="text" class="inpt" style="color:green" size="20" maxlength="30" readonly="readonly" id="rwt"/></td>
