@@ -10,9 +10,9 @@ include_once "ini.php";
 
 //Connect to database from here
 $connection = new mysqli($serverInfo["address"], $serverInfo["username"], $serverInfo["password"]);
-		if (mysqli_connect_errno()) {
-			die('Could not connect: ' . mysqli_connect_error());
-		}
+if (mysqli_connect_errno()) {
+	die('Could not connect: ' . mysqli_connect_error());
+}
 $connection->select_db($serverInfo["db"]);
 $isAdmin = $_SESSION['permissionid'];
 $flag = verifyInput($_POST['flag']);
@@ -32,7 +32,7 @@ else {
 				     echo "UserNotFound";
 				 }
 			    else {
-			    	 echo json_encode($row, JSON_FORCE_OBJECT);
+			    	 echo json_encode((object)$row);
 			     }
 			}
 		}

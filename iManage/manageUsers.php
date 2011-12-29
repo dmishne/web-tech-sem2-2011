@@ -133,7 +133,7 @@
 						         </tr>
 						         <tr>
 						            <td style="width:30%;">Username:</td>
-						            <td colspan="2"><input id="Uusername" name="Username" type="text" class="inpt" style="position:relative; top:0px;" size="30" maxlength="30"></input></td>			   
+						            <td colspan="2"><input id="Uusername" name="Username" type="text" class="inpt" style="position:relative; top:0px;" size="30" readonly="readonly" maxlength="30"></input></td>			   
 						         </tr>
 						         <tr>
 						            <td style="width:30%;">First Name:</td>
