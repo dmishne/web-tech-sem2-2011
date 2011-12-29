@@ -190,7 +190,7 @@ function L_U_D()
 						{	
     	                    var stu = $("#uStatus").css('display');	 
     	                    $.ajaxSetup({async:false});
-					        $.post("manageUsersForm.php",{ Username:$('#Uusername').val(),log:$("#manageUser_log").val(),userStatus:stu,flag:3},
+					        $.post("manageUsersForm.php",{ Username:$('#Uusername').val(),userStatus:stu,flag:3},
 					        	   function(data)
      		                       {
 						        	if(data == "fail")
@@ -231,7 +231,7 @@ function L_U_D()
 			{   	
     	          var stl = $("#uStatus").css('display');
     	          $.ajaxSetup({async:false});
-		        $.post("manageUsersForm.php",{ Username:$('#Uusername').val(),log:$("#manageUser_log").val(),userStatus:stl,flag:3},
+		        $.post("manageUsersForm.php",{ Username:$('#Uusername').val(),userStatus:stl,flag:3},
 		        		function(data)
 	                       {	
 		        	       if(data == "fail")

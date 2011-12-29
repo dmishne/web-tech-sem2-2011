@@ -57,17 +57,16 @@ else {
 		}
 		else if($flag == 3)   // lock\unlock button
 		{
-			$username = verifyInput($_POST['Username']);
-			$comment = verifyInput($_POST['log']);
+			$username = verifyInput($_POST['Username']);		
 			$userStatus = verifyInput($_POST['userStatus']);
 			$currentDate = date("d.m.Y H:i");
 			if($userStatus == "block")  // was locked
 			{
-			    $newComment = "$comment \nUser Unlocked - $currentDate";
+			    $newComment = "User Unlocked - $currentDate\n";
 			}
 			else if($userStatus == "none")  // was unlocked
 			{
-				$newComment = "$comment \nUser Locked - $currentDate";
+				$newComment = "User Locked - $currentDate\n";
 			}
 			$res3 = $connection->query("CALL updateUserLock('$username','$newComment')") or die(mysqli_error());
 			if($res3->num_rows > 0)
