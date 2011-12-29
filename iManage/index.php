@@ -94,7 +94,11 @@ if(isset($_SESSION['login']) && $_SESSION['login'] != '0')
 				Home Page
 			</div>
 			<div id="content-middle">
-		           <div id="tabs">
+			
+			
+<?php 		if($loggedin)
+			{
+		         echo " <div id='tabs'>
 		           		<ul>
 							<li><a href='#tabs-1'>Overview</a></li>
 							<li><a href='#tabs-2'>Incomes</a></li>
@@ -104,8 +108,7 @@ if(isset($_SESSION['login']) && $_SESSION['login'] != '0')
 						<div id='tabs-1'>
                              <p>pppp</p>
 						</div>
-						<div id='tabs-2' style="margin: 0px auto 0px auto; text-align:center; width:100%;">
-						<?php 
+						<div id='tabs-2' style='margin: 0px auto 0px auto; text-align:center; width:100%;'>";
 							if(!empty($incomes))
 							{ 
 								echo "<table style='margin: 0px auto 0px auto;'>";
@@ -134,10 +137,9 @@ if(isset($_SESSION['login']) && $_SESSION['login'] != '0')
 								echo "<p> No Incomes Available </p>";
 							}
 				             
-						?>
-						</div>
-						<div id='tabs-3' style="margin: 0px auto 0px auto; text-align:center; width:100%;">
-							<?php 
+						echo "</div>
+						<div id='tabs-3' style='margin: 0px auto 0px auto; text-align:center; width:100%;'>";
+							
 							if(!empty($payouts))
 							{ 
 								echo "<table style='margin: 0px auto 0px auto;'>";
@@ -165,45 +167,38 @@ if(isset($_SESSION['login']) && $_SESSION['login'] != '0')
 							else {
 								echo "<p> No Payouts Available </p>";
 							}   
-						?>
-						</div>
+						
+						echo " </div>
 						<div id='tabs-4'>
 							<p>dddd</p>
 						</div>
-		           </div>
+		           </div> ";
 		           
-		           
-		           <!-- -------------------------------------------------------------------------------------------------- -->
-
-
-
-
-<div id="wowslider-container1">
-	    <div class="ws_images">
-			<span><img src="data1/images/image1.jpg" alt="image1" title="image1" id="wows0"/></span>
-			<span><img src="data1/images/image2.jpg" alt="image2" title="image2" id="wows1"/></span>
-			<span><img src="data1/images/image3.jpg" alt="image3" title="image3" id="wows2"/></span>
-			<span><img src="data1/images/image4.jpg" alt="image4" title="image4" id="wows3"/></span>
-			<span><img src="data1/images/image5.jpg" alt="image5" title="image5" id="wows4"/></span>
-		</div>
-		<div class="ws_bullets">
-		    <div>
-				<a href="#wows0" title="image1"><img src="data1/tooltips/image1.jpg" alt="image1"/>1</a>
-				<a href="#wows1" title="image2"><img src="data1/tooltips/image2.jpg" alt="image2"/>2</a>
-				<a href="#wows2" title="image3"><img src="data1/tooltips/image3.jpg" alt="image3"/>3</a>
-				<a href="#wows3" title="image4"><img src="data1/tooltips/image4.jpg" alt="image4"/>4</a>
-				<a href="#wows4" title="image5"><img src="data1/tooltips/image5.jpg" alt="image5"/>5</a>
-		   </div>
-        </div>		
-	<div class="ws_shadow"></div>
-</div>
-	<script type="text/javascript" src="engine1/script.js"></script>
-
-
-
-
-<!-- ---------------------------------------------------------------------------------------------------- -->
-		           
+		}       
+		else
+		{
+			echo "		<div id='wowslider-container1'>
+						    <div class='ws_images'>
+								<span><img src='data1/images/image1.jpg' alt='image1' title='image1' id='wows0'/></span>
+								<span><img src='data1/images/image2.jpg' alt='image2' title='image2' id='wows1'/></span>
+								<span><img src='data1/images/image3.jpg' alt='image3' title='image3' id='wows2'/></span>
+								<span><img src='data1/images/image4.jpg' alt='image4' title='image4' id='wows3'/></span>
+								<span><img src='data1/images/image5.jpg' alt='image5' title='image5' id='wows4'/></span>
+							</div>
+							<div class='ws_bullets'>
+							    <div>
+									<a href='#wows0' title='image1'><img src='data1/tooltips/image1.jpg' alt='image1'/>1</a>
+									<a href='#wows1' title='image2'><img src='data1/tooltips/image2.jpg' alt='image2'/>2</a>
+									<a href='#wows2' title='image3'><img src='data1/tooltips/image3.jpg' alt='image3'/>3</a>
+									<a href='#wows3' title='image4'><img src='data1/tooltips/image4.jpg' alt='image4'/>4</a>
+									<a href='#wows4' title='image5'><img src='data1/tooltips/image5.jpg' alt='image5'/>5</a>
+							   </div>
+					        </div>		
+						<div class='ws_shadow'></div>
+					</div>
+						<script type='text/javascript' src='engine1/script.js'></script>";
+		}
+?>          
 		           
 		           
 			</div>
