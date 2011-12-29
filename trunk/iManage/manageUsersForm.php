@@ -5,6 +5,7 @@ include "sessionVerifier.php";
 if('3' != $_SESSION['permissionid'])
 {
 	header("location:index.php");
+	exit();
 }
 include_once "ini.php";
 
