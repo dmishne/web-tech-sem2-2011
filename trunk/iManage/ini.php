@@ -5,7 +5,18 @@ $serverInfo = array("address" => "remote-mysql4.servage.net", "username" => "web
 
 function verifyInput($input)
 {
-	return stripslashes(htmlspecialchars($input));
+	if(is_array($input))
+	{
+		foreach($input as &$value)
+		{
+			$value = verifyInput($value);
+		}
+		return $input;
+	}
+	else
+	{
+		return stripslashes(htmlspecialchars($input));
+	}
 }
 
 
