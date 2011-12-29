@@ -5,6 +5,7 @@
 	if('3' != $_SESSION['permissionid'] && '2' != $_SESSION['permissionid'])
 	{
 		header("location:index.php");
+		exit();
 	}
 	include_once "ini.php";
 ?>
