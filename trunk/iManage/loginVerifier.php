@@ -45,7 +45,7 @@ else if ($res->num_rows > 0)
 	$res->free();
 	//Impossible to submit any quesry after a SP, cause of some mysql glitch - known issue, 
 	//this frees each row in the result of the SP
-	while ($connection->next_result()) {
+	while ($connection->more_results() && $connection->next_result()) {
 		//free each result.
 		$result = $connection->use_result();
 		if ($result instanceof mysqli_result) {
