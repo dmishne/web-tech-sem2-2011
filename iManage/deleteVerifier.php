@@ -26,7 +26,7 @@ if($which == "income")
     	    $deltype = (int)$deltypeS;
     	    $idtype = (int)$idtypeS;
     	$res = $connection->query("CALL deleteTransaction('$username','$id','$idtype','$deltype','$deldate')") or die(mysqli_error());
-    	while ($connection->next_result()) {
+    	while ($connection->more_results() && $connection->next_result()) {
     		//free each result.
     		$result = $connection->use_result();
     		if ($result instanceof mysqli_result) {
@@ -49,7 +49,7 @@ else if($which == "payout")
     	    (int)$deltype;
     	    (int)$idtype;
     	$res = $connection->query("CALL deleteTransaction('$username','$id','$idtype','$deltype','$deldate')") or die(mysqli_error());
-    	while ($connection->next_result()) {
+    	while ($connection->more_results() && $connection->next_result()) {
     		//free each result.
     		$result = $connection->use_result();
     		if ($result instanceof mysqli_result) {

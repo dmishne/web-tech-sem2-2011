@@ -67,7 +67,8 @@ if($formN == 1)  // Update working hours
 			$cYear2 = $cYear;
 			if($sH > $eH || (($sH == $eH) && ($sM > $eM)) ){
 				$newdate = nextdaydate($cYear, $cMonth, $cDay);
-				$cDay2 = $newdate[2];
+				$cDay2 = $newdate[2];  
+				
 				$cMonth2 = $newdate[1];
 				$cYear2 = $newdate[0];
 			}
@@ -85,7 +86,7 @@ if($formN == 1)  // Update working hours
 		        	if(is_object($eres)) {
 		        		$eres->free(); 
 		        	}
-					while ($connection->next_result()) {
+					while ($connection->more_results() && $connection->next_result()) {
 						//free each result.
 						$result = $connection->use_result();
 						if ($result instanceof mysqli_result) {
