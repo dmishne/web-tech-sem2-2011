@@ -57,7 +57,6 @@
 	var stockData = {};
 	var counter = 0;
 	var chart = null;
-	var names = ['MSFT', 'AAPL', 'GOOG', 'INTC'];
 
 	var createTableRow = function(id) {
 		symbol = userStockInfo[id][1];

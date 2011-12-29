@@ -9,6 +9,7 @@ $loggedin = 0;
 if(isset($_SESSION['login']) && $_SESSION['login'] != '0')
 {
 	$loggedin = intval($_SESSION['login']);
+	$per = intval($_SESSION['permissionid']);
 }
 ?>
 
@@ -43,6 +44,24 @@ if(isset($_SESSION['login']) && $_SESSION['login'] != '0')
 					}
 				}
 			}
+			while ($connection->more_results() && $connection->next_result()) {
+				//free each result.
+				$result = $connection->use_result();
+				if ($result instanceof mysqli_result) {
+					$result->free();
+				}
+			}
+			$res = $connection->query("CALL getAllInvestments('$username')") or die(mysqli_error());
+			$userStockInformation = array();
+			if($res->num_rows > 0)
+			{
+				while ($r = $res->fetch_array(MYSQLI_NUM)){
+					if($r[0] != null)
+					{
+						$userStockInformation[$r[0]] = $r;
+					}
+				}
+			}
 		}
 ?>
 
@@ -57,6 +76,7 @@ if(isset($_SESSION['login']) && $_SESSION['login'] != '0')
 	<link rel="icon" href="images/logo.ico" />
 	<link rel="apple-touch-icon" href="images/icon_apple.png" />
 	<?php include "include.php"; ?>
+	<script type="text/javascript" src="jquery.csv.min.js"></script>
 	<script type="text/javascript" src="JQueryUI/jquery-ui-1.8.16.custom.min.js"> </script>
 	<link rel="stylesheet" href="JQueryUI/jquery-ui-1.8.16.custom.css" type="text/css"/>
 	
@@ -66,15 +86,115 @@ if(isset($_SESSION['login']) && $_SESSION['login'] != '0')
 		}	
 	</style>
 	<script type="text/javascript">
-		$(function() {
-			$( '#tabs' ).tabs();
+<?php 
+if($loggedin && ($per == 2 || $per==3))
+{
+	if (!empty($userStockInformation)) {
+		echo "var userStockInfo = " . json_encode((object)$userStockInformation) . ";";
+	}
+	else {
+		echo "var userStockInfo = {};";
+	}
+?>
+
+	var stockData = {};
+
+	var addStockInformation = function (symbol, f) {
+		$.ajaxSetup({
+  error: function(xhr, status, error) {
+    alert('An AJAX error occured: ' + status + '\nError:'+ error);  }
+});
+	if (typeof stockData[symbol]=='undefined')
+	{
+		stockData[symbol] = [];
+		$.get('geturl.php',{url:'http://download.finance.yahoo.com/d/quotes.csv?s=' + symbol +'&f=snp'}, function(data) {
+			dataArray = jQuery.csv()(data);
+			if (typeof(dataArray[0][2]) != 'undefined' && !isNaN(dataArray[0][2]))
+			{
+				stockData[symbol][0] = dataArray[0][1];
+				stockData[symbol][1] = parseFloat(dataArray[0][2]);
+				f(symbol,'new');
+			}
+			else {
+				stockData[symbol] = null;
+			}
 		});
+	}
+	else {
+		if (typeof f == 'function') 
+		{
+			f(symbol,'exist');
+		}
+	}
+}
+	<?php 
+	echo "
+	var getAssocArrayLength = function (tempArray) 
+	{
+		var result = 0;
+		for ( tempValue in tempArray ) {
+			result++;
+		}	
+		return result;
+	}
+
+	var waitForElement = function (i,symbol){
+	    if(typeof (stockData[symbol][1]) != 'undefined'){
+	    	createTableRow(i);
+	    }
+	    else{
+	        setTimeout(function(){
+	            waitForElement(i,symbol);
+	        },250);
+	    }
+	}
+
+	var createTableRow = function(id) {
+		symbol = userStockInfo[id][1];
+		name = stockData[symbol][0];
+		amount_inv = (parseFloat(userStockInfo[id][2])).toFixed(2);
+		sdate = userStockInfo[id][3];
+		svalue = parseFloat(userStockInfo[id][4]).toFixed(2);
+		lvalue = (stockData[symbol][1]).toFixed(2);
+		change = (((lvalue-svalue)*100)/svalue).toFixed(2);
+		profit = (change*amount_inv/100).toFixed(2);
+		$('#I_stocksTable tr:last').after('<tr> <td>'+ symbol +'</td> <td>' + name + '</td> <td>' + amount_inv + '</td> <td>' + sdate + '</td> <td>' + svalue + '</td> <td>' + lvalue + '</td> <td>' +  change   + '% </td> <td>' + profit + '</td> <td> <div class=\"blue buttonStyle small\" onclick=\"createChartSingle(\'' + symbol + '\')\"> View </div> </td> </tr>');
+	}";
+}
+?>
+	
+	$(function() {
+		$( '#tabs' ).tabs();
+<?php 
+if($loggedin && ($per == 2 || $per==3))
+{
+	echo "var length = getAssocArrayLength(userStockInfo);
+		var datacount = 0;
+		if(length != 0)
+		{
+			$.each(userStockInfo, function(i, stock) {
+				symbol = stock[1];
+				addStockInformation(symbol,function (symbol , isexist) { 
+					datacount++;
+				});
+			});
+			if(datacount == length)
+			{
+				$.each(userStockInfo, function(i, stock) {
+					symbol = stock[1];
+					waitForElement(i,symbol);
+				});	
+			}
+		}";
+}
+?>	
+	});
 	</script>
-	                      <!-- Start WOWSlider.com HEAD section -->
+	                      
 	<link rel="stylesheet" type="text/css" href="engine1/style.css"/>
 	<style type="text/css">a#vlb{display:none}</style>
 	<script type="text/javascript" src="engine1/wowslider.js"></script>
-	                      <!-- End WOWSlider.com HEAD section -->
+	                      
 </head>
 
 <body>
@@ -170,7 +290,22 @@ if(isset($_SESSION['login']) && $_SESSION['login'] != '0')
 						
 						echo " </div>
 						<div id='tabs-4'>
-							<p>dddd</p>
+
+							<div id='userStock'>
+					          	<table class='stocksTablesStyle' id='I_stocksTable'>
+					          		<tr style='background-color:#0099ff; display: table-row;'>
+					          			<th>Symbol</th>
+					          			<th>Name</th>
+					          			<th>Amount Invested</th>
+					          			<th>Start Date</th>
+					          			<th>Start Value</th>
+					          			<th>Last Value</th>
+					          			<th>Change</th>
+					          			<th>Profit</th>
+					          			<th></th>
+					          		</tr>
+					          	</table>		                   
+					          </div>       
 						</div>
 		           </div> ";
 		           
