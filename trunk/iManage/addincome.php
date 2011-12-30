@@ -171,7 +171,7 @@
 			             }
 		             ?>	
 		            
-		             <p class="flip"  style="text-align:center;"> Update working hours</p>
+		             <p class="flip"  style="text-align:center;"> Add Working Hours </p>
 				     <button class="green rounded" id="frst"><img  id="1a" src="<?php  if(isset($usrinpt['err1']) && $usrinpt['err1'] == 1) echo "images/arrows_up.png"; else echo "images/arrows_down.png";?>" /></button>		
 					 <div class="panel1" style="<?php if(isset($usrinpt['err1']) && $usrinpt['err1'] == 1) echo "display:block;"; ?>">
 						<form method="post" action="addincomeTransaction.php" id="panel1_form">	
@@ -250,7 +250,7 @@
 							       <?php if(isset($usrinpt['time2']) && $usrinpt['time2'] == "error"){
 		            			            echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Incorrect time </div> </td> </tr>";}?>
 							       <?php if(isset($usrinpt['hours']) && $usrinpt['hours'] == "error"){
-		            			            echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Update hours unavailable! Please delete and insert as new occurence... </div> </td> </tr>";}?>
+		            			            echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Updating working hours isn't allowed! Please delete this entry before adding a new one. </div> </td> </tr>";}?>
 							       <tr>
 							         <td width="45%" class="pfont">Total per Day: </td>
 							         <td width="55%"><input type="text" class="inpt" style="color:green" size="20" maxlength="30" readonly="readonly" id="rwt"/></td>
@@ -259,7 +259,7 @@
 						     </td>
 						     <td width="35%" style="position:relative; vertical-align:bottom">
 						         <table>
-							         <tr><td align="right"><input type="submit" value="Update" class="blue button small bround"></input></td></tr>
+							         <tr><td align="right"><input type="submit" value="Add" class="blue button small bround"></input></td></tr>
 						         </table> 
 						     </td> 
 						   </tr> 
