@@ -37,6 +37,7 @@ function loadMySqlDump($filename,$mysql_host,$mysql_username,$mysql_password,$my
 		// If it has a semicolon at the end, it's the end of the query
 		if (substr(trim($line), -1, 1) == ';')
 		{
+			str_replace('webtech',$mysql_database,$templine);
 			// Perform the query
 			mysql_query($templine) or print('Error performing query \'<strong>' . $templine . '\': ' . mysql_error() . '<br /><br />');
 			// Reset temp variable to empty
@@ -88,10 +89,10 @@ function loadMySqlDump($filename,$mysql_host,$mysql_username,$mysql_password,$my
 				}
 				$connection->select_db($ms_db);
 				if (intval($ms_demo) == 1) {
-					$res = $connection->query("CALL installDB('$username',$user_password_md5,1)") or die(mysqli_error());
+					$res = $connection->query("CALL installDB('$username','$user_password_md5',1)") or die(mysqli_error());
 				}
 				else {
-					$res = $connection->query("CALL installDB('$username',$user_password_md5,0)") or die(mysqli_error());
+					$res = $connection->query("CALL installDB('$username','$user_password_md5',0)") or die(mysqli_error());
 				}
 				$connection->close();
 				if($res->num_rows > 1)
