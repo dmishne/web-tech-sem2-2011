@@ -95,40 +95,35 @@ if($loggedin && ($per == 2 || $per==3))
 	else {
 		echo "var userStockInfo = {};";
 	}
-?>
 
-	var stockData = {};
+	echo "var stockData = {};
 
 	var addStockInformation = function (symbol, f) {
-		$.ajaxSetup({
-  error: function(xhr, status, error) {
-    alert('An AJAX error occured: ' + status + '\nError:'+ error);  }
-});
-	if (typeof stockData[symbol]=='undefined')
-	{
-		stockData[symbol] = [];
-		$.get('geturl.php',{url:'http://download.finance.yahoo.com/d/quotes.csv?s=' + symbol +'&f=snp'}, function(data) {
-			dataArray = jQuery.csv()(data);
-			if (typeof(dataArray[0][2]) != 'undefined' && !isNaN(dataArray[0][2]))
-			{
-				stockData[symbol][0] = dataArray[0][1];
-				stockData[symbol][1] = parseFloat(dataArray[0][2]);
-				f(symbol,'new');
-			}
-			else {
-				stockData[symbol] = null;
-			}
-		});
-	}
-	else {
-		if (typeof f == 'function') 
+		if (typeof stockData[symbol]=='undefined')
 		{
-			f(symbol,'exist');
+			stockData[symbol] = [];
+			$.get('geturl.php',{url:'http://download.finance.yahoo.com/d/quotes.csv?s=' + symbol +'&f=snp'}, function(data) {
+				dataArray = jQuery.csv()(data);
+				if (typeof(dataArray[0][2]) != 'undefined' && !isNaN(dataArray[0][2]))
+				{
+					stockData[symbol][0] = dataArray[0][1];
+					stockData[symbol][1] = parseFloat(dataArray[0][2]);
+					f(symbol,'new');
+				}
+				else {
+					stockData[symbol] = null;
+				}
+			});
+		}
+		else {
+			if (typeof f == 'function') 
+			{
+				f(symbol,'exist');
+			}
 		}
 	}
-}
-	<?php 
-	echo "
+
+	
 	var getAssocArrayLength = function (tempArray) 
 	{
 		var result = 0;
@@ -158,7 +153,7 @@ if($loggedin && ($per == 2 || $per==3))
 		lvalue = (stockData[symbol][1]).toFixed(2);
 		change = (((lvalue-svalue)*100)/svalue).toFixed(2);
 		profit = (change*amount_inv/100).toFixed(2);
-		$('#I_stocksTable tr:last').after('<tr> <td>'+ symbol +'</td> <td>' + name + '</td> <td>' + amount_inv + '</td> <td>' + sdate + '</td> <td>' + svalue + '</td> <td>' + lvalue + '</td> <td>' +  change   + '% </td> <td>' + profit + '</td> <td> <div class=\"blue buttonStyle small\" onclick=\"createChartSingle(\'' + symbol + '\')\"> View </div> </td> </tr>');
+		$('#I_stocksTable tr:last').after('<tr> <td>'+ symbol +'</td> <td>' + name + '</td> <td>' + amount_inv + '</td> <td>' + sdate + '</td> <td>' + svalue + '</td> <td>' + lvalue + '</td> <td>' +  change   + '% </td> <td>' + profit + '</td> </tr>');
 	}";
 }
 ?>
@@ -176,16 +171,20 @@ if($loggedin && ($per == 2 || $per==3))
 				symbol = stock[1];
 				addStockInformation(symbol,function (symbol , isexist) { 
 					datacount++;
+					if(datacount == length)
+					{
+						$.each(userStockInfo, function(i, stock) {
+							symbol = stock[1];
+							waitForElement(i,symbol);
+						});	
+					}	
 				});
 			});
-			if(datacount == length)
-			{
-				$.each(userStockInfo, function(i, stock) {
-					symbol = stock[1];
-					waitForElement(i,symbol);
-				});	
-			}
-		}";
+		}
+		else {
+			$('#tabs-4').html('<p style=\"margin: 0px auto 0px auto; text-align:center; width:100%;\"> No Investments Available </p>');
+		}	
+	";
 }
 ?>	
 	});
@@ -220,14 +219,12 @@ if($loggedin && ($per == 2 || $per==3))
 			{
 		         echo " <div id='tabs'>
 		           		<ul>
-							<li><a href='#tabs-1'>Overview</a></li>
 							<li><a href='#tabs-2'>Incomes</a></li>
-							<li><a href='#tabs-3'>Payouts</a></li>
-							<li><a href='#tabs-4'>Investments</a></li>
-						</ul>
-						<div id='tabs-1'>
-                             <p>pppp</p>
-						</div>
+							<li><a href='#tabs-3'>Payouts</a></li>";
+         		if($per == 2 || $per==3){
+					echo "<li><a href='#tabs-4'>Investments</a></li>";
+         		}
+				echo "</ul>
 						<div id='tabs-2' style='margin: 0px auto 0px auto; text-align:center; width:100%;'>";
 							if(!empty($incomes))
 							{ 
@@ -288,26 +285,27 @@ if($loggedin && ($per == 2 || $per==3))
 								echo "<p> No Payouts Available </p>";
 							}   
 						
-						echo " </div>
-						<div id='tabs-4'>
-
-							<div id='userStock'>
-					          	<table class='stocksTablesStyle' id='I_stocksTable'>
-					          		<tr style='background-color:#0099ff; display: table-row;'>
-					          			<th>Symbol</th>
-					          			<th>Name</th>
-					          			<th>Amount Invested</th>
-					          			<th>Start Date</th>
-					          			<th>Start Value</th>
-					          			<th>Last Value</th>
-					          			<th>Change</th>
-					          			<th>Profit</th>
-					          			<th></th>
-					          		</tr>
-					          	</table>		                   
-					          </div>       
-						</div>
-		           </div> ";
+						echo " </div>";
+						if($per == 2 || $per==3){
+							echo "
+							<div id='tabs-4'>
+								<div id='userStock'>
+						          	<table class='stocksTablesStyle' id='I_stocksTable'>
+						          		<tr style='background-color:#0099ff; display: table-row;'>
+						          			<th>Symbol</th>
+						          			<th style='width:85px;'>Name</th>
+						          			<th>Amount Invested</th>
+						          			<th style='width:85px;'>Start Date</th>
+						          			<th>Start Value</th>
+						          			<th>Last Value</th>
+						          			<th>Change</th>
+						          			<th>Profit</th>
+						          		</tr>
+						          	</table>		                   
+						          </div>       
+							</div>";
+						}
+		           echo "</div> ";
 		           
 		}       
 		else
@@ -334,7 +332,6 @@ if($loggedin && ($per == 2 || $per==3))
 						<script type='text/javascript' src='engine1/script.js'></script>";
 		}
 ?>          
-		           
 		           
 			</div>
 		</div>
