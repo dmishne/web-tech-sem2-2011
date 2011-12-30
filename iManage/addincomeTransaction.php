@@ -26,25 +26,6 @@ if($formN == 1)  // Update working hours
 	$transtypeid = 3;  
 	$chckId = -1;
 	$jobId = verifyInput($_POST['workid']);
-	if(isset($_SESSION['jobhours']))
-	{
-		foreach ($_SESSION['jobhours'] as $valH)
-		{
-			if(isset($_SESSION['jobs']))
-			{
-				foreach ($_SESSION['jobs'] as $valJ)
-				{
-					if($valH['transname'] == $valJ['name'] && $valJ['recTrans'] == $jobId)
-					{
-						$usrinpt['hours']="error";
-				        $usrinpt['err1'] = 1;
-				        $pass =0;
-						break;
-					}
-				}
-			}
-		}
-	}
 	if($jobId != 'clear'){
 			//$workName = verifyInput($_POST['workname']);   // marked out for security reasons 
 			$amount = verifyInput($_POST['wage']);
@@ -94,6 +75,27 @@ if($formN == 1)  // Update working hours
 			}
 			$startHour = sprintf('%4d-%02d-%02d %02d:%02d:%02d',$cYear, $cMonth, $cDay, $sH, $sM, 0);
 			$endHour = sprintf('%4d-%02d-%02d %02d:%02d:%02d',$cYear2, $cMonth2, $cDay2, $eH, $eM, 0);
+			if(isset($_SESSION['jobhours']))
+			{
+				foreach ($_SESSION['jobhours'] as $valH)
+				{
+					list($getDate,$getTime) = explode(' ', $valH['startHour'],2);
+					$inptDate = sprintf('%4d-%02d-%02d',$cYear, $cMonth, $cDay);
+					if(isset($_SESSION['jobs']))
+					{
+						foreach ($_SESSION['jobs'] as $valJ)
+						{
+							if($valH['transname'] == $valJ['name'] && $valJ['recTrans'] == $jobId && $getDate == $inptDate)
+							{
+								$usrinpt['hours']="error";
+								$usrinpt['err1'] = 1;
+								$pass =0;
+								break;
+							}
+						}
+					}
+				}
+			}
 			if($pass == 1){
 				$usrinpt['amount']=null;
 				$usrinpt['time1'] = null;
