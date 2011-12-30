@@ -25,7 +25,7 @@ if($formN == 1)  // Update working hours
 	$timeupdate = 0;
 	$transtypeid = 3;  
 	$chckId = -1;
-	$jobId = verifyInput($_POST['workid']); 
+	$jobId = verifyInput($_POST['workid']);
 	if(isset($_SESSION['jobhours']))
 	{
 		foreach ($_SESSION['jobhours'] as $valH)
@@ -99,6 +99,7 @@ if($formN == 1)  // Update working hours
 				$usrinpt['time1'] = null;
 				$usrinpt['time2']=null;
 				$usrinpt['err1'] = null;
+				$usrinpt['hours'] = null;
 				$usrinpt['notallowed'] = null;
 				$eres = $connection->query("CALL editJobDetails('$jobId',null,null,'$amount','$pdate')") or die(mysqli_error());
 		        if($timeupdate)
