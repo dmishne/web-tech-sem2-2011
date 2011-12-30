@@ -25,7 +25,7 @@
 	#vertical{
 		float:left;
 		height:50%;
-		margin-top:-400px;
+		margin-top:-365px;
 		width:100%;
 	}
 	#hoz {
@@ -33,7 +33,7 @@
 		width:100%;
 		margin-left:auto;
 		margin-right:auto;
-		height:800px;
+		height:730px;
 		border:1px solid silver;
 		overflow:auto;/* allow content to scroll inside element */
 		text-align:left;
@@ -41,7 +41,7 @@
 	}
 	#ins_logo {
 		text-align: center;
-		height: 180px;
+		height: 135px;
 		width: 100%;
 		//background-image:url('images/logo.png');
 		background-repeat:no-repeat;
@@ -114,31 +114,45 @@
 <script type="text/javascript">
 function verifyInformation()
 {
+	 $("#ins_bu").attr('disabled', true);
 	document.getElementById("ins_error").innerHTML="<img src=\"images/loading.gif\" height=\"42\" width=\"42\" />";
 	mysql_address = document.getElementById("ins_mysql_add").value;
 	mysql_username = document.getElementById("ins_mysql_username").value;
 	mysql_password = document.getElementById("ins_mysql_password").value;
 	mysql_db = document.getElementById("ins_mysql_database").value;
+	mysql_demo_info = document.getElementById("ins_demo_info").value;
+
+	username = document.getElementById('ins_admin_username').value;
+	password = document.getElementById('ins_admin_password').value;
+	passwordr = document.getElementById('ins_admin_password_v').value;
 	// send user information
 	// validate user information
-	$.get("installVerifier.php",{mysql_address:mysql_address,mysql_username:mysql_username ,mysql_password:mysql_password,mysql_db:mysql_db},function(data) {
-		switch(data)
-		{
-		case "1":
-			document.getElementById("ins_error").innerHTML="ok";
-			break;
-		case "0":
-			document.getElementById("ins_error").innerHTML="Problem with MySQL Information";
-			break;
-		case "-1":
-			document.getElementById("ins_error").innerHTML="Site already installed! <br/> Please email Webadmin or recopy the original files";
-			break;
-		default:
-			// Error
-		}
-	});
-	
-	
+	if(password == passwordr && username != "")
+	{
+		$.post("installVerifier.php",{mysql_address:mysql_address,mysql_username:mysql_username ,mysql_password:mysql_password,mysql_db:mysql_db,mysql_demo_info:mysql_demo_info,username:username,password:password,passwordr:passwordr},function(data) {
+			switch(data)
+			{
+			case "1":
+				document.getElementById("ins_error").innerHTML="ok";
+				break;
+			case "0":
+				document.getElementById("ins_error").innerHTML="Problem with MySQL Information";
+				break;
+			case "-1":
+				document.getElementById("ins_error").innerHTML="Site already installed! <br/> Please email Webadmin or recopy the original files";
+				break;
+			default:
+				document.getElementById("ins_error").innerHTML="Problem, Can't install at the moment";
+				break;
+			}
+		})
+		.error(function() {document.getElementById("ins_error").innerHTML="Problem, Can't install at the moment";});
+	}
+	else
+	{
+		document.getElementById("ins_error").innerHTML="Problem with User information";
+	}
+	 $("#ins_bu").attr('disabled', false);
 }
 
 </script>
@@ -149,7 +163,7 @@ function verifyInformation()
 <div id="vertical"></div>
 <div id="hoz">
 	<div id="ins_logo">
-		<img style="vertical-align:-30%; margin:0px 10px 0px -10px;" src='images/logo.png' />Install
+		<img style="vertical-align:-30%; margin:0px 10px 0px -10px;" src='images/logo.png' width='162px' height='134px'/>Install
 	</div>
 	<div id="ins_content">
 		<form id="ins_form" action="" method="get">
@@ -166,11 +180,15 @@ function verifyInformation()
 				</p>
 				<p>
 					<label for="ins_mysql_password">Password </label>
-					<input class="ins_inp" type="text" name="ins_mysql_password" id="ins_mysql_password" />
+					<input class="ins_inp" type="password" name="ins_mysql_password" id="ins_mysql_password" />
 				</p>
 				<p>
 					<label for="ins_mysql_database">Database </label>
 					<input class="ins_inp" type="text" name="ins_mysql_database" id="ins_mysql_database" />
+				</p>
+				<p>
+					<label style="display:inline;" for="ins_demo_info"> Add Demo Information </label>
+					<input type="checkbox" id="ins_demo_info" name="ins_demo_info" value="1"/>
 				</p>
 				<h3><span> Admin User Information</span></h3>
 				<p>
@@ -179,13 +197,13 @@ function verifyInformation()
 				</p>
 				<p>
 					<label for="ins_admin_password">Password </label>
-					<input class="ins_inp" type="text" name="ins_admin_password" id="ins_admin_password" />
+					<input class="ins_inp" type="password" name="ins_admin_password" id="ins_admin_password" />
 				</p>
 				<p>
 					<label for="ins_admin_password_v">Re-type Password</label>
-					<input class="ins_inp" type="text" name="ins_admin_password_v" id="ins_admin_password_v" />
+					<input class="ins_inp" type="password" name="ins_admin_password_v" id="ins_admin_password_v" />
 				</p>
-				<p><input class="blue buttom medium" type="button" value="Install" onclick="verifyInformation()"></input></p>
+				<p><input id="ins_bu" class="blue buttom medium" type="button" value="Install" onclick="verifyInformation()"></input></p>
 			<div id="ins_error" class="error"></div>
 			</fieldset>
 		</form>
