@@ -13,27 +13,22 @@
 <body>
 <div id="wrapper">
 
-	<div id="top">
-		<?php include "header.php"; ?>
-	</div>
+	
 	
 	<div id="middle" style="width:100%;">	
 		<div id="content" style="width:100%; text-align:center;">
 			<div id="content-head">
-		           Under Construction
+		           Not Installed Yet.
 			</div>
 			<div id="content-middle">
 				   Website hasn't been installed yet. <br/>
 				   For further information please contact site administration. <br/>
-				   <?php echo phpversion(); ?>
 			</div>
 		</div>
 	</div>
 	
 	
-	<div id="footer">
-		<?php include "footer.php"; ?>
-	</div>
+	
 </div> <!-- wrapper -->
 </body>
 </html>
