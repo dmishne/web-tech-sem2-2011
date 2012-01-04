@@ -1,501 +1,315 @@
--- MySQL Administrator dump 1.4
---
--- ------------------------------------------------------
--- Server version	5.0.85
+-- Script date 1/2/2012 12:07:54 AM
+-- Server version: 5.0.85
+-- Client version: 4.1
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+-- 
+-- Disable foreign keys
+-- 
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
+-- 
+-- Set character set the client will use to send SQL statements to the server
+--
+SET NAMES 'utf8';
 
 --
--- Create schema webtech
+-- Definition for database webtechtest
 --
+DROP DATABASE IF EXISTS webtechtest;
+CREATE DATABASE IF NOT EXISTS webtechtest
+	CHARACTER SET latin1
+	COLLATE latin1_swedish_ci;
 
-CREATE DATABASE IF NOT EXISTS webtech;
-USE webtech;
-
+-- 
+-- Set default database
 --
--- Definition of table `commitdailyjoblog`
---
-
-DROP TABLE IF EXISTS `commitdailyjoblog`;
-CREATE TABLE `commitdailyjoblog` (
-  `commitDailyJobLogId` int(11) NOT NULL auto_increment,
-  `runDate` datetime NOT NULL,
-  `isSuccessful` int(11) NOT NULL default '0',
-  `jobName` varchar(255) NOT NULL,
-  PRIMARY KEY  (`commitDailyJobLogId`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+USE webtechtest;
 
 --
--- Dumping data for table `commitdailyjoblog`
+-- Definition for table commitdailyjoblog
 --
-
-/*!40000 ALTER TABLE `commitdailyjoblog` DISABLE KEYS */;
-INSERT INTO `commitdailyjoblog` (`commitDailyJobLogId`,`runDate`,`isSuccessful`,`jobName`) VALUES 
- (17,'2011-12-28 13:18:26',1,'commitDailyNotifications'),
- (18,'2011-12-28 13:18:29',0,'commitDailyTrans'),
- (19,'2011-12-28 13:18:34',1,'commitJobHours');
-/*!40000 ALTER TABLE `commitdailyjoblog` ENABLE KEYS */;
-
-
---
--- Definition of table `investments`
---
-
-DROP TABLE IF EXISTS `investments`;
-CREATE TABLE `investments` (
-  `invId` int(11) NOT NULL auto_increment,
-  `symbol` varchar(20) NOT NULL,
-  `amount` double NOT NULL,
-  `startDate` date NOT NULL,
-  `value` double NOT NULL,
-  `walletId` int(10) unsigned NOT NULL,
-  `isActive` tinyint(4) NOT NULL default '1',
-  PRIMARY KEY  (`invId`),
-  KEY `FK_investments_wallet_walletId` (`walletId`),
-  CONSTRAINT `FK_investments_wallet_walletId` FOREIGN KEY (`walletId`) REFERENCES `wallet` (`walletId`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS commitdailyjoblog (
+  commitDailyJobLogId INT(11) NOT NULL AUTO_INCREMENT,
+  runDate DATETIME NOT NULL,
+  isSuccessful INT(11) NOT NULL DEFAULT 0,
+  jobName VARCHAR(255) NOT NULL,
+  PRIMARY KEY (commitDailyJobLogId)
+)
+ENGINE = INNODB
+AUTO_INCREMENT = 30
+AVG_ROW_LENGTH = 1260
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
 
 --
--- Dumping data for table `investments`
+-- Definition for table permission
 --
-
-/*!40000 ALTER TABLE `investments` DISABLE KEYS */;
-/*!40000 ALTER TABLE `investments` ENABLE KEYS */;
-
-
---
--- Definition of table `jobhours`
---
-
-DROP TABLE IF EXISTS `jobhours`;
-CREATE TABLE `jobhours` (
-  `jobHoursId` int(10) unsigned NOT NULL auto_increment,
-  `startHour` datetime NOT NULL,
-  `endHour` datetime NOT NULL,
-  `recId` int(10) unsigned default NULL,
-  `walletId` int(10) unsigned default NULL,
-  `description` varchar(200) default NULL,
-  `isCalculated` int(11) NOT NULL default '0',
-  `transId` int(10) unsigned default NULL,
-  PRIMARY KEY  (`jobHoursId`),
-  KEY `FK_JobHours_1` (`recId`),
-  KEY `FK_JobHours_2` (`walletId`),
-  KEY `FK_jobhours_transaction_transId` (`transId`),
-  CONSTRAINT `FK_JobHours_1` FOREIGN KEY (`recId`) REFERENCES `recurringtransaction` (`recTrans`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_JobHours_2` FOREIGN KEY (`walletId`) REFERENCES `wallet` (`walletId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_jobhours_transaction_transId` FOREIGN KEY (`transId`) REFERENCES `transaction` (`transId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS permission (
+  permissionId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  description VARCHAR(45) NOT NULL,
+  name VARCHAR(45) NOT NULL,
+  PRIMARY KEY (permissionId)
+)
+ENGINE = INNODB
+AUTO_INCREMENT = 4
+AVG_ROW_LENGTH = 5461
+CHARACTER SET latin1
+COLLATE latin1_swedish_ci;
 
 --
--- Dumping data for table `jobhours`
+-- Definition for table recurrencetype
 --
-
-/*!40000 ALTER TABLE `jobhours` DISABLE KEYS */;
-/*!40000 ALTER TABLE `jobhours` ENABLE KEYS */;
-
-
---
--- Definition of table `notifications`
---
-
-DROP TABLE IF EXISTS `notifications`;
-CREATE TABLE `notifications` (
-  `notificationId` int(10) unsigned NOT NULL auto_increment,
-  `firstNoteDate` date default NULL,
-  `lastNoteDate` date NOT NULL,
-  `walletId` int(10) unsigned NOT NULL,
-  `recId` int(10) unsigned NOT NULL,
-  PRIMARY KEY  (`notificationId`),
-  KEY `FK_Notifications_1` (`walletId`),
-  KEY `FK_notifications_2` (`recId`),
-  CONSTRAINT `FK_Notifications_1` FOREIGN KEY (`walletId`) REFERENCES `wallet` (`walletId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_notifications_2` FOREIGN KEY (`recId`) REFERENCES `recurringtransaction` (`recTrans`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='InnoDB free: 988160 kB';
+CREATE TABLE IF NOT EXISTS recurrencetype (
+  recurTypeId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  type VARCHAR(45) NOT NULL,
+  PRIMARY KEY (recurTypeId)
+)
+ENGINE = INNODB
+AUTO_INCREMENT = 11
+AVG_ROW_LENGTH = 2730
+CHARACTER SET latin1
+COLLATE latin1_swedish_ci;
 
 --
--- Dumping data for table `notifications`
+-- Definition for table transactiontype
 --
-
-/*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
-/*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
-
-
---
--- Definition of table `permission`
---
-
-DROP TABLE IF EXISTS `permission`;
-CREATE TABLE `permission` (
-  `permissionId` int(10) unsigned NOT NULL auto_increment,
-  `description` varchar(45) NOT NULL,
-  `name` varchar(45) NOT NULL,
-  PRIMARY KEY  (`permissionId`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+CREATE TABLE IF NOT EXISTS transactiontype (
+  typeId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  Name VARCHAR(45) NOT NULL,
+  Description VARCHAR(45) NOT NULL,
+  PRIMARY KEY (typeId)
+)
+ENGINE = INNODB
+AUTO_INCREMENT = 8
+AVG_ROW_LENGTH = 2730
+CHARACTER SET latin1
+COLLATE latin1_swedish_ci;
 
 --
--- Dumping data for table `permission`
+-- Definition for table userstatus
 --
-
-/*!40000 ALTER TABLE `permission` DISABLE KEYS */;
-INSERT INTO `permission` (`permissionId`,`description`,`name`) VALUES 
- (1,'Regular user','Regular'),
- (2,'Premium user','Premium'),
- (3,'Admin','Admin');
-/*!40000 ALTER TABLE `permission` ENABLE KEYS */;
-
-
---
--- Definition of table `recurrencetype`
---
-
-DROP TABLE IF EXISTS `recurrencetype`;
-CREATE TABLE `recurrencetype` (
-  `recurTypeId` int(10) unsigned NOT NULL auto_increment,
-  `type` varchar(45) NOT NULL,
-  PRIMARY KEY  (`recurTypeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS userstatus (
+  statusId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  name VARCHAR(45) NOT NULL,
+  description VARCHAR(100) NOT NULL,
+  PRIMARY KEY (statusId)
+)
+ENGINE = INNODB
+AUTO_INCREMENT = 4
+AVG_ROW_LENGTH = 5461
+CHARACTER SET latin1
+COLLATE latin1_swedish_ci;
 
 --
--- Dumping data for table `recurrencetype`
+-- Definition for table wallettype
 --
-
-/*!40000 ALTER TABLE `recurrencetype` DISABLE KEYS */;
-INSERT INTO `recurrencetype` (`recurTypeId`,`type`) VALUES 
- (1,'1 Week'),
- (2,'2 Weeks'),
- (4,'1 Month'),
- (8,'2 Months'),
- (9,'none'),
- (10,'Daily');
-/*!40000 ALTER TABLE `recurrencetype` ENABLE KEYS */;
-
-
---
--- Definition of table `recurringtransaction`
---
-
-DROP TABLE IF EXISTS `recurringtransaction`;
-CREATE TABLE `recurringtransaction` (
-  `recTrans` int(10) unsigned NOT NULL auto_increment,
-  `name` varchar(45) NOT NULL,
-  `description` varchar(100) default NULL,
-  `wage` double unsigned default NULL,
-  `incomeDate` date default NULL,
-  `walletId` int(10) unsigned default NULL,
-  `isActive` tinyint(4) NOT NULL default '1',
-  PRIMARY KEY  (`recTrans`),
-  KEY `FK_RecurringTransaction_1` (`walletId`),
-  CONSTRAINT `FK_RecurringTransaction_1` FOREIGN KEY (`walletId`) REFERENCES `wallet` (`walletId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AVG_ROW_LENGTH=390;
+CREATE TABLE IF NOT EXISTS wallettype (
+  typeId INT(10) NOT NULL AUTO_INCREMENT,
+  typeName VARCHAR(45) NOT NULL,
+  PRIMARY KEY (typeId)
+)
+ENGINE = INNODB
+AUTO_INCREMENT = 3
+AVG_ROW_LENGTH = 8192
+CHARACTER SET latin1
+COLLATE latin1_swedish_ci;
 
 --
--- Dumping data for table `recurringtransaction`
+-- Definition for table users
 --
-
-/*!40000 ALTER TABLE `recurringtransaction` DISABLE KEYS */;
-/*!40000 ALTER TABLE `recurringtransaction` ENABLE KEYS */;
-
-
---
--- Definition of table `transaction`
---
-
-DROP TABLE IF EXISTS `transaction`;
-CREATE TABLE `transaction` (
-  `transId` int(10) unsigned NOT NULL auto_increment,
-  `amount` double default '0',
-  `transDate` date NOT NULL,
-  `isCommited` tinyint(1) NOT NULL default '0',
-  `walletId` int(10) unsigned NOT NULL,
-  `transTypeId` int(10) unsigned NOT NULL,
-  `transCustomName` varchar(45) NOT NULL,
-  `recurrence` int(10) unsigned NOT NULL default '0',
-  `description` varchar(100) default NULL,
-  `recId` int(10) unsigned default NULL,
-  `wage` double default NULL,
-  PRIMARY KEY  (`transId`),
-  KEY `FK_Transaction_1` (`walletId`),
-  KEY `FK_Transaction_2` USING BTREE (`transTypeId`),
-  KEY `FK_Transaction_4` (`recId`),
-  KEY `FK_Transaction_3` USING BTREE (`recurrence`),
-  CONSTRAINT `FK_Transaction_1` FOREIGN KEY (`walletId`) REFERENCES `wallet` (`walletId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_Transaction_2` FOREIGN KEY (`transTypeId`) REFERENCES `transactiontype` (`typeId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_Transaction_3` FOREIGN KEY (`recurrence`) REFERENCES `recurrencetype` (`recurTypeId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_Transaction_4` FOREIGN KEY (`recId`) REFERENCES `recurringtransaction` (`recTrans`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC COMMENT='InnoDB free: 733184 kB; (`type`) REFER `webtech/TransactionT';
+CREATE TABLE IF NOT EXISTS users (
+  userId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  loginname VARCHAR(20) NOT NULL,
+  firstName VARCHAR(20) NOT NULL,
+  lastName VARCHAR(20) DEFAULT NULL,
+  registrationDate DATETIME NOT NULL,
+  dateOfBirth DATE NOT NULL,
+  statusId INT(10) UNSIGNED NOT NULL,
+  permissionId INT(10) UNSIGNED NOT NULL,
+  email VARCHAR(45) NOT NULL,
+  pincode VARCHAR(45) NOT NULL,
+  statusChangeDate DATETIME DEFAULT NULL,
+  statusChangeComment VARCHAR(225) DEFAULT NULL,
+  PRIMARY KEY (userId),
+  INDEX FK_Users_1 (permissionId),
+  INDEX FK_Users_2 (statusId),
+  UNIQUE INDEX loginname (loginname),
+  CONSTRAINT FK_Users_1 FOREIGN KEY (permissionId)
+    REFERENCES permission(permissionId) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT FK_Users_2 FOREIGN KEY (statusId)
+    REFERENCES userstatus(statusId) ON DELETE NO ACTION ON UPDATE NO ACTION
+)
+ENGINE = INNODB
+AUTO_INCREMENT = 2
+AVG_ROW_LENGTH = 16384
+CHARACTER SET latin1
+COLLATE latin1_swedish_ci
+COMMENT = 'InnoDB free: 727040 kB; (`permissionId`) REFER `webtech/Perm';
 
 --
--- Dumping data for table `transaction`
+-- Definition for table wallet
 --
-
-/*!40000 ALTER TABLE `transaction` DISABLE KEYS */;
-/*!40000 ALTER TABLE `transaction` ENABLE KEYS */;
-
-
---
--- Definition of table `transactiontype`
---
-
-DROP TABLE IF EXISTS `transactiontype`;
-CREATE TABLE `transactiontype` (
-  `typeId` int(10) unsigned NOT NULL auto_increment,
-  `Name` varchar(45) NOT NULL,
-  `Description` varchar(45) NOT NULL,
-  PRIMARY KEY  (`typeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `transactiontype`
---
-
-/*!40000 ALTER TABLE `transactiontype` DISABLE KEYS */;
-INSERT INTO `transactiontype` (`typeId`,`Name`,`Description`) VALUES 
- (1,'One time income','One time income'),
- (2,'Recurring income','Recurring income'),
- (3,'Recurring Generated income','Recurring Generated income'),
- (5,'One time payout','One time payout'),
- (6,'Recurring payout','Recurring payout'),
- (7,'Recurring Generated payout','Recurring Generated payout');
-/*!40000 ALTER TABLE `transactiontype` ENABLE KEYS */;
-
+CREATE TABLE IF NOT EXISTS wallet (
+  walletId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  balance DOUBLE DEFAULT 0,
+  lastUpdateDate DATETIME NOT NULL,
+  userId INT(10) UNSIGNED NOT NULL,
+  wallettype INT(10) NOT NULL DEFAULT 1,
+  PRIMARY KEY (walletId),
+  INDEX FK_Wallet_1 (userId),
+  CONSTRAINT FK_Wallet_1 FOREIGN KEY (userId)
+    REFERENCES users(userId) ON DELETE NO ACTION ON UPDATE NO ACTION
+)
+ENGINE = INNODB
+AUTO_INCREMENT = 2
+AVG_ROW_LENGTH = 16384
+CHARACTER SET latin1
+COLLATE latin1_swedish_ci;
 
 --
--- Definition of table `users`
+-- Definition for table investments
 --
-
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users` (
-  `userId` int(10) unsigned NOT NULL auto_increment,
-  `loginname` varchar(20) NOT NULL,
-  `firstName` varchar(20) NOT NULL,
-  `lastName` varchar(20) default NULL,
-  `registrationDate` datetime NOT NULL,
-  `dateOfBirth` date NOT NULL,
-  `statusId` int(10) unsigned NOT NULL,
-  `permissionId` int(10) unsigned NOT NULL,
-  `email` varchar(45) NOT NULL,
-  `pincode` varchar(45) NOT NULL,
-  `statusChangeDate` datetime default NULL,
-  `statusChangeComment` varchar(255) default NULL,
-  PRIMARY KEY  (`userId`),
-  UNIQUE KEY `loginname` (`loginname`),
-  KEY `FK_Users_1` (`permissionId`),
-  KEY `FK_Users_2` (`statusId`),
-  CONSTRAINT `FK_Users_1` FOREIGN KEY (`permissionId`) REFERENCES `permission` (`permissionId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_Users_2` FOREIGN KEY (`statusId`) REFERENCES `userstatus` (`statusId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1 COMMENT='InnoDB free: 727040 kB; (`permissionId`) REFER `webtech/Perm';
+CREATE TABLE IF NOT EXISTS investments (
+  invId INT(11) NOT NULL AUTO_INCREMENT,
+  symbol VARCHAR(20) NOT NULL,
+  amount DOUBLE NOT NULL,
+  startDate DATE NOT NULL,
+  value DOUBLE NOT NULL,
+  walletId INT(10) UNSIGNED NOT NULL,
+  isActive TINYINT(4) NOT NULL DEFAULT 1,
+  PRIMARY KEY (invId),
+  INDEX FK_investments_wallet_walletId (walletId),
+  CONSTRAINT FK_investments_wallet_walletId FOREIGN KEY (walletId)
+    REFERENCES wallet(walletId) ON DELETE RESTRICT ON UPDATE RESTRICT
+)
+ENGINE = INNODB
+AUTO_INCREMENT = 1
+CHARACTER SET latin1
+COLLATE latin1_swedish_ci;
 
 --
--- Dumping data for table `users`
+-- Definition for table recurringtransaction
 --
-
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` (`userId`,`loginname`,`firstName`,`lastName`,`registrationDate`,`dateOfBirth`,`statusId`,`permissionId`,`email`,`pincode`,`statusChangeDate`,`statusChangeComment`) VALUES 
- (5,'LenaTest3','test','test','2011-09-22 09:36:07','2011-12-25',1,2,'updated@test.cc','81dc9bdb52d04dc20036dbd8313ed055','2011-12-25 16:58:18','comment'),
- (10,'daniel','Daniel','Mishne','2011-10-19 18:38:16','1984-09-29',1,3,'daniel.mishne@gmail.com','aa47f8215c6f30a0dcdb2a36a9f4168e','2011-12-28 10:07:48',' \nUser Locked - 28.12.2011 10:07 \nUser Unlocked - 28.12.2011 10:07'),
- (11,'jek','Evgeny','Radbel','2011-11-02 19:01:15','1983-11-01',1,3,'evgeny11183@gmail.com','e10adc3949ba59abbe56e057f20f883e',NULL,NULL),
- (12,'test','test','test','2011-12-07 11:31:33','2011-12-07',1,2,'aaa@aaa.com','098f6bcd4621d373cade4e832627b4f6',NULL,NULL),
- (13,'mytest','jeka','noname','2011-12-13 21:42:56','1987-06-12',1,3,'bla@mail.com','975370276566244ccfc977e26dfd90ac',NULL,NULL),
- (14,'tester','test','test','2011-12-23 20:25:38','1987-12-12',1,1,'tttt@eeee.hhh','b59c67bf196a4758191e42f76670ceba',NULL,NULL),
- (15,'test1','test1','testtest','2011-12-24 11:26:14','1970-01-01',3,1,'aaa@aaa.com','5a105e8b9d40e1329780d62ea2265d8a','2011-12-26 12:13:35','Account was deleted'),
- (16,'test2','testFirst','testLast','2011-12-25 23:06:01','2011-12-12',3,1,'bal@bak.com','ad0234829205b9033196ba818f7a872b','2011-12-26 12:33:53','Account was deleted'),
- (17,'test3','bla','blabla','2011-12-25 23:11:06','1981-02-12',1,1,'ggg2@ail.com','8ad8757baa8564dc136c1e07507f4a98','2011-12-27 13:35:53',' \nUser Unlocked - 27.12.2011 13:18 \nUser Locked - 27.12.2011 13:18 \nUser Unlocked - 27.12.2011 13:22 \nUser Locked - 27.12.2011 13:23 \nUser Unlocked - 27.12.2011 13:35'),
- (18,'admin1','jeka','radbel','2011-12-27 00:24:48','1983-11-01',1,1,'e.radbel@gmail.com','445f6b76535e533be0bc220dad8b221b',NULL,NULL),
- (20,'tester2','admin','test','2011-12-28 13:25:13','2011-12-28',1,3,'email@mail.d','81dc9bdb52d04dc20036dbd8313ed055',NULL,NULL);
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
-
-
---
--- Definition of table `userstatus`
---
-
-DROP TABLE IF EXISTS `userstatus`;
-CREATE TABLE `userstatus` (
-  `statusId` int(10) unsigned NOT NULL auto_increment,
-  `name` varchar(45) NOT NULL,
-  `description` varchar(100) NOT NULL,
-  PRIMARY KEY  (`statusId`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS recurringtransaction (
+  recTrans INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  name VARCHAR(45) NOT NULL,
+  description VARCHAR(100) DEFAULT NULL,
+  wage DOUBLE UNSIGNED DEFAULT NULL,
+  incomeDate DATE DEFAULT NULL,
+  walletId INT(10) UNSIGNED DEFAULT NULL,
+  isActive TINYINT(4) NOT NULL DEFAULT 1,
+  PRIMARY KEY (recTrans),
+  INDEX FK_RecurringTransaction_1 (walletId),
+  CONSTRAINT FK_RecurringTransaction_1 FOREIGN KEY (walletId)
+    REFERENCES wallet(walletId) ON DELETE NO ACTION ON UPDATE NO ACTION
+)
+ENGINE = INNODB
+AUTO_INCREMENT = 1
+CHARACTER SET latin1
+COLLATE latin1_swedish_ci;
 
 --
--- Dumping data for table `userstatus`
+-- Definition for table notifications
 --
-
-/*!40000 ALTER TABLE `userstatus` DISABLE KEYS */;
-INSERT INTO `userstatus` (`statusId`,`name`,`description`) VALUES 
- (1,'Open','Any new user holds this status until gets loc'),
- (2,'Locked','Locked user'),
- (3,'Deleted','Pending deletion or deleted user');
-/*!40000 ALTER TABLE `userstatus` ENABLE KEYS */;
-
-
---
--- Definition of table `wallet`
---
-
-DROP TABLE IF EXISTS `wallet`;
-CREATE TABLE `wallet` (
-  `walletId` int(10) unsigned NOT NULL auto_increment,
-  `balance` double default '0',
-  `lastUpdateDate` datetime NOT NULL,
-  `userId` int(10) unsigned NOT NULL,
-  `wallettype` int(10) NOT NULL default '1',
-  PRIMARY KEY  (`walletId`),
-  KEY `FK_Wallet_1` (`userId`),
-  CONSTRAINT `FK_Wallet_1` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+CREATE TABLE IF NOT EXISTS notifications (
+  notificationId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  firstNoteDate DATE DEFAULT NULL,
+  lastNoteDate DATE NOT NULL,
+  walletId INT(10) UNSIGNED NOT NULL,
+  recId INT(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (notificationId),
+  INDEX FK_Notifications_1 (walletId),
+  INDEX FK_notifications_2 (recId),
+  CONSTRAINT FK_Notifications_1 FOREIGN KEY (walletId)
+    REFERENCES wallet(walletId) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT FK_notifications_2 FOREIGN KEY (recId)
+    REFERENCES recurringtransaction(recTrans) ON DELETE NO ACTION ON UPDATE NO ACTION
+)
+ENGINE = INNODB
+AUTO_INCREMENT = 1
+CHARACTER SET latin1
+COLLATE latin1_swedish_ci
+COMMENT = 'InnoDB free: 988160 kB';
 
 --
--- Dumping data for table `wallet`
+-- Definition for table transaction
 --
-
-/*!40000 ALTER TABLE `wallet` DISABLE KEYS */;
-INSERT INTO `wallet` (`walletId`,`balance`,`lastUpdateDate`,`userId`,`wallettype`) VALUES 
- (1,540,'2011-12-28 10:44:26',5,1),
- (6,-1910,'2011-12-28 11:32:09',10,1),
- (7,0,'2011-12-17 21:58:07',11,1),
- (8,-550,'2011-12-28 11:39:58',12,1),
- (9,189,'2011-12-27 22:39:06',13,1),
- (10,0,'2011-12-17 09:44:43',5,2),
- (11,0,'2011-12-21 13:29:44',10,2),
- (12,0,'2011-12-24 10:40:50',14,1),
- (13,0,'2011-12-24 11:30:19',15,1),
- (14,0,'2011-12-25 23:06:01',16,1),
- (15,0,'2011-12-25 23:11:06',17,1),
- (16,350,'2011-12-27 00:42:47',18,1),
- (17,0,'2011-12-28 11:46:53',12,2),
- (19,0,'2011-12-28 13:25:13',20,1);
-/*!40000 ALTER TABLE `wallet` ENABLE KEYS */;
-
-
---
--- Definition of table `wallettype`
---
-
-DROP TABLE IF EXISTS `wallettype`;
-CREATE TABLE `wallettype` (
-  `typeId` int(10) NOT NULL auto_increment,
-  `typeName` varchar(45) NOT NULL,
-  PRIMARY KEY  (`typeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `wallettype`
---
-
-/*!40000 ALTER TABLE `wallettype` DISABLE KEYS */;
-INSERT INTO `wallettype` (`typeId`,`typeName`) VALUES 
- (1,'Regular'),
- (2,'Investment');
-/*!40000 ALTER TABLE `wallettype` ENABLE KEYS */;
-
+CREATE TABLE IF NOT EXISTS transaction (
+  transId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  amount DOUBLE DEFAULT 0,
+  transDate DATE NOT NULL,
+  isCommited TINYINT(1) NOT NULL DEFAULT 0,
+  walletId INT(10) UNSIGNED NOT NULL,
+  transTypeId INT(10) UNSIGNED NOT NULL,
+  transCustomName VARCHAR(45) NOT NULL,
+  recurrence INT(10) UNSIGNED NOT NULL DEFAULT 0,
+  description VARCHAR(100) DEFAULT NULL,
+  recId INT(10) UNSIGNED DEFAULT NULL,
+  wage DOUBLE DEFAULT NULL,
+  PRIMARY KEY (transId),
+  INDEX FK_Transaction_1 (walletId),
+  INDEX FK_Transaction_2 (transTypeId),
+  INDEX FK_Transaction_3 (recurrence),
+  INDEX FK_Transaction_4 (recId),
+  CONSTRAINT FK_Transaction_1 FOREIGN KEY (walletId)
+    REFERENCES wallet(walletId) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT FK_Transaction_2 FOREIGN KEY (transTypeId)
+    REFERENCES transactiontype(typeId) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT FK_Transaction_3 FOREIGN KEY (recurrence)
+    REFERENCES recurrencetype(recurTypeId) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT FK_Transaction_4 FOREIGN KEY (recId)
+    REFERENCES recurringtransaction(recTrans) ON DELETE NO ACTION ON UPDATE NO ACTION
+)
+ENGINE = INNODB
+AUTO_INCREMENT = 1
+CHARACTER SET latin1
+COLLATE latin1_swedish_ci
+COMMENT = 'InnoDB free: 733184 kB; (`type`) REFER `webtech/TransactionT';
 
 --
--- Definition of function `calcSalaryHourWage`
+-- Definition for table jobhours
 --
-
-DROP FUNCTION IF EXISTS `calcSalaryHourWage`;
+CREATE TABLE IF NOT EXISTS jobhours (
+  jobHoursId INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  startHour DATETIME NOT NULL,
+  endHour DATETIME NOT NULL,
+  recId INT(10) UNSIGNED DEFAULT NULL,
+  walletId INT(10) UNSIGNED DEFAULT NULL,
+  description VARCHAR(200) DEFAULT NULL,
+  isCalculated INT(11) NOT NULL DEFAULT 0,
+  transId INT(10) UNSIGNED DEFAULT NULL,
+  PRIMARY KEY (jobHoursId),
+  INDEX FK_JobHours_1 (recId),
+  INDEX FK_JobHours_2 (walletId),
+  INDEX FK_jobhours_transaction_transId (transId),
+  CONSTRAINT FK_JobHours_1 FOREIGN KEY (recId)
+    REFERENCES recurringtransaction(recTrans) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT FK_JobHours_2 FOREIGN KEY (walletId)
+    REFERENCES wallet(walletId) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT FK_jobhours_transaction_transId FOREIGN KEY (transId)
+    REFERENCES transaction(transId) ON DELETE RESTRICT ON UPDATE RESTRICT
+)
+ENGINE = INNODB
+AUTO_INCREMENT = 1
+CHARACTER SET latin1
+COLLATE latin1_swedish_ci;
 
 DELIMITER $$
 
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` FUNCTION `calcSalaryHourWage`(startHour DATETIME, endHour DATETIME, wage DOUBLE) RETURNS double
-BEGIN
-  SET @timeDiff = (SELECT TIMESTAMPDIFF(minute,startHour,endHour));
-  SET @minuteWage = wage/60;
-  return @timeDiff * @minuteWage;
-
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
-
 --
--- Definition of function `getFutureTrans`
+-- Definition for procedure balanceForecastReport
 --
-
-DROP FUNCTION IF EXISTS `getFutureTrans`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER' */ $$
-CREATE DEFINER=`webtech`@`%` FUNCTION `getFutureTrans`(transDate DATE, recurrence INT) RETURNS date
-BEGIN
-    IF (recurrence >= 1 and recurrence < 9 ) then
-      SET @futuredate = null;
-
-      CASE recurrence
-			    WHEN 10 THEN
-				  	SET @futuredate = transDate + INTERVAL 1 day;
-  			  WHEN 1 THEN
-	  				SET @futuredate = transDate + INTERVAL 1 week;
-		  	  WHEN 2 THEN
-			  		SET @futuredate = transDate + INTERVAL 2 week;
-  			  WHEN 4 THEN
-            IF @futuredate = LAST_DAY(transDate) THEN
-	  			  	SET @futuredate = LAST_DAY(transDate + INTERVAL 1 month);
-            ELSE
-            	SET @futuredate = transDate + INTERVAL 1 month;
-            END IF;
-		  	  WHEN 8 THEN
-            IF @futuredate = LAST_DAY(transDate) THEN
-	  			  	SET @futuredate = LAST_DAY(transDate + INTERVAL 2 month);
-            ELSE
-            	SET @futuredate = transDate + INTERVAL 2 month;
-            END IF;
-        END CASE;
-    ELSE
-      RETURN '1000-01-01';
-    END IF;
-RETURN @futuredate;
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
-
---
--- Definition of function `IsNumeric`
---
-
-DROP FUNCTION IF EXISTS `IsNumeric`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER' */ $$
-CREATE DEFINER=`webtech`@`%` FUNCTION `IsNumeric`(sIn varchar(1024)) RETURNS tinyint(4)
-RETURN sIn REGEXP '^(-|\\+){0,1}([0-9]+\\.[0-9]*|[0-9]*\\.[0-9]+|[0-9]+)$' $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
-
---
--- Definition of procedure `balanceForecastReport`
---
-
-DROP PROCEDURE IF EXISTS `balanceForecastReport`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `balanceForecastReport`(IN loginname VARCHAR(20))
+CREATE 
+PROCEDURE balanceForecastReport(IN loginname VARCHAR(20))
 BEGIN
   SET @uid = (SELECT userid FROM users u where u.loginname = loginname );
   SET @wid = (SELECT walletid FROM wallet w WHERE w.userId = @uid AND w.wallettype = 1);
 IF @wid IS NULL THEN
   SELECT 'Incorrect details';
 ELSE
-  DROP TABLE IF EXISTS `webtech`.`result`,  `webtech`.`tempres` ;
-  CREATE TEMPORARY TABLE `webtech`.`result` (transname VARCHAR(40), amount DOUBLE, month_name VARCHAR(30));
-  CREATE TEMPORARY TABLE `webtech`.`tempres` (transname VARCHAR(40), amount DOUBLE, month_name VARCHAR(30));
+  DROP TABLE IF EXISTS `webtechtest`.`result`,  `webtechtest`.`tempres` ;
+  CREATE TEMPORARY TABLE `webtechtest`.`result` (transname VARCHAR(40), amount DOUBLE, month_name VARCHAR(30));
+  CREATE TEMPORARY TABLE `webtechtest`.`tempres` (transname VARCHAR(40), amount DOUBLE, month_name VARCHAR(30));
 
   SET @yearStart = date_format(DATE(utc_timestamp() - interval 11 month), '%Y-%m-01');
   SET @monthStart = date_format(DATE(utc_timestamp()), '%Y-%m-01');
@@ -650,29 +464,22 @@ ELSE
   SElECT * FROM result;
 END IF;
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `balanceYearlyReport`
+-- Definition for procedure balanceYearlyReport
 --
-
-DROP PROCEDURE IF EXISTS `balanceYearlyReport`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `balanceYearlyReport`(IN loginname VARCHAR(20))
+CREATE 
+PROCEDURE balanceYearlyReport(IN loginname VARCHAR(20))
 BEGIN
   SET @uid = (SELECT userid FROM users u where u.loginname = loginname );
   SET @wid = (SELECT walletid FROM wallet w WHERE w.userId = @uid AND w.wallettype = 1);
 IF @wid IS NULL THEN
   SELECT 'Incorrect details';
 ELSE
-  DROP TABLE IF EXISTS `webtech`.`result` ;
-  CREATE TEMPORARY TABLE `webtech`.`result` (transname VARCHAR(40), amount DOUBLE, month_name VARCHAR(30));
+  DROP TABLE IF EXISTS `webtechtest`.`result` ;
+  CREATE TEMPORARY TABLE `webtechtest`.`result` (transname VARCHAR(40), amount DOUBLE, month_name VARCHAR(30));
 
   SET @yearStart = date_format(DATE(utc_timestamp() - interval 11 month), '%Y-%m-01');
   SET @yearEnd = last_day(DATE(utc_timestamp()));
@@ -714,21 +521,14 @@ ELSE
   SElECT * FROM result;
 END IF;
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `clearAndFillDb`
+-- Definition for procedure clearAndFillDb
 --
-
-DROP PROCEDURE IF EXISTS `clearAndFillDb`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `clearAndFillDb`(IN loginname varchar(20), IN toClear INT)
+CREATE 
+PROCEDURE clearAndFillDb(IN loginname varchar(20), IN toClear INT)
 BEGIN
 #-------------------- choose loginname -----------------------------------------------------#
 SET @loginname = loginname;
@@ -750,7 +550,7 @@ END IF;
 
 #Insert one time incomes
 SET @count = 7;
-SET @tempdate = now() - interval 1 month;
+SET @tempdate = utc_timestamp() - interval 1 month;
 WHILE (@count > 0 ) DO
   call insertTransaction(@count*2, @loginname, @tempDate, 'one time income - auto', 9,1,null,'auto - one time income description');
   set @tempDate = @tempdate + interval @count day;
@@ -758,7 +558,7 @@ WHILE (@count > 0 ) DO
 END WHILE;
 #Insert one time payouts
 SET @count = 7;
-SET @tempdate = now() - interval 1 month;
+SET @tempdate = utc_timestamp() - interval 1 month;
 WHILE (@count > 0 ) DO
   call insertTransaction(-(@count*2), @loginname, @tempDate, 'one time payout - auto', 9,5,null,'auto - one time payout description');
   set @tempDate = @tempdate + interval @count day;
@@ -766,7 +566,7 @@ WHILE (@count > 0 ) DO
 END WHILE;
 #Insert recurring incomes
 SET @count = 4;
-SET @tempdate = now() - interval 2 month;
+SET @tempdate = utc_timestamp() - interval 2 month;
 WHILE (@count > 0 ) DO
   call insertTransaction(@count*20, @loginname, @tempDate, 'recurring income - auto', 1,2,null,'auto - recurring income description');
   set @tempDate = @tempdate + interval @count day;
@@ -774,7 +574,7 @@ WHILE (@count > 0 ) DO
 END WHILE;
 #Insert recurring incomes
 SET @count = 3;
-SET @tempdate = now() - interval 5 month;
+SET @tempdate = utc_timestamp() - interval 5 month;
 WHILE (@count > 0 ) DO
   call insertTransaction(-(@count*20), @loginname, @tempDate, 'recurring payouts - auto', 4,6,null,'auto - recurring payouts description');
   set @tempDate = @tempdate + interval @count day;
@@ -782,34 +582,27 @@ WHILE (@count > 0 ) DO
 END WHILE;
 #Insert jobs
 SET @count = 3;
-SET @tempdate = now() - interval 5 month;
+SET @tempdate = utc_timestamp() - interval 5 month;
 WHILE (@count > 0 ) DO
-  call insertJob(@loginname, concat('Job name', @count), concat('Desc name',@count), 25.7, now() + interval @count day);
+  call insertJob(@loginname, concat('Job name', @count), concat('Desc name',@count), 25.7, utc_timestamp() + interval @count day);
   set @tempDate = @tempdate + interval @count day;
   SET @count = @count - 1;
 END WHILE;
 
 update wallet set balance = 1000 where walletId = @wid and wallettype = 1;
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `commitDailyNotifications`
+-- Definition for procedure commitDailyNotifications
 --
-
-DROP PROCEDURE IF EXISTS `commitDailyNotifications`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `commitDailyNotifications`()
+CREATE 
+PROCEDURE commitDailyNotifications()
 BEGIN
-DROP TABLE IF EXISTS `webtech`.`temp`, `webtech`.`result`;
-CREATE TEMPORARY TABLE `webtech`.`temp`(notId INT(10), recId INT (10), recName VARCHAR(45), email VARCHAR(45), notType INT);
-CREATE TEMPORARY TABLE `webtech`.`result`(notId INT(10), recId INT (10), recName VARCHAR(45), email VARCHAR(45), notType INT);
+DROP TABLE IF EXISTS `webtechtest`.`temp`, `webtechtest`.`result`;
+CREATE TEMPORARY TABLE `webtechtest`.`temp`(notId INT(10), recId INT (10), recName VARCHAR(45), email VARCHAR(45), notType INT);
+CREATE TEMPORARY TABLE `webtechtest`.`result`(notId INT(10), recId INT (10), recName VARCHAR(45), email VARCHAR(45), notType INT);
 
 
 #---------select all emails to send notifications to-----------------------------#
@@ -846,36 +639,29 @@ WHILE (@rows > 0) DO
   SET @rows = (SELECT count(*) FROM temp);
 END WHILE;
 #---------return list of emails to send them notifications-----------------------#
-  INSERT INTO commitdailyjoblog (`runDate`, `isSuccessful`, `jobName`) VALUES (now(), 1, 'commitDailyNotifications');  
+  #INSERT INTO commitdailyjoblog (`runDate`, `isSuccessful`, `jobName`) VALUES (utc_timestamp(), 1, 'commitDailyNotifications');  
 SELECT * FROM result;
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `commitDailyTrans`
+-- Definition for procedure commitDailyTrans
 --
-
-DROP PROCEDURE IF EXISTS `commitDailyTrans`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `commitDailyTrans`()
+CREATE 
+PROCEDURE commitDailyTrans()
 BEGIN
 
-IF (SELECT count(*) FROM transaction t WHERE t.isCommited = 0 and t.transDate <= date(now()) > 0) THEN
+IF (SELECT count(*) FROM transaction t WHERE t.isCommited = 0 and t.transDate <= date(utc_timestamp()) > 0) THEN
   # ---------------------- All future transactions except from Recurring generated payout! ------------#
-  SET @rows = (SELECT count(*) FROM transaction t WHERE t.isCommited = 0 and t.transDate <= date(now()) and t.transTypeId <> 7);
+  SET @rows = (SELECT count(*) FROM transaction t WHERE t.isCommited = 0 and t.transDate <= date(utc_timestamp()) and t.transTypeId <> 7);
   IF ( @rows > 0) THEN 
-    DROP TABLE IF EXISTS `webtech`.`temp`;
-    CREATE TEMPORARY TABLE `webtech`.`temp` (`rowid` INT,`transID` INT, `walletid` INT, `amount` DOUBLE, `recurrence` INT, `recid` INT, `transTypeId` INT(10),`transname` VARCHAR(45),  `description` VARCHAR(100));
+    DROP TABLE IF EXISTS `webtechtest`.`temp`;
+    CREATE TEMPORARY TABLE `webtechtest`.`temp` (`rowid` INT,`transID` INT, `walletid` INT, `amount` DOUBLE, `recurrence` INT, `recid` INT, `transTypeId` INT(10),`transname` VARCHAR(45),  `description` VARCHAR(100));
   
     INSERT INTO `temp` (`rowid`,`transID`, `walletid`, `amount`, `recurrence`, `recid`,`transTypeId`,`transname`, `description`)
     SELECT @rownum:=@rownum+1 `rowid`, t.transId, t.walletId, t.amount, t.recurrence, t.recId, t.transTypeId, t.transCustomName, t.description
       FROM transaction t, (SELECT @rownum:=0) r 
-      WHERE t.isCommited = 0 and t.transDate <= date(now()) and t.transTypeId <> 7;
+      WHERE t.isCommited = 0 and t.transDate <= date(utc_timestamp()) and t.transTypeId <> 7;
   
     SET @i=1; 
     SET @trans = 0; SET @wid = 0; SET @amount = 0.0; SET @recur = 0; SET @recid = 0; SET @transTypeId = 0; SET @transCustomName = null; SET @description = null;
@@ -885,14 +671,14 @@ IF (SELECT count(*) FROM transaction t WHERE t.isCommited = 0 and t.transDate <=
       INTO @trans, @wid, @amount, @recur, @recid, @transTypeId, @transCustomName, @description
       FROM  `temp`  WHERE rowid = @i;
   
-      UPDATE `wallet` SET balance = balance + @amount, lastUpdateDate = now() where walletId = @wid;
+      UPDATE `wallet` SET balance = balance + @amount, lastUpdateDate = utc_timestamp() where walletId = @wid;
       UPDATE `transaction` SET isCommited = 1 where transId = @trans;
      
      #Calculate the next transaction, if recurring
       IF (@recur >= 1 and @recur < 11 ) then
-        SET @futuredate = getFutureTrans(date(now()), @recur);
+        SET @futuredate = getFutureTrans(date(utc_timestamp()), @recur);
         #Create future uncommitted transaction
-        INSERT INTO `webtech`.`transaction` ( `amount`, `transdate`, `iscommited`, `walletid`, `transtypeid`, `transcustomname`, `recurrence`, `description` )
+        INSERT INTO `webtechtest`.`transaction` ( `amount`, `transdate`, `iscommited`, `walletid`, `transtypeid`, `transcustomname`, `recurrence`, `description` )
   						VALUES ( @amount,  @futuredate, 0, @wid, @transtypeid, @transcustomname, @recur, @description);
       END IF;
       SET @i = @i +1;
@@ -900,15 +686,15 @@ IF (SELECT count(*) FROM transaction t WHERE t.isCommited = 0 and t.transDate <=
   END IF;
 
   # ---------------------- ONLY Recurring generated payout future transactions ! ------------#
-  SET @rows = (SELECT count(*) FROM transaction t WHERE t.isCommited = 0 and t.transDate <= date(now()) and t.transTypeId = 7);
+  SET @rows = (SELECT count(*) FROM transaction t WHERE t.isCommited = 0 and t.transDate <= date(utc_timestamp()) and t.transTypeId = 7);
   IF ( @rows > 0) THEN 
-    DROP TABLE IF EXISTS `webtech`.`temp`;
-    CREATE TEMPORARY TABLE `webtech`.`temp` (`rowid` INT,`transID` INT, `walletid` INT, `amount` DOUBLE, `recurrence` INT, `recid` INT, `transTypeId` INT(10),`transname` VARCHAR(45),  `description` VARCHAR(100));
+    DROP TABLE IF EXISTS `webtechtest`.`temp`;
+    CREATE TEMPORARY TABLE `webtechtest`.`temp` (`rowid` INT,`transID` INT, `walletid` INT, `amount` DOUBLE, `recurrence` INT, `recid` INT, `transTypeId` INT(10),`transname` VARCHAR(45),  `description` VARCHAR(100));
   
     INSERT INTO `temp` (`rowid`,`transID`, `walletid`, `amount`, `recurrence`, `recid`,`transTypeId`,`transname`, `description`)
     SELECT @rownum:=@rownum+1 `rowid`, t.transId, t.walletId, t.amount, t.recurrence, t.recId, t.transTypeId, t.transCustomName, t.description
       FROM transaction t, (SELECT @rownum:=0) r 
-      WHERE t.isCommited = 0 and t.transDate <= date(now()) and t.transTypeId = 7;
+      WHERE t.isCommited = 0 and t.transDate <= date(utc_timestamp()) and t.transTypeId = 7;
   
     SET @i=1; 
     SET @trans = 0; SET @wid = 0; SET @amount = 0.0; SET @recur = 0; SET @recid = 0; SET @transTypeId = 0; SET @transCustomName = null; SET @description = null;
@@ -919,15 +705,15 @@ IF (SELECT count(*) FROM transaction t WHERE t.isCommited = 0 and t.transDate <=
       FROM  `temp`  WHERE rowid = @i;
     
       IF @amount IS NOT NULL THEN
-        UPDATE `wallet` SET balance = balance + @amount, lastUpdateDate = now() where walletId = @wid;
+        UPDATE `wallet` SET balance = balance + @amount, lastUpdateDate = utc_timestamp() where walletId = @wid;
         UPDATE `transaction` SET isCommited = 1 where transId = @trans;
       END IF;
      #Calculate the next transaction, if recurring - recurring generated payouts cannot be daily
       IF (@recur >= 1 and @recur < 9 ) then
       #Create future uncommitted transaction
-        INSERT INTO `webtech`.`transaction` ( `amount`, `transdate`, `iscommited`, `walletid`, `transtypeid`, `transcustomname`, `recurrence`, `description` )
+        INSERT INTO `webtechtest`.`transaction` ( `amount`, `transdate`, `iscommited`, `walletid`, `transtypeid`, `transcustomname`, `recurrence`, `description` )
   						VALUES ( @amount,  @futuredate, 0, @wid, @transtypeid, @transcustomname, @recur, @description);
-        SET @futuredate = getFutureTrans(date(now()), @recur);
+        SET @futuredate = getFutureTrans(date(utc_timestamp()), @recur);
         IF ( SELECT n.firstNoteDate FROM notifications n WHERE n.recId = @recid IS NOT NULL ) THEN
           SET @firstNote = (SELECT n.firstNoteDate FROM notifications n WHERE n.recId = @recid);
           SET @firstNote = getFutureTrans(@firstNote, @recur);
@@ -943,32 +729,25 @@ IF (SELECT count(*) FROM transaction t WHERE t.isCommited = 0 and t.transDate <=
     END WHILE;
   END IF;
 
-  INSERT INTO commitdailyjoblog (`runDate`, `isSuccessful`, `jobName`) VALUES (now(), 1, 'commitDailyTrans');  
+  INSERT INTO commitdailyjoblog (`runDate`, `isSuccessful`, `jobName`) VALUES (utc_timestamp(), 1, 'commitDailyTrans');  
 ELSE
 
-  INSERT INTO commitdailyjoblog (`runDate`, `isSuccessful`, `jobName`) VALUES (now(), 1, 'commitDailyTrans');
+  INSERT INTO commitdailyjoblog (`runDate`, `isSuccessful`, `jobName`) VALUES (utc_timestamp(), 1, 'commitDailyTrans');
   END IF;
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `commitJobHours`
+-- Definition for procedure commitJobHours
 --
-
-DROP PROCEDURE IF EXISTS `commitJobHours`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `commitJobHours`()
+CREATE 
+PROCEDURE commitJobHours()
 BEGIN
 
-DROP TABLE IF EXISTS `webtech`.`tempRec`, `webtech`.`tempJob`;
-CREATE TEMPORARY TABLE `webtech`.`tempRec` (`recid` INT, `incomeDate` DATE, `wage` DOUBLE, jobName VARCHAR(45), description VARCHAR(100), walletId INT(10));
-CREATE TEMPORARY TABLE `webtech`.`tempJob`(`jobhoursId` INT, startHour DATETIME, endHour DATETIME);
+DROP TABLE IF EXISTS `webtechtest`.`tempRec`, `webtechtest`.`tempJob`;
+CREATE TEMPORARY TABLE `webtechtest`.`tempRec` (`recid` INT, `incomeDate` DATE, `wage` DOUBLE, jobName VARCHAR(45), description VARCHAR(100), walletId INT(10));
+CREATE TEMPORARY TABLE `webtechtest`.`tempJob`(`jobhoursId` INT, startHour DATETIME, endHour DATETIME);
 
 INSERT INTO `tempRec`(`recid`, `incomeDate`, `wage`, `jobName`, `description`, `walletId`)
 SELECT jh.recId, rt.incomeDate, rt.wage, rt.name, rt.description, rt.walletId FROM recurringtransaction rt, jobhours jh 
@@ -1010,30 +789,23 @@ SET @rows = row_count();
       END IF;
       
       UPDATE recurringtransaction SET incomeDate = @incDate where recTrans = @rec;
-      INSERT INTO `webtech`.`transaction` (amount,transDate,isCommited,walletId,transTypeId,transCustomName,recurrence,description,recId,wage)
+      INSERT INTO `webtechtest`.`transaction` (amount,transDate,isCommited,walletId,transTypeId,transCustomName,recurrence,description,recId,wage)
       VALUES (null,@incDate, 0, @wid, 3, @name, 4, @desc, @rec, @wage);
   
   
        DELETE FROM `tempRec` where recid = @rec;
        SET @rows = (SELECT count(*) FROM `tempRec`);
   END WHILE;
-  INSERT INTO commitdailyjoblog (`runDate`, `isSuccessful`, `jobName`) VALUES (now(), 1, 'commitJobHours');  
+  #INSERT INTO commitdailyjoblog (`runDate`, `isSuccessful`, `jobName`) VALUES (utc_timestamp(), 1, 'commitJobHours');  
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `createInvestment`
+-- Definition for procedure createInvestment
 --
-
-DROP PROCEDURE IF EXISTS `createInvestment`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `createInvestment`(IN loginname VARCHAR(20),IN symbol VARCHAR(20),IN amount DOUBLE, IN startDate DATE, IN val DOUBLE )
+CREATE 
+PROCEDURE createInvestment(IN loginname VARCHAR(20),IN symbol VARCHAR(20),IN amount DOUBLE, IN startDate DATE, IN val DOUBLE )
 BEGIN
 
 SET @uid = (select u.userId from users u where u.loginname = loginname);
@@ -1056,21 +828,14 @@ END IF;
 
 
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `deleteInvestment`
+-- Definition for procedure deleteInvestment
 --
-
-DROP PROCEDURE IF EXISTS `deleteInvestment`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `deleteInvestment`(IN invId INT(10))
+CREATE 
+PROCEDURE deleteInvestment(IN invId INT(10))
 BEGIN
 
 IF (invId is null OR (SELECT count(*) FROM investments i WHERE i.invId = invId) = 0 ) THEN
@@ -1079,21 +844,14 @@ ELSE
   UPDATE investments i SET i.isActive = 0 WHERE i.invId = invId;
   SELECT 0;
 END IF;
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `deleteTransaction`
+-- Definition for procedure deleteTransaction
 --
-
-DROP PROCEDURE IF EXISTS `deleteTransaction`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `deleteTransaction`(loginname VARCHAR(20), id INT, transtype INT, deleteType INT, onDate DATE)
+CREATE 
+PROCEDURE deleteTransaction(loginname VARCHAR(20), id INT, transtype INT, deleteType INT, onDate DATE)
 BEGIN
 SET @uid = (select u.userId from users u where u.loginname = loginname);
 SET @wid = (select walletId from wallet where userId = @uid and wallettype = 1);
@@ -1111,7 +869,7 @@ IF (@wid > 0 AND id > 0 AND transtype IN (1,2,3) AND deleteType IN (1,2,3) AND o
             DELETE from notifications where recId = id;
             SELECT 0;
           WHEN 2 THEN
-            DROP TABLE IF EXISTS `webtech`.`temp`;
+            DROP TABLE IF EXISTS `webtechtest`.`temp`;
             CREATE TEMPORARY TABLE temp (transid INT(10), amount DOUBLE, isCommited INT);
 
             INSERT INTO temp
@@ -1125,7 +883,7 @@ IF (@wid > 0 AND id > 0 AND transtype IN (1,2,3) AND deleteType IN (1,2,3) AND o
               FROM  `temp`  LIMIT 1;
               
               IF @isCommited = 1 THEN
-                UPDATE wallet SET balance = balance + @amount, lastUpdateDate = now() WHERE walletId = @wid;
+                UPDATE wallet SET balance = balance + @amount, lastUpdateDate = utc_timestamp() WHERE walletId = @wid;
               END IF;
               
               DELETE FROM transaction WHERE transId = @trans;
@@ -1139,7 +897,7 @@ IF (@wid > 0 AND id > 0 AND transtype IN (1,2,3) AND deleteType IN (1,2,3) AND o
             IF ((SELECT rt.incomeDate FROM recurringtransaction rt WHERE rt.recTrans = id) IS NULL 
               AND (SELECT rt.wage FROM recurringtransaction rt WHERE rt.recTrans = id) IS NULL)  THEN
 
-              DROP TABLE IF EXISTS `webtech`.`temp`;
+              DROP TABLE IF EXISTS `webtechtest`.`temp`;
               CREATE TEMPORARY TABLE temp (transid INT(10), amount DOUBLE, isCommited INT);
   
               INSERT INTO temp
@@ -1153,7 +911,7 @@ IF (@wid > 0 AND id > 0 AND transtype IN (1,2,3) AND deleteType IN (1,2,3) AND o
                 FROM  `temp`  LIMIT 1;
                 
                 IF @isCommited = 1 THEN
-                    UPDATE wallet SET balance = balance - @amount, lastUpdateDate = now() WHERE walletId = @wid;
+                    UPDATE wallet SET balance = balance - @amount, lastUpdateDate = utc_timestamp() WHERE walletId = @wid;
                 END IF;
                 
                 DELETE FROM transaction WHERE transId = @trans;
@@ -1165,7 +923,7 @@ IF (@wid > 0 AND id > 0 AND transtype IN (1,2,3) AND deleteType IN (1,2,3) AND o
               SELECT 0;
 
           ELSE #----------------- If we delete the whole job lists -----------------------#
-           DROP TABLE IF EXISTS `webtech`.`temp`;
+           DROP TABLE IF EXISTS `webtechtest`.`temp`;
            CREATE TEMPORARY TABLE `temp` (transid INT(10), amount DOUBLE, wage DOUBLE ,isCommited INT);
             
            INSERT INTO temp 
@@ -1180,7 +938,7 @@ IF (@wid > 0 AND id > 0 AND transtype IN (1,2,3) AND deleteType IN (1,2,3) AND o
               FROM `temp` t LIMIT 1;
               
               IF (@isCommited = 1) THEN
-                UPDATE wallet SET balance = balance - @amount, lastUpdateDate = now() WHERE walletId = @wid;
+                UPDATE wallet SET balance = balance - @amount, lastUpdateDate = utc_timestamp() WHERE walletId = @wid;
                 DELETE FROM transaction WHERE transid = @trans;
               END IF;  
               DELETE FROM temp WHERE transid = @trans;
@@ -1217,19 +975,19 @@ IF (@wid > 0 AND id > 0 AND transtype IN (1,2,3) AND deleteType IN (1,2,3) AND o
         #1=on this date(date = onDate), 2 =  future, 3= all
           WHEN 1 THEN
         
-            IF ((SELECT IsCalculated FROM Jobhours WHERE JobHoursId = Id ) = 0) THEN
-              DELETE FROM Jobhours WHERE JobHoursId = Id;
+            IF ((SELECT isCalculated FROM jobhours WHERE jobHoursId = id ) = 0) THEN
+              DELETE FROM jobhours WHERE jobHoursId = id;
             ELSE
                SET @wage = (select t.wage from transaction t where transId = @transId);
                SELECT jh.startHour, jh.endHour INTO @start, @end FROM jobhours jh WHERE jh.jobHoursId = id;
-               update wallet set balance = balance - calcSalaryHourWage(@start, @end, @wage), lastUpdateDate = now() where walletId = @wid;
+               update wallet set balance = balance - calcSalaryHourWage(@start, @end, @wage), lastUpdateDate = utc_timestamp() where walletId = @wid;
                update transaction set amount = amount - calcSalaryHourWage(@start, @end, @wage) where transId= @transId;
-               DELETE FROM Jobhours WHERE JobHoursId = Id;
+               DELETE FROM jobhours WHERE jobHoursId = id;
             END IF;
 
 --           WHEN 2 THEN
 --           
---             DROP TABLE IF EXISTS `webtech`.`temp`, `webtech`.`temptrans`;
+--             DROP TABLE IF EXISTS `webtechtest`.`temp`, `webtechtest`.`temptrans`;
 --             CREATE TEMPORARY TABLE `temp` (transid INT(10), amount DOUBLE, isCommited INT);
 --             CREATE TEMPORARY TABLE `temptrans` (transid INT(10));
 --             
@@ -1252,7 +1010,7 @@ IF (@wid > 0 AND id > 0 AND transtype IN (1,2,3) AND deleteType IN (1,2,3) AND o
 --               FROM  `temp`  LIMIT 1;
 --               
 --               IF (@iscommited = 1)
---                 UPDATE wallet SET balance = balance - @amount, lastUpdateDate = now() WHERE walletId = @wid;
+--                 UPDATE wallet SET balance = balance - @amount, lastUpdateDate = utc_timestamp() WHERE walletId = @wid;
 --                 DELETE FROM temp WHERE transId = @transId;
 --                            
 --                 SET @rows = (SELECT count(*) FROM temp);
@@ -1271,21 +1029,14 @@ ELSE
   SELECT -1;
 
 END IF;
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `deleteUser`
+-- Definition for procedure deleteUser
 --
-
-DROP PROCEDURE IF EXISTS `deleteUser`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `deleteUser`(IN loginname VARCHAR(20))
+CREATE 
+PROCEDURE deleteUser(IN loginname VARCHAR(20))
 BEGIN
   IF (SELECT count(*) FROM users u WHERE u.loginname= loginname) > 0 THEN
     UPDATE users u SET u.statusId = 3, u.statusChangeDate = utc_timestamp, u.statusChangeComment = 'Account was deleted' 
@@ -1296,53 +1047,39 @@ BEGIN
   END IF;
 
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `doLogin`
+-- Definition for procedure doLogin
 --
-
-DROP PROCEDURE IF EXISTS `doLogin`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `doLogin`(IN login VARCHAR(20), IN pass VARCHAR(45))
+CREATE 
+PROCEDURE doLogin(IN login VARCHAR(20), IN pass VARCHAR(45))
 BEGIN
 
-IF ((SELECT count(*) FROM webtech.users u
+IF ((SELECT count(*) FROM webtechtest.users u
 		WHERE u.loginname = login and u.pincode = pass and u.statusId = 1) > 0) THEN
       SELECT firstname, lastName, dateOfBirth, statusId, permissionId, email
-    		FROM webtech.users u
+    		FROM webtechtest.users u
     		WHERE u.loginname = login and u.pincode = pass and u.statusId = 1;
-ELSEIF (SELECT count(*) FROM webtech.users u
+ELSEIF (SELECT count(*) FROM webtechtest.users u
   	  	WHERE u.loginname = login and u.pincode = pass and u.statusId = 2) > 0 THEN
         SELECT 'Locked account';
-ELSEIF (SELECT count(*) FROM webtech.users u
+ELSEIF (SELECT count(*) FROM webtechtest.users u
   	  	WHERE u.loginname = login and u.pincode = pass and u.statusId NOT IN (1,2,3) ) = 0 THEN
         SELECT 'Incorrect account details';
 ELSE
       SELECT 'Account Deleted';
 END IF;
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `editJobDetails`
+-- Definition for procedure editJobDetails
 --
-
-DROP PROCEDURE IF EXISTS `editJobDetails`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `editJobDetails`(IN jobid INT(10), IN jobName VARCHAR(45), IN description VARCHAR(100), IN wage DOUBLE, IN incomeDate DATE)
+CREATE 
+PROCEDURE editJobDetails(IN jobid INT(10), IN jobName VARCHAR(45), IN description VARCHAR(100), IN wage DOUBLE, IN incomeDate DATE)
 BEGIN
 IF (jobid > 0 and (SELECT count(*) from recurringtransaction rt where rt.recTrans = jobid) > 0) THEN
     IF jobName is not null THEN
@@ -1355,7 +1092,7 @@ IF (jobid > 0 and (SELECT count(*) from recurringtransaction rt where rt.recTran
       UPDATE recurringtransaction SET `wage`= wage where recTrans = jobid;
     END IF;
     IF incomeDate is not null THEN
-      IF incomeDate >= date(now()) THEN
+      IF incomeDate >= date(utc_timestamp()) THEN
         
         UPDATE recurringtransaction SET `incomeDate` = incomeDate where recTrans = jobid;
         SELECT rt.incomeDate from recurringtransaction  rt where rt.recTrans = jobid;
@@ -1363,21 +1100,14 @@ IF (jobid > 0 and (SELECT count(*) from recurringtransaction rt where rt.recTran
     END IF;
 END IF;
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `editOneTimeTransDetails`
+-- Definition for procedure editOneTimeTransDetails
 --
-
-DROP PROCEDURE IF EXISTS `editOneTimeTransDetails`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `editOneTimeTransDetails`(IN transnum INT(10), IN transName VARCHAR(45), IN description VARCHAR(100), IN amount DOUBLE)
+CREATE 
+PROCEDURE editOneTimeTransDetails(IN transnum INT(10), IN transName VARCHAR(45), IN description VARCHAR(100), IN amount DOUBLE)
 BEGIN
 IF (transnum > 0 and (SELECT count(*) from `transaction` t where t.transId = transnum) > 0) THEN
 
@@ -1393,30 +1123,23 @@ IF (transnum > 0 and (SELECT count(*) from `transaction` t where t.transId = tra
     END IF;
 
     IF amount is not null THEN
-      IF @transdate <= DATE(NOW()) THEN
+      IF @transdate <= DATE(utc_timestamp()) THEN
         SET @prevamount = (SELECT t.amount FROM `transaction` t where transId = transnum);
         UPDATE `transaction` SET `amount`= amount where transId = transnum;
-        UPDATE wallet SET balance = balance-@prevamount+amount, lastUpdateDate = now() where walletId = @wid;
+        UPDATE wallet SET balance = balance-@prevamount+amount, lastUpdateDate = utc_timestamp() where walletId = @wid;
       END IF;
     END IF;
 
 END IF;
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `editRecurringTransDetails`
+-- Definition for procedure editRecurringTransDetails
 --
-
-DROP PROCEDURE IF EXISTS `editRecurringTransDetails`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `editRecurringTransDetails`(IN recTransId INT(10), IN transName VARCHAR(45), IN description VARCHAR(100), IN recType INT(10), IN newamount DOUBLE, IN changePeriod INT(10), IN onDate DATE, IN toEditNote TINYINT)
+CREATE 
+PROCEDURE editRecurringTransDetails(IN recTransId INT(10), IN transName VARCHAR(45), IN description VARCHAR(100), IN recType INT(10), IN newamount DOUBLE, IN changePeriod INT(10), IN onDate DATE, IN toEditNote TINYINT)
 BEGIN
 IF (recTransId > 0 and (SELECT count(*) from recurringtransaction rt, `transaction` t where rt.recTrans = recTransId and t.recid= recTransId and t.transDate = onDate ) > 0) THEN
     SET @wid = (SELECT rt.walletId FROM recurringtransaction rt WHERE rt.recTrans = recTransId);
@@ -1434,7 +1157,7 @@ IF (recTransId > 0 and (SELECT count(*) from recurringtransaction rt, `transacti
         IF ((select t.transTypeId from transaction t where t.recId = recTransId limit 1) = 6) THEN
           SET @noteDate = (select max(t.transdate) from transaction t where t.recId = recTransId and t.isCommited = 0 limit 1);
           SELECT rt.walletId INTO @wid FROM recurringtransaction rt WHERE rt.recTrans = recTransId;
-  				INSERT INTO `webtech`.`notifications` (`firstnotedate`,`lastnotedate`,`walletid`,`recid`)
+  				INSERT INTO `webtechtest`.`notifications` (`firstnotedate`,`lastnotedate`,`walletid`,`recid`)
   					VALUES(null, @noteDate , @wid, recTransId);
         END IF;
     ELSEIF toEditNote = 0 THEN
@@ -1451,11 +1174,11 @@ IF (recTransId > 0 and (SELECT count(*) from recurringtransaction rt, `transacti
     END IF;
 
     IF recType is not null THEN
-      IF (SELECT count(*) FROM `transaction` t WHERE t.recId = recTransId and t.transDate > DATE(NOW())) > 0 THEN
-        SET @futureTrans = (SELECT t.transid FROM `transaction` t WHERE t.recId = recTransId and t.transDate > DATE(NOW()));
+      IF (SELECT count(*) FROM `transaction` t WHERE t.recId = recTransId and t.transDate > DATE(utc_timestamp())) > 0 THEN
+        SET @futureTrans = (SELECT t.transid FROM `transaction` t WHERE t.recId = recTransId and t.transDate > DATE(utc_timestamp()));
         UPDATE `transaction` SET recurrence = recType WHERE transId = @futureTrans;
       ELSE
-        SET @futureTrans = (SELECT min(t.transid) FROM `transaction` t WHERE t.recId = recTransId and t.transDate > DATE(NOW()));
+        SET @futureTrans = (SELECT min(t.transid) FROM `transaction` t WHERE t.recId = recTransId and t.transDate > DATE(utc_timestamp()));
         UPDATE `transaction` SET recurrence = recType WHERE transId = @futureTrans;
       END IF;
     END IF;
@@ -1471,16 +1194,16 @@ IF (recTransId > 0 and (SELECT count(*) from recurringtransaction rt, `transacti
             
             IF (@commitstatus = 1) THEN
                 IF @transtype in (2,3) and newamount > @oldamount THEN
-                  UPDATE wallet SET balance = balance + abs(newamount - @oldamount), lastUpdateDate = now() WHERE walletid = @wid;
+                  UPDATE wallet SET balance = balance + abs(newamount - @oldamount), lastUpdateDate = utc_timestamp() WHERE walletid = @wid;
                 END IF;
                 IF @transtype in (2,3) and newamount < @oldamount THEN
-                  UPDATE wallet SET balance = balance - abs(newamount - @oldamount), lastUpdateDate = now() WHERE walletid = @wid;
+                  UPDATE wallet SET balance = balance - abs(newamount - @oldamount), lastUpdateDate = utc_timestamp() WHERE walletid = @wid;
                 END IF;
                 IF @transtype in (6,7) and newamount > @oldamount THEN
-                  UPDATE wallet SET balance = balance + abs(newamount - @oldamount), lastUpdateDate = now() WHERE walletid = @wid;
+                  UPDATE wallet SET balance = balance + abs(newamount - @oldamount), lastUpdateDate = utc_timestamp() WHERE walletid = @wid;
                 END IF;
                 IF @transtype in (6,7) and newamount < @oldamount THEN
-                  UPDATE wallet SET balance = balance - abs(newamount - @oldamount), lastUpdateDate = now() WHERE walletid = @wid;
+                  UPDATE wallet SET balance = balance - abs(newamount - @oldamount), lastUpdateDate = utc_timestamp() WHERE walletid = @wid;
                 END IF;
              END IF;
   
@@ -1490,8 +1213,8 @@ IF (recTransId > 0 and (SELECT count(*) from recurringtransaction rt, `transacti
           SET @transtype = 0;
           SELECT transTypeId INTO @transtype FROM `transaction` t WHERE t.recId = recTransId AND t.transDate = onDate ;
 
-          DROP TABLE IF EXISTS `webtech`.`temp`;
-          CREATE TEMPORARY TABLE `webtech`.`temp` (rowid INT, transid INT, iscommited INT, oldamount DOUBLE);
+          DROP TABLE IF EXISTS `webtechtest`.`temp`;
+          CREATE TEMPORARY TABLE `webtechtest`.`temp` (rowid INT, transid INT, iscommited INT, oldamount DOUBLE);
           INSERT INTO `temp` (`rowid`,`transid`,`iscommited`, `oldamount`)
           
           SELECT @rownum:=@rownum+1 `rowid`, t.transid, t.iscommited, t.amount from transaction t, (select @rownum:=0) r
@@ -1503,30 +1226,30 @@ IF (recTransId > 0 and (SELECT count(*) from recurringtransaction rt, `transacti
             SET @transUpdate = (SELECT t.transid FROM temp t WHERE rowid = @i);
             IF ((SELECT t.iscommited FROM temp t WHERE t.rowid = @i) = 1) THEN
               IF @transtype in (2,3) and newamount > @oldamount THEN
-                UPDATE wallet SET balance = balance + abs(newamount - @oldamount), lastUpdateDate = now() WHERE walletid = @wid;
+                UPDATE wallet SET balance = balance + abs(newamount - @oldamount), lastUpdateDate = utc_timestamp() WHERE walletid = @wid;
               END IF;
               IF @transtype in (2,3) and newamount < @oldamount THEN
-                UPDATE wallet SET balance = balance - abs(newamount - @oldamount), lastUpdateDate = now() WHERE walletid = @wid;
+                UPDATE wallet SET balance = balance - abs(newamount - @oldamount), lastUpdateDate = utc_timestamp() WHERE walletid = @wid;
               END IF;
               IF @transtype in (6,7) and newamount > @oldamount THEN
-                UPDATE wallet SET balance = balance + abs(newamount - @oldamount), lastUpdateDate = now() WHERE walletid = @wid;
+                UPDATE wallet SET balance = balance + abs(newamount - @oldamount), lastUpdateDate = utc_timestamp() WHERE walletid = @wid;
               END IF;
               IF @transtype in (6,7) and newamount < @oldamount THEN
-                UPDATE wallet SET balance = balance - abs(newamount - @oldamount), lastUpdateDate = now() WHERE walletid = @wid;
+                UPDATE wallet SET balance = balance - abs(newamount - @oldamount), lastUpdateDate = utc_timestamp() WHERE walletid = @wid;
               END IF;
             END IF;
 
             UPDATE transaction SET `amount` = newamount WHERE transId = @transUpdate;
             SET @i = @i -1;
           END WHILE;
-          DROP TABLE IF EXISTS `webtech`.`temp`;
+          DROP TABLE IF EXISTS `webtechtest`.`temp`;
            
           WHEN 3 THEN
             SET @transtype = 0;
             SELECT transTypeId INTO @transtype FROM `transaction` t WHERE t.recId = recTransId AND t.transDate = onDate ;
   
-            DROP TABLE IF EXISTS `webtech`.`temp`;
-            CREATE TEMPORARY TABLE `webtech`.`temp` (rowid INT, transid INT, iscommited INT, oldamount DOUBLE);
+            DROP TABLE IF EXISTS `webtechtest`.`temp`;
+            CREATE TEMPORARY TABLE `webtechtest`.`temp` (rowid INT, transid INT, iscommited INT, oldamount DOUBLE);
             INSERT INTO `temp` (`rowid`,`transid`,`iscommited`, `oldamount`)
             SELECT @rownum:=@rownum+1 `rowid`, t.transid, t.iscommited, t.amount from `transaction` t, (SELECT @rownum:=0) r
               WHERE t.recId = recTransId;
@@ -1539,22 +1262,22 @@ IF (recTransId > 0 and (SELECT count(*) from recurringtransaction rt, `transacti
   
               IF ((SELECT t.iscommited FROM temp t WHERE t.rowid = @i) = 1) THEN
                 IF @transtype in (2,3) and newamount > @oldamount THEN
-                  UPDATE wallet SET balance = balance + abs(newamount - @oldamount), lastUpdateDate = now() WHERE walletid = @wid;
+                  UPDATE wallet SET balance = balance + abs(newamount - @oldamount), lastUpdateDate = utc_timestamp() WHERE walletid = @wid;
                 END IF;
                 IF @transtype in (2,3) and newamount < @oldamount THEN
-                  UPDATE wallet SET balance = balance - abs(newamount - @oldamount), lastUpdateDate = now() WHERE walletid = @wid;
+                  UPDATE wallet SET balance = balance - abs(newamount - @oldamount), lastUpdateDate = utc_timestamp() WHERE walletid = @wid;
                 END IF;
                 IF @transtype in (6,7) and newamount > @oldamount THEN
-                  UPDATE wallet SET balance = balance + abs(newamount - @oldamount), lastUpdateDate = now() WHERE walletid = @wid;
+                  UPDATE wallet SET balance = balance + abs(newamount - @oldamount), lastUpdateDate = utc_timestamp() WHERE walletid = @wid;
                 END IF;
                 IF @transtype in (6,7) and newamount < @oldamount THEN
-                  UPDATE wallet SET balance = balance - abs(newamount - @oldamount), lastUpdateDate = now() WHERE walletid = @wid;
+                  UPDATE wallet SET balance = balance - abs(newamount - @oldamount), lastUpdateDate = utc_timestamp() WHERE walletid = @wid;
                 END IF;
               END IF;
               UPDATE transaction SET `amount` = newamount WHERE transId = @transUpdate;
               SET @i = @i -1;
             END WHILE;
-            DROP TABLE IF EXISTS `webtech`.`temp`;
+            DROP TABLE IF EXISTS `webtechtest`.`temp`;
 
       END CASE;
     END IF;
@@ -1563,21 +1286,14 @@ ELSE
   select ('Invalid input!');
 
 END IF;
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `editUser`
+-- Definition for procedure editUser
 --
-
-DROP PROCEDURE IF EXISTS `editUser`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `editUser`(IN loginname VARCHAR(20), IN firstName VARCHAR(20), IN lastName VARCHAR(20), IN DOB DATE, IN email VARCHAR(45), IN userPer VARCHAR(45) )
+CREATE 
+PROCEDURE editUser(IN loginname VARCHAR(20), IN firstName VARCHAR(20), IN lastName VARCHAR(20), IN DOB DATE, IN email VARCHAR(45), IN userPer VARCHAR(45) )
 BEGIN
 
   IF ( ((SELECT count(*) FROM users u WHERE u.loginname = loginname) > 0) AND
@@ -1610,21 +1326,14 @@ BEGIN
 
 
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `getAllInvestments`
+-- Definition for procedure getAllInvestments
 --
-
-DROP PROCEDURE IF EXISTS `getAllInvestments`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `getAllInvestments`(IN loginname VARCHAR(20))
+CREATE 
+PROCEDURE getAllInvestments(IN loginname VARCHAR(20))
 BEGIN
 
 SET @uid = (select u.userId from users u where u.loginname = loginname);
@@ -1633,7 +1342,7 @@ SET @wid = (select walletid from wallet where userid = @uid and wallettype = 2);
 IF (@uid is null and @wid is null) THEN
   SELECT 'loginname is incorrect';
 ELSE
-  DROP TABLE IF EXISTS `webtech`.`tempRes`;
+  DROP TABLE IF EXISTS `webtechtest`.`tempRes`;
   CREATE TEMPORARY TABLE tempRes (invId INT(10), symbol VARCHAR(20), amount double, startDate DATE, value DOUBLE);
   IF (SELECT count(*) FROM investments i WHERE i.walletId = @wid and i.isActive = 1) > 0 THEN
     INSERT INTO tempRes (invId, symbol, amount, startDate, value)
@@ -1642,30 +1351,23 @@ ELSE
       WHERE i.walletId = @wid and i.isActive = 1;
 
     select * from tempRes order by invId;
-    DROP TABLE IF EXISTS `webtech`.`tempRes`;
+    DROP TABLE IF EXISTS `webtechtest`.`tempRes`;
   ELSE 
     SELECT NULL;
   END IF;
   
 END IF;
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `getAllMonthlyTransactions`
+-- Definition for procedure getAllMonthlyTransactions
 --
-
-DROP PROCEDURE IF EXISTS `getAllMonthlyTransactions`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `getAllMonthlyTransactions`( IN loginname VARCHAR(20), IN monthYear DATE)
+CREATE 
+PROCEDURE getAllMonthlyTransactions( IN loginname VARCHAR(20), IN monthYear DATE)
 BEGIN
-DROP TABLE IF EXISTS `webtech`.`tempRes`;
+DROP TABLE IF EXISTS `webtechtest`.`tempRes`;
 
 SET @uid = (select u.userId from users u where u.loginname = loginname);
 SET @wid = (select walletid from wallet where userid = @uid and wallettype = 1);
@@ -1710,30 +1412,23 @@ ELSE
       END IF;
     
       select * from tempRes order by transdate;
-      DROP TABLE IF EXISTS `webtech`.`tempRes`;
+      DROP TABLE IF EXISTS `webtechtest`.`tempRes`;
   ELSE
       SELECT 0;
   END IF;
 END IF;
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `getAllPendingGeneratedPayouts`
+-- Definition for procedure getAllPendingGeneratedPayouts
 --
-
-DROP PROCEDURE IF EXISTS `getAllPendingGeneratedPayouts`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `getAllPendingGeneratedPayouts`(IN loginname VARCHAR(20))
+CREATE 
+PROCEDURE getAllPendingGeneratedPayouts(IN loginname VARCHAR(20))
 BEGIN
 
-DROP TABLE IF EXISTS `webtech`.`tempRes`;
+DROP TABLE IF EXISTS `webtechtest`.`tempRes`;
 
 SET @uid = (select u.userId from users u where u.loginname = loginname);
 SET @wid = (select walletid from wallet where userid = @uid and wallettype = 1);
@@ -1743,33 +1438,26 @@ IF @wid = null OR @uid = null THEN
 ELSE
   CREATE TEMPORARY TABLE tempRes (transname VARCHAR(45), amount DOUBLE, description VARCHAR(100), transDate DATE, transId INT(10));
 
-  IF (SELECT count(*) FROM `Transaction` t WHERE t.transdate < DATE(NOW()) and t.walletId = @wid and t.isCommited = 0) > 0 THEN
+  IF (SELECT count(*) FROM `Transaction` t WHERE t.transdate < DATE(utc_timestamp()) and t.walletId = @wid and t.isCommited = 0) > 0 THEN
     INSERT INTO tempRes (transname, amount, description, transDate, transId)
     SELECT t.transCustomName, t.amount, t.description, t.transDate, t.transId
     FROM `transaction` t
-    WHERE t.transdate < DATE(NOW()) and t.walletId = @wid and t.isCommited = 0 and t.transTypeId = 7 ;
+    WHERE t.transdate < DATE(utc_timestamp()) and t.walletId = @wid and t.isCommited = 0 and t.transTypeId = 7 ;
   END IF;
   select * from tempRes order by transDate;
-  DROP TABLE IF EXISTS `webtech`.`tempRes`;
+  DROP TABLE IF EXISTS `webtechtest`.`tempRes`;
 END IF;
 
 
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `getBalance`
+-- Definition for procedure getBalance
 --
-
-DROP PROCEDURE IF EXISTS `getBalance`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `getBalance`(IN loginname varchar(20))
+CREATE 
+PROCEDURE getBalance(IN loginname varchar(20))
 BEGIN
 
 SET @res = (select w.balance from users u, wallet w where u.loginname = loginname and u.userid = w.userid and wallettype = 1);
@@ -1780,23 +1468,16 @@ ELSE
   select null;
 END IF;
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `getDailyOneTimeIncomes`
+-- Definition for procedure getDailyOneTimeIncomes
 --
-
-DROP PROCEDURE IF EXISTS `getDailyOneTimeIncomes`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `getDailyOneTimeIncomes`(IN loginname VARCHAR(20), IN transDate DATE)
+CREATE 
+PROCEDURE getDailyOneTimeIncomes(IN loginname VARCHAR(20), IN transDate DATE)
 BEGIN
-DROP TABLE IF EXISTS `webtech`.`tempRes`;
+DROP TABLE IF EXISTS `webtechtest`.`tempRes`;
 
 SET @uid = (select u.userId from users u where u.loginname = loginname);
 SET @wid = (select walletid from wallet where userid = @uid and wallettype = 1);
@@ -1812,27 +1493,20 @@ ELSE
       WHERE t.transdate = transDate and t.walletId = @wid  AND t.transtypeid = 1;
   END IF;
   select * from tempRes order by transid;
-  DROP TABLE IF EXISTS `webtech`.`tempRes`;
+  DROP TABLE IF EXISTS `webtechtest`.`tempRes`;
 
 END IF;
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `getDailyOneTimePayouts`
+-- Definition for procedure getDailyOneTimePayouts
 --
-
-DROP PROCEDURE IF EXISTS `getDailyOneTimePayouts`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `getDailyOneTimePayouts`(IN loginname VARCHAR(20), IN transDate DATE)
+CREATE 
+PROCEDURE getDailyOneTimePayouts(IN loginname VARCHAR(20), IN transDate DATE)
 BEGIN
-DROP TABLE IF EXISTS `webtech`.`tempRes`;
+DROP TABLE IF EXISTS `webtechtest`.`tempRes`;
 
 SET @uid = (select u.userId from users u where u.loginname = loginname);
 SET @wid = (select walletid from wallet where userid = @uid and wallettype = 1);
@@ -1848,27 +1522,20 @@ ELSE
       WHERE t.transdate = transDate and t.walletId = @wid  AND t.transtypeid = 5;
   END IF;
   select * from tempRes order by transid;
-  DROP TABLE IF EXISTS `webtech`.`tempRes`;
+  DROP TABLE IF EXISTS `webtechtest`.`tempRes`;
 
 END IF;
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `getDailyRecurringIncomes`
+-- Definition for procedure getDailyRecurringIncomes
 --
-
-DROP PROCEDURE IF EXISTS `getDailyRecurringIncomes`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `getDailyRecurringIncomes`(IN loginname VARCHAR(20), IN transDate DATE)
+CREATE 
+PROCEDURE getDailyRecurringIncomes(IN loginname VARCHAR(20), IN transDate DATE)
 BEGIN
-DROP TABLE IF EXISTS `webtech`.`tempRes`, `webtech`.`temp`;
+DROP TABLE IF EXISTS `webtechtest`.`tempRes`, `webtechtest`.`temp`;
 
 SET @uid = (select u.userId from users u where u.loginname = loginname);
 SET @wid = (select walletId from wallet where userId = @uid and wallettype = 1);
@@ -1895,26 +1562,19 @@ ELSE
 
   END IF;
   select * from tempRes order by recId ;
-DROP TABLE IF EXISTS `webtech`.`tempRes`, `webtech`.`temp`;
+DROP TABLE IF EXISTS `webtechtest`.`tempRes`, `webtechtest`.`temp`;
 
 END IF;
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `getDailyRecurringPayouts`
+-- Definition for procedure getDailyRecurringPayouts
 --
-
-DROP PROCEDURE IF EXISTS `getDailyRecurringPayouts`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `getDailyRecurringPayouts`(IN loginname VARCHAR(20), IN transDate DATE)
+CREATE 
+PROCEDURE getDailyRecurringPayouts(IN loginname VARCHAR(20), IN transDate DATE)
 BEGIN
-DROP TABLE IF EXISTS `webtech`.`tempRes`, `webtech`.`temp`;
+DROP TABLE IF EXISTS `webtechtest`.`tempRes`, `webtechtest`.`temp`;
 
 SET @uid = (select u.userId from users u where u.loginname = loginname);
 SET @wid = (select walletId from wallet where userId = @uid and wallettype = 1);
@@ -1946,26 +1606,19 @@ ELSE
 
   END IF;
   select * from tempRes order by recId ;
-DROP TABLE IF EXISTS `webtech`.`tempRes`, `webtech`.`temp`;
+DROP TABLE IF EXISTS `webtechtest`.`tempRes`, `webtechtest`.`temp`;
 
 END IF;
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `getDailyTransactions`
+-- Definition for procedure getDailyTransactions
 --
-
-DROP PROCEDURE IF EXISTS `getDailyTransactions`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `getDailyTransactions`(IN loginname VARCHAR(20), IN todaydate DATE)
+CREATE 
+PROCEDURE getDailyTransactions(IN loginname VARCHAR(20), IN todaydate DATE)
 BEGIN
-DROP TABLE IF EXISTS `webtech`.`tempRes`, `tempTrans`, `tempJH`;
+DROP TABLE IF EXISTS `webtechtest`.`tempRes`, `tempTrans`, `tempJH`;
 
 SET @uid = (select u.userId from users u where u.loginname = loginname);
 SET @wid = (select walletid from wallet where userid = @uid and wallettype = 1);
@@ -2035,26 +1688,19 @@ ELSE
   END IF;
 
   select * from tempRes order by amount desc;
-  DROP TABLE IF EXISTS `webtech`.`tempRes`;
+  DROP TABLE IF EXISTS `webtechtest`.`tempRes`;
 END IF;
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `getDailyWorkHours`
+-- Definition for procedure getDailyWorkHours
 --
-
-DROP PROCEDURE IF EXISTS `getDailyWorkHours`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `getDailyWorkHours`(IN loginname varchar(20), IN transDate DATE)
+CREATE 
+PROCEDURE getDailyWorkHours(IN loginname varchar(20), IN transDate DATE)
 BEGIN
-DROP TABLE IF EXISTS `webtech`.`tempRes`;
+DROP TABLE IF EXISTS `webtechtest`.`tempRes`;
 
 SET @uid = (select u.userId from users u where u.loginname = loginname);
 SET @wid = (select walletid from wallet where userid = @uid and wallettype = 1);
@@ -2085,25 +1731,18 @@ ELSE
 
   END IF;
   select * from tempRes order by startHour;
-  DROP TABLE IF EXISTS `webtech`.`tempRes`;
+  DROP TABLE IF EXISTS `webtechtest`.`tempRes`;
 
 END IF;
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `getInvestment`
+-- Definition for procedure getInvestment
 --
-
-DROP PROCEDURE IF EXISTS `getInvestment`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `getInvestment`(IN loginname VARCHAR(20),IN symbol VARCHAR(20))
+CREATE 
+PROCEDURE getInvestment(IN loginname VARCHAR(20),IN symbol VARCHAR(20))
 BEGIN
 
 SET @uid = (select u.userId from users u where u.loginname = loginname);
@@ -2112,7 +1751,7 @@ SET @wid = (select walletid from wallet where userid = @uid and wallettype = 2);
 IF (@uid is null and @wid is null) THEN
   SELECT 'loginname is incorrect';
 ELSE
-  DROP TABLE IF EXISTS `webtech`.`tempRes`;
+  DROP TABLE IF EXISTS `webtechtest`.`tempRes`;
   CREATE TEMPORARY TABLE tempRes (invId INT(10), symbol VARCHAR(20), amount double, startDate DATE, value DOUBLE);
   IF (SELECT count(*) FROM investments i WHERE i.symbol = symbol and i.walletId = @wid and i.isActive = 1) > 0 THEN
     INSERT INTO tempRes (invId, symbol, amount, startDate, value)
@@ -2121,28 +1760,21 @@ ELSE
       WHERE i.symbol = symbol and i.walletId = @wid and i.isActive = 1;
 
     select * from tempRes order by invId;
-    DROP TABLE IF EXISTS `webtech`.`tempRes`;
+    DROP TABLE IF EXISTS `webtechtest`.`tempRes`;
   ELSE 
     SELECT NULL;
   END IF;
   
 END IF;
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `getJobs`
+-- Definition for procedure getJobs
 --
-
-DROP PROCEDURE IF EXISTS `getJobs`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `getJobs`(IN loginname varchar(20))
+CREATE 
+PROCEDURE getJobs(IN loginname varchar(20))
 BEGIN
 
 SET @uid = (select u.userId from users u where u.loginname = loginname);
@@ -2159,23 +1791,16 @@ END IF;
 
 
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `getTopMonthlyTransactions`
+-- Definition for procedure getTopMonthlyTransactions
 --
-
-DROP PROCEDURE IF EXISTS `getTopMonthlyTransactions`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `getTopMonthlyTransactions`( IN loginname VARCHAR(20), IN monthYear DATE)
+CREATE 
+PROCEDURE getTopMonthlyTransactions( IN loginname VARCHAR(20), IN monthYear DATE)
 BEGIN
-DROP TABLE IF EXISTS `webtech`.`result`, `tempPay`, `tempInc` ;
+DROP TABLE IF EXISTS `webtechtest`.`result`, `tempPay`, `tempInc` ;
 
 SET @uid = (select u.userId from users u where u.loginname = loginname);
 SET @wid = (select walletid from wallet where userid = @uid and wallettype = 1);
@@ -2235,28 +1860,21 @@ ELSE
 
     SELECT * from `result`;    
 
-    DROP TABLE IF EXISTS `webtech`.result, `webtech`.`tempInc`,`webtech`.`tempPay`;
+    DROP TABLE IF EXISTS `webtechtest`.result, `webtechtest`.`tempInc`,`webtechtest`.`tempPay`;
 
   ELSE
     SELECT NULL;
   END IF;
 END IF;
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `getTransToDelete`
+-- Definition for procedure getTransToDelete
 --
-
-DROP PROCEDURE IF EXISTS `getTransToDelete`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `getTransToDelete`(IN monthYear DATE, IN loginname VARCHAR(20))
+CREATE 
+PROCEDURE getTransToDelete(IN monthYear DATE, IN loginname VARCHAR(20))
 BEGIN
   SET @uid = (SELECT userid FROM users u where u.loginname = loginname );
   SET @wid = (SELECT walletid FROM wallet w WHERE w.userId = @uid AND w.wallettype = 1);
@@ -2266,21 +1884,21 @@ IF ( @uid IS NOT NULL AND monthYear IS NOT NULL ) THEN
   SET @firstday = DATE_FORMAT(monthYear ,'%Y-%m-01');
   SET @lastDay = DATE_FORMAT(last_day(monthYear) ,'%Y-%m-%d');
 
-  DROP TABLE IF EXISTS `webtech`.`result` , `webtech`.`rectemp`, `webtech`.`jobtemp`;
+  DROP TABLE IF EXISTS `webtechtest`.`result` , `webtechtest`.`rectemp`, `webtechtest`.`jobtemp`;
 
-  CREATE TEMPORARY TABLE `webtech`.`result` (`recid` INT, jobhourid INT, transid INT, transname VARCHAR(40), amount DOUBLE, transdate DATE, iscommited INT);
-  CREATE TEMPORARY TABLE `webtech`.`jobtemp` (`recid` INT, jobhourid INT, starthour DATETIME, endHour DATETIME);
-  CREATE TEMPORARY TABLE `webtech`.`rectemp` (`recid` INT, `recname` VARCHAR(40));
+  CREATE TEMPORARY TABLE `webtechtest`.`result` (`recid` INT, jobhourid INT, transid INT, transname VARCHAR(40), amount DOUBLE, transdate DATE, iscommited INT);
+  CREATE TEMPORARY TABLE `webtechtest`.`jobtemp` (`recid` INT, jobhourid INT, starthour DATETIME, endHour DATETIME);
+  CREATE TEMPORARY TABLE `webtechtest`.`rectemp` (`recid` INT, `recname` VARCHAR(40));
 
 #--------------------   Insert all ONE TIME transactions   ----------------------------------#
-  INSERT INTO `webtech`.`result` (recid, jobhourid, transid, transname , amount , transdate, iscommited )
+  INSERT INTO `webtechtest`.`result` (recid, jobhourid, transid, transname , amount , transdate, iscommited )
     SELECT  null, null, t.transid, t.transCustomName, t.amount, t.transDate, t.iscommited 
-    FROM `webtech`.`transaction` t
+    FROM `webtechtest`.`transaction` t
     WHERE t.walletId = @wid AND t.recId IS NULL AND t.recurrence = 9 
     AND t.transDate BETWEEN @firstday AND @lastDay 
     ORDER BY 1 ASC;
 #--------------------  Insert all RECURRING transactions NOT JOBS #TEMP# --------------------------------#
- INSERT INTO `webtech`.`rectemp` (`recid`,`recname`)
+ INSERT INTO `webtechtest`.`rectemp` (`recid`,`recname`)
     SELECT rt.recTrans as recid, rt.`name` from transaction t, recurringtransaction rt
       where t.recId = rt.recTrans 
       and rt.walletId = @wid 
@@ -2293,11 +1911,11 @@ IF ( @uid IS NOT NULL AND monthYear IS NOT NULL ) THEN
   #---------------------  Insert all transactions related to RECURRING #RESULT#  --------------------------------#
     WHILE (@rows > 0) DO
       SET @rec =  (SELECT r.recid from `rectemp` r limit 1);
-      INSERT INTO `webtech`.`result` (recid, jobhourid, transid, transname , amount , transdate, iscommited )
+      INSERT INTO `webtechtest`.`result` (recid, jobhourid, transid, transname , amount , transdate, iscommited )
       SELECT  r.recid, null, null, r.recname, null, null, null from `rectemp` r
         where r.recid = @rec;
   
-      INSERT INTO `webtech`.`result` (recid, jobhourid, transid, transname , amount , transdate, iscommited )
+      INSERT INTO `webtechtest`.`result` (recid, jobhourid, transid, transname , amount , transdate, iscommited )
       SELECT  t.recid, null, t.transId, t.transCustomName, t.amount, t.transDate, t.isCommited from transaction t
         where t.recId = @rec and t.transDate between @firstday and @lastDay order by t.transDate asc;
 
@@ -2306,7 +1924,7 @@ IF ( @uid IS NOT NULL AND monthYear IS NOT NULL ) THEN
     END WHILE;
 
 #--------------------- Insert all Recurring transactions - that have Job hours related #TEMP#  --------------------------------#
-  INSERT INTO `webtech`.`jobtemp` (`recid` , jobhourid , starthour , endHour )
+  INSERT INTO `webtechtest`.`jobtemp` (`recid` , jobhourid , starthour , endHour )
     SELECT  j.recId, j.jobHoursId, j.startHour, j.endHour  from `jobhours` j, recurringtransaction rt
       where j.recId = rt.recTrans and j.walletId = @wid and date(j.endHour) >= @firstday and date(j.starthour) <= @lastDay
       and  rt.isActive = 1
@@ -2318,13 +1936,13 @@ IF ( @uid IS NOT NULL AND monthYear IS NOT NULL ) THEN
    WHILE (@rows > 0) DO    
     SET @rec =  (SELECT j.recid from `jobtemp` j limit 1);
     #---Insert the label of the work ---#
-    INSERT INTO `webtech`.`result` (recid, jobhourid, transid, transname , amount , transdate, iscommited )
+    INSERT INTO `webtechtest`.`result` (recid, jobhourid, transid, transname , amount , transdate, iscommited )
     SELECT  rt.recTrans, null, null, rt.name, null, rt.incomeDate, null 
       FROM `recurringtransaction` rt
       WHERE rt.recTrans = @rec;
 
     #---Insert the hours of the work ---#
-    INSERT INTO `webtech`.`result` (recid, jobhourid, transid, transname , amount , transdate, iscommited )
+    INSERT INTO `webtechtest`.`result` (recid, jobhourid, transid, transname , amount , transdate, iscommited )
     SELECT  jh.recid, jh.jobHoursId, null, 
             concat(DATE_FORMAT(jh.starthour ,'%d/%m/%Y, %H:%i'), ' - ', DATE_FORMAT(jh.endhour ,'%d/%m/%Y, %H:%i')),
             null, null, jh.isCalculated 
@@ -2337,30 +1955,23 @@ IF ( @uid IS NOT NULL AND monthYear IS NOT NULL ) THEN
      SET @rows = (SELECT count(*) FROM `jobtemp`);
   END WHILE;
 
-IF (( SELECT count(*) FROM `webtech`.`result`) > 0 ) then
-  SELECT * FROM `webtech`.`result`;
+IF (( SELECT count(*) FROM `webtechtest`.`result`) > 0 ) then
+  SELECT * FROM `webtechtest`.`result`;
 ELSE
   Select 0;
 END IF;
 ELSE
   SELECT 'Username or Date is incorrect!';
 END IF;
- #DROP TABLE IF EXISTS `webtech`.`result` ,  `webtech`.`rectemp`, `webtech`.`jobtemp`;
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+ #DROP TABLE IF EXISTS `webtechtest`.`result` ,  `webtechtest`.`rectemp`, `webtechtest`.`jobtemp`;
+END
+$$
 
 --
--- Definition of procedure `getUserInfo`
+-- Definition for procedure getUserInfo
 --
-
-DROP PROCEDURE IF EXISTS `getUserInfo`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `getUserInfo`(IN loginname VARCHAR(20))
+CREATE 
+PROCEDURE getUserInfo(IN loginname VARCHAR(20))
 BEGIN
 
   IF (SELECT count(*) FROM users u WHERE u.loginname= loginname) > 0 THEN 
@@ -2372,21 +1983,14 @@ BEGIN
     SELECT -1;
   END IF;
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `getWage`
+-- Definition for procedure getWage
 --
-
-DROP PROCEDURE IF EXISTS `getWage`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `getWage`(IN recId INT(10))
+CREATE 
+PROCEDURE getWage(IN recId INT(10))
 BEGIN
 
 
@@ -2396,21 +2000,14 @@ ELSE
   SELECT "Incorrect ID";
 
 END IF;
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `insertJob`
+-- Definition for procedure insertJob
 --
-
-DROP PROCEDURE IF EXISTS `insertJob`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `insertJob`(IN loginname varchar(20), IN jobcustomname varchar(45), IN description varchar(100), IN wage DOUBLE, IN incomeDate DATE)
+CREATE 
+PROCEDURE insertJob(IN loginname varchar(20), IN jobcustomname varchar(45), IN description varchar(100), IN wage DOUBLE, IN incomeDate DATE)
 BEGIN
 SET @uid = (select u.userId from users u where u.loginname = loginname);
 SET @wid = (select walletid from wallet where userid = @uid and wallettype = 1);
@@ -2418,29 +2015,22 @@ SET @wid = (select walletid from wallet where userid = @uid and wallettype = 1);
 IF (jobcustomname is null or wage <= 0 or incomeDate is null or @wid is null or @uid is null OR incomeDate < date(utc_timestamp()) ) THEN
   SELECT "Inserted details are incorrect";
 ELSE
-  INSERT INTO `webtech`.recurringtransaction (`name`, `description`, `wage`,`incomeDate`, `walletId`)
+  INSERT INTO `webtechtest`.recurringtransaction (`name`, `description`, `wage`,`incomeDate`, `walletId`)
 		VALUES(jobcustomname, description, wage, incomeDate, @wid);
   SET @rec = last_insert_id();
-  INSERT INTO `webtech`.`transaction` (amount,transDate,isCommited,walletId,transTypeId,transCustomName,recurrence,description,recId,wage)
+  INSERT INTO `webtechtest`.`transaction` (amount,transDate,isCommited,walletId,transTypeId,transCustomName,recurrence,description,recId,wage)
     VALUES (null,incomeDate,0, @wid, 3, jobcustomname, 4, description,@rec,wage);
   SELECT 0;
 
 END IF;
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `insertOneTimeTrans`
+-- Definition for procedure insertOneTimeTrans
 --
-
-DROP PROCEDURE IF EXISTS `insertOneTimeTrans`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `insertOneTimeTrans`(IN amount DOUBLE, IN loginname varchar(20), IN transdate DATE, IN transcustomname varchar(45), IN transactiontypeid int(10), IN description VARCHAR(100))
+CREATE 
+PROCEDURE insertOneTimeTrans(IN amount DOUBLE, IN loginname varchar(20), IN transdate DATE, IN transcustomname varchar(45), IN transactiontypeid int(10), IN description VARCHAR(100))
 BEGIN
 
  SET @wid = (select w.walletid from users u, wallet w where u.loginname = loginname and u.userid = w.userid and w.wallettype = 1);
@@ -2448,14 +2038,14 @@ BEGIN
  IF @wid IS NOT NULL THEN
 
     IF transactiontypeid in (1,5) THEN
-      IF (transdate <= (SELECT DATE(now())) ) THEN
-        INSERT INTO `webtech`.`transaction` ( `amount`, `transdate`, `iscommited`, `walletid`, `transtypeid`, `transcustomname`, `recurrence` , `description`, `recid`)
+      IF (transdate <= (SELECT DATE(utc_timestamp())) ) THEN
+        INSERT INTO `webtechtest`.`transaction` ( `amount`, `transdate`, `iscommited`, `walletid`, `transtypeid`, `transcustomname`, `recurrence` , `description`, `recid`)
 		      VALUES ( amount,  transdate, 1, @wid, transactiontypeid, transcustomname, 9 , description, null);
 
-        UPDATE wallet SET balance = balance+amount, lastUpdateDate = now()  where walletid = @wid;
+        UPDATE wallet SET balance = balance+amount, lastUpdateDate = utc_timestamp()  where walletid = @wid;
         select 0;
       ELSE
-        INSERT INTO `webtech`.`transaction` ( `amount`, `transdate`, `iscommited`, `walletid`, `transtypeid`, `transcustomname`, `recurrence` ,`description`, `recid`)
+        INSERT INTO `webtechtest`.`transaction` ( `amount`, `transdate`, `iscommited`, `walletid`, `transtypeid`, `transcustomname`, `recurrence` ,`description`, `recid`)
           VALUES ( amount,  transdate, 0, @wid, transactiontypeid, transcustomname, 9, description, null);
         select 0;
 
@@ -2469,21 +2059,14 @@ BEGIN
   END IF;
 
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `insertRecurringTrans`
+-- Definition for procedure insertRecurringTrans
 --
-
-DROP PROCEDURE IF EXISTS `insertRecurringTrans`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `insertRecurringTrans`(IN amount DOUBLE, IN loginname varchar(20), IN transdate DATE, IN transcustomname varchar(45), IN recurrence varchar(45), IN transtypeid INT(10), IN firstNote DATE, IN description VARCHAR(100))
+CREATE 
+PROCEDURE insertRecurringTrans(IN amount DOUBLE, IN loginname varchar(20), IN transdate DATE, IN transcustomname varchar(45), IN recurrence varchar(45), IN transtypeid INT(10), IN firstNote DATE, IN description VARCHAR(100))
 BEGIN
   SET @trans = 0;
   SET @tempdate = transdate;
@@ -2503,10 +2086,10 @@ BEGIN
 		IF transtypeid in (2, 6) THEN                       
 
 			IF (transdate <= date(utc_timestamp()) ) THEN     
-        INSERT INTO `webtech`.`transaction` ( `amount`, `transdate`, `iscommited`, `walletid`, `transtypeid`, `transcustomname`, `recurrence`, `description` )
+        INSERT INTO `webtechtest`.`transaction` ( `amount`, `transdate`, `iscommited`, `walletid`, `transtypeid`, `transcustomname`, `recurrence`, `description` )
 					VALUES ( amount,  @tempdate, 1, @wid, transtypeid, transcustomname, recurrence, description);
 				SET @trans = LAST_INSERT_ID();
-				INSERT INTO `webtech`.recurringtransaction (`name`, `description`, `walletID`)
+				INSERT INTO `webtechtest`.recurringtransaction (`name`, `description`, `walletID`)
 					VALUES(transcustomname, description, @wid);
 				SET @rec = LAST_INSERT_ID();
 				UPDATE `transaction` SET recId = @rec WHERE transid = @trans;
@@ -2541,7 +2124,7 @@ BEGIN
         END CASE;
 
 				WHILE (@tempdate <= date(utc_timestamp())) DO
-					INSERT INTO `webtech`.`transaction` ( `amount`, `transdate`, `iscommited`, `walletid`, `transtypeid`, `transcustomname`, `recurrence`, `description` )
+					INSERT INTO `webtechtest`.`transaction` ( `amount`, `transdate`, `iscommited`, `walletid`, `transtypeid`, `transcustomname`, `recurrence`, `description` )
 						VALUES ( amount,  @tempdate, 1, @wid, transtypeid, transcustomname, recurrence, description);
 					SET @trans = LAST_INSERT_ID();
 					UPDATE wallet SET balance = balance+amount, lastUpdateDate = utc_timestamp()  where walletid = @wid;
@@ -2577,7 +2160,7 @@ BEGIN
 				END WHILE;
 
 				IF (@tempdate > date(utc_timestamp()) ) THEN
-				  INSERT INTO `webtech`.`transaction` ( `amount`, `transdate`, `iscommited`, `walletid`, `transtypeid`, `transcustomname`, `recurrence` ,`description`)
+				  INSERT INTO `webtechtest`.`transaction` ( `amount`, `transdate`, `iscommited`, `walletid`, `transtypeid`, `transcustomname`, `recurrence` ,`description`)
 						VALUES ( amount,  @tempdate, 0, @wid, transtypeid, transcustomname, recurrence, description);
 				  SET @trans = LAST_INSERT_ID();
 				  UPDATE `transaction` SET recId = @rec WHERE transid = @trans;
@@ -2585,10 +2168,10 @@ BEGIN
 
 			ELSE 
 
-				INSERT INTO `webtech`.`transaction` ( `amount`, `transdate`, `iscommited`, `walletid`, `transtypeid`, `transcustomname`, `recurrence` ,`description`)
+				INSERT INTO `webtechtest`.`transaction` ( `amount`, `transdate`, `iscommited`, `walletid`, `transtypeid`, `transcustomname`, `recurrence` ,`description`)
 					  VALUES ( amount,  @tempdate, 0, @wid, transtypeid, transcustomname, recurrence, description);
 				SET @trans = LAST_INSERT_ID();
-				INSERT INTO webtech.recurringtransaction (`name`, `description`, `walletID`)
+				INSERT INTO webtechtest.recurringtransaction (`name`, `description`, `walletID`)
 					VALUES(transcustomname, description, @wid);
 				SET @rec = LAST_INSERT_ID();
 				UPDATE `transaction` SET recId = @rec WHERE transid = @trans;
@@ -2597,7 +2180,7 @@ BEGIN
 
 
 			IF transtypeid in (6) and firstNote is NOT NULL THEN
-				INSERT INTO `webtech`.`notifications` (`firstnotedate`,`lastnotedate`,`walletid`,`recid`)
+				INSERT INTO `webtechtest`.`notifications` (`firstnotedate`,`lastnotedate`,`walletid`,`recid`)
 					VALUES(null, @tempnote, @wid, @rec);
 			END IF;
 		select 0;
@@ -2606,11 +2189,11 @@ BEGIN
     
 		IF transtypeid in (7) THEN
 			IF (transdate <=  date(utc_timestamp()) ) THEN
-				INSERT INTO `webtech`.`transaction` ( `amount`, `transdate`, `iscommited`, `walletid`, `transtypeid`, `transcustomname`, `recurrence`, `description`)
+				INSERT INTO `webtechtest`.`transaction` ( `amount`, `transdate`, `iscommited`, `walletid`, `transtypeid`, `transcustomname`, `recurrence`, `description`)
 					VALUES ( amount,  transdate, 1, @wid, transtypeid, transcustomname, recurrence, description);
 				SET @trans = LAST_INSERT_ID();
 				 
-				INSERT INTO `webtech`.`recurringtransaction` (`name`, `description`, `walletID`)
+				INSERT INTO `webtechtest`.`recurringtransaction` (`name`, `description`, `walletID`)
 					VALUES(transcustomname, description, @wid);
 				SET @rec = LAST_INSERT_ID();
 				UPDATE `transaction` SET recId = @rec WHERE transid = @trans;
@@ -2645,25 +2228,25 @@ BEGIN
          END CASE;
 
          IF (@tempdate >= date(utc_timestamp()) ) THEN
-					INSERT INTO `webtech`.`transaction` ( `amount`, `transdate`, `iscommited`, `walletid`, `transtypeid`, `transcustomname`, `recurrence` , `description`)
+					INSERT INTO `webtechtest`.`transaction` ( `amount`, `transdate`, `iscommited`, `walletid`, `transtypeid`, `transcustomname`, `recurrence` , `description`)
 						VALUES ( null,  @tempdate, 0, @wid, transtypeid, transcustomname, recurrence, description);
 					SET @trans = LAST_INSERT_ID();
 					UPDATE `transaction` SET recId = @rec WHERE transid = @trans;
 				 END IF;
 
-				 INSERT INTO `webtech`.`notifications` (`firstnotedate`,`lastnotedate`,`walletid`,`recid`)
+				 INSERT INTO `webtechtest`.`notifications` (`firstnotedate`,`lastnotedate`,`walletid`,`recid`)
 					VALUES(@tempnote, @tempdate - INTERVAL 3 day, @wid, @rec);
 			ELSE
-				INSERT INTO `webtech`.`transaction` ( `amount`, `transdate`, `iscommited`, `walletid`, `transtypeid`, `transcustomname`, `recurrence` ,`description`)
+				INSERT INTO `webtechtest`.`transaction` ( `amount`, `transdate`, `iscommited`, `walletid`, `transtypeid`, `transcustomname`, `recurrence` ,`description`)
 				  VALUES ( null,  transdate, 0, @wid, transtypeid, transcustomname, recurrence, description);
 				SET @trans = LAST_INSERT_ID();
 				
-				INSERT INTO `webtech`.`recurringtransaction` (`name`, `description`, `walletID`)
+				INSERT INTO `webtechtest`.`recurringtransaction` (`name`, `description`, `walletID`)
 					VALUES(transcustomname, description, @wid);
         SET @rec = LAST_INSERT_ID();
 				UPDATE `transaction` SET recId = @rec WHERE transid = @trans;
 				
-				INSERT INTO `webtech`.`notifications` (`firstnotedate`,`lastnotedate`,`walletid`,`transid`)
+				INSERT INTO `webtechtest`.`notifications` (`firstnotedate`,`lastnotedate`,`walletid`,`transid`)
 				  VALUES(@tempnote, @tempdate - INTERVAL 3 day, @wid, @rec);
 				  
 		  END IF;
@@ -2671,21 +2254,14 @@ BEGIN
 		END IF;
 
 	END IF;
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `insertTransaction`
+-- Definition for procedure insertTransaction
 --
-
-DROP PROCEDURE IF EXISTS `insertTransaction`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `insertTransaction`(IN amount DOUBLE, IN loginname varchar(20), IN transdate DATE, IN transcustomname varchar(45), IN recurrance varchar(45), IN transtypeid INT(10), IN firstNote DATE, IN description VARCHAR(100))
+CREATE 
+PROCEDURE insertTransaction(IN amount DOUBLE, IN loginname varchar(20), IN transdate DATE, IN transcustomname varchar(45), IN recurrance varchar(45), IN transtypeid INT(10), IN firstNote DATE, IN description VARCHAR(100))
 BEGIN
 
 IF (amount = null OR loginname = null OR transdate = null OR (transtypeid not between 1 and 7)) THEN
@@ -2702,21 +2278,14 @@ ELSE
 
 END IF;
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `installDB`
+-- Definition for procedure installDB
 --
-
-DROP PROCEDURE IF EXISTS `installDB`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `installDB`(IN username VARCHAR(20), IN pass VARCHAR(45), IN addData TINYINT)
+CREATE 
+PROCEDURE installDB(IN username VARCHAR(20), IN pass VARCHAR(45), IN addData TINYINT)
 BEGIN
 
 IF (username IS NULL or pass IS NULL or addData < 0 or addData > 1 ) THEN
@@ -2725,114 +2294,132 @@ ELSE
 # ----------- Clear all -------------# 
   truncate notifications;
   truncate jobhours;
-  
   truncate transaction;
   truncate recurringtransaction;
-# ---- delete user if exists ---------# 
-  IF ( select count(*) from users where loginname = username > 0 ) THEN
-      SET @uid = (select u.userId from users u where u.loginname = username);
-      SET @wid = (select walletid from wallet where userid = @uid and wallettype = 1);
-      delete from wallet where walletId = @wid;
-      delete from users where userId = @uid;
-  END IF;
+  truncate investments;
+  truncate wallet;
+  truncate users;
 
 # ----------- Add data -------------# 
-  
-  call register(username, 'admin', 'test', DATE(now()), 3, 'email@mail.d', pass);
-  
-  IF (addData = 1) THEN
-      SET @uid = (select u.userId from users u where u.loginname = username);
-      SET @wid = (select walletid from wallet where userid = @uid and wallettype = 1);
-      
-      #Insert one time incomes
-      SET @count = 7;
-      SET @tempdate = now() - interval @count month;
-      WHILE (@count >= 0 ) DO
-        call insertTransaction(@count*3, username, @tempDate, 'one time income - auto', 9,1,null,'auto - one time income description');
-        set @tempDate = @tempdate - interval @count month;
-        SET @count = @count - 1;
-      END WHILE;
-      
-      #Insert one time payouts
-      SET @count = 7;
-      SET @tempdate = now() - interval @count month;
-      WHILE (@count >= 0 ) DO
-        call insertTransaction(-(@count*3), username, @tempDate, 'one time payout - auto', 9,5,null,'auto - one time payout description');
-        set @tempDate = @tempdate - interval @count month;
-        SET @count = @count - 1;
-      END WHILE;
+    call register(username, 'admin', 'test', DATE(utc_timestamp()), 3, 'email@mail.d', pass);
 
-      #Insert recurring incomes
-      SET @count = 2;
-      SET @tempdate = now() - interval 2 month;
-      WHILE (@count > 0 ) DO
-        call insertTransaction(@count*1005, username, @tempDate, 'recurring income - auto', 1,2,null,'auto - recurring income description');
-        set @tempDate = @tempdate + interval @count day;
-        SET @count = @count - 1;
-      END WHILE;
+    IF (addData = 1) THEN
+      DROP TABLE IF EXISTS temp;
+      CREATE TEMPORARY TABLE temp (username VARCHAR(20));
+
+      call register('demoRegular', 'demo', 'Regular', DATE(utc_timestamp()), 1, 'email@mail.b', pass);
+      call register('demoPremium', 'demo', 'Premium', DATE(utc_timestamp()), 2, 'email@mail.c', pass);
       
-      #Insert recurring payouts
-      SET @count = 2;
-      SET @tempdate = now() - interval @count month;
-      WHILE (@count > 0 ) DO
-        call insertTransaction(-(@count*20), username, @tempDate, 'recurring payouts - auto', 2,6,null,'auto - recurring payouts description');
-        call insertTransaction(-(@count*17), username, @tempDate, 'recurring payouts with notification - auto', 2,6, @tempDate,'auto - recurring payouts  with notification description');
-        set @tempDate = @tempdate + interval @count week;
-        SET @count = @count - 1;
-      END WHILE;
-      
-      #Insert jobs
-      SET @count = 2;
-      SET @tempdate = now() - interval 5 month;
-      WHILE (@count > 0 ) DO
-        call insertJob(username, concat('Job name', @count), concat('Desc name',@count), 25.7, now() + interval @count day);
-        set @tempDate = @tempdate + interval @count day;
-        SET @count = @count - 1;
+      INSERT INTO temp (username)
+        SELECT u.loginname FROM users u;
+      SET @rows = row_count();
+
+      WHILE (@rows > 0) DO
+        SET @username = (select u.username FROM temp u LIMIT 1);
+
+          SET @uid = (select u.userId from users u where u.loginname = @username);
+          SET @wid = (select walletid from wallet where userid = @uid and wallettype = 1);
+    
+          #Insert one time incomes
+          SET @count = 4;
+          SET @tempdate = utc_timestamp();
+          WHILE (@count > 0 ) DO
+            call insertTransaction(@count*3, @username, @tempDate, 'one time income - auto', 9,1,null,'auto - one time income description');
+            set @tempDate = @tempdate - interval @count week;
+            SET @count = @count - 1;
+          END WHILE;
+          
+          #Insert one time payouts
+          SET @count = 5;
+          SET @tempdate = utc_timestamp();
+          WHILE (@count > 0 ) DO
+            call insertTransaction(-(@count*3), @username, @tempDate, 'one time payout - auto', 9,5,null,'auto - one time payout description');
+            set @tempDate = @tempdate - interval @count month;
+            SET @count = @count - 1;
+          END WHILE;
+    
+          #Insert recurring incomes
+          SET @count = 2;
+          SET @tempdate = utc_timestamp() - interval 11 month;
+          WHILE (@count > 0 ) DO
+            call insertTransaction(@count*(FLOOR(100 + (RAND() * 200))), @username, @tempDate, 'recurring income - auto', 4,2,null,'auto - recurring income description');
+            set @tempDate = @tempdate + interval @count month;
+            SET @count = @count - 1;
+          END WHILE;
+          
+          #Insert recurring payouts
+          SET @count = 2;
+          SET @tempdate = utc_timestamp() - interval 10 month;
+          WHILE (@count > 0 ) DO
+            call insertTransaction(-(@count*110), @username, @tempDate, 'recurring payouts - auto', 2,6,null,'auto - recurring payouts description');
+            call insertTransaction(-(@count*137), @username, @tempDate, 'recurring payouts with notification - auto', 2,6, @tempDate,'auto - recurring payouts  with notification description');
+            set @tempDate = @tempdate + interval @count week;
+            SET @count = @count - 1;
+          END WHILE;
+          
+          #Insert jobs
+          SET @count = 2;
+          SET @tempdate = utc_timestamp();
+          WHILE (@count > 0 ) DO
+            call insertJob(@username, concat('Job name ', @count), concat('Desc name ',@count), 25.7+@count, @tempdate);
+            SET @count = @count - 1;
+          END WHILE;
+        DELETE FROM temp LIMIT 1;
+        SET @rows = (select count(*) from temp);
+
       END WHILE;
 
       #Insert job hours
-      SET @count = 11;
-      SET  @recid =  (select rt.recTrans from recurringtransaction rt where rt.incomeDate IS NOT NULL and rt.wage > 0 limit 1);
-      UPDATE recurringtransaction SET incomeDate = last_day(utc_timestamp() - interval 1 month) where recTrans = @recid;
-      WHILE (@count > 0 ) DO
-        call updateWorkingHours(@recid, utc_timestamp() - interval @count day - interval 1 month - interval 5 hour,utc_timestamp() - interval @count day - interval 1 month , 'Decription - AUTO generated');
-        SET @count = @count - 1;
-      END WHILE;
-      call commitJobHours;
-      SET @count = 11;
-      SET  @recid =  (select rt.recTrans from recurringtransaction rt where rt.incomeDate IS NOT NULL and rt.wage > 0 limit 1);
-      WHILE (@count > 0 ) DO
-        call updateWorkingHours(@recid, utc_timestamp() - interval @count day - interval 5 hour,utc_timestamp() - interval @count day, 'Decription - AUTO generated');
-        SET @count = @count - 1;
+      DROP TABLE IF EXISTS tempWallets;
+      CREATE TEMPORARY TABLE tempWallets (walletId INT(11));
+      
+      INSERT INTO tempWallets(`walletId`) SELECT walletId FROM wallet;
+      
+      SET @rows = (select count(*) from tempWallets);
+      #while users > 0
+      WHILE (@rows > 0) DO
+        SELECT tw.walletId INTO @wid FROM tempWallets tw LIMIT 1;
+        SET @recid = (select rt.recTrans from recurringtransaction rt where rt.incomeDate IS NOT NULL and rt.wage > 0 and rt.walletId = @wid limit 1);
+        SET @month = 2;
+        #2 months count
+        WHILE (@month > 0) DO
+          SET @days = 14;
+          #14 days of work a month
+          WHILE (@days > 0 ) DO
+            CALL updateWorkingHours(@recid, utc_timestamp() - interval @days day - interval @month month - interval 5 hour,utc_timestamp() - interval @days day - interval @month month , 'AUTO- Salary');
+            SET @days = @days - 1;
+          END WHILE;
+
+          SET @month = @month - 1;
+          CALL commitJobHours();
+        END WHILE;
+        
+        DELETE FROM tempWallets LIMIT 1;
+        SET @rows = (select count(*) from tempWallets);
+        
       END WHILE;
 
-  END IF;
+    END IF;
 END IF;
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+DROP TABLE IF EXISTS temp;
+END
+$$
 
 --
--- Definition of procedure `register`
+-- Definition for procedure register
 --
-
-DROP PROCEDURE IF EXISTS `register`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `register`(IN loginname VARCHAR(20), IN firstname VARCHAR(20), IN lastname VARCHAR(20), IN dateOfBirth Date, IN permissionId INT(10), IN email VARCHAR(45), IN pincode VARCHAR(45))
+CREATE 
+PROCEDURE register(IN loginname VARCHAR(20), IN firstname VARCHAR(20), IN lastname VARCHAR(20), IN dateOfBirth Date, IN permissionId INT(10), IN email VARCHAR(45), IN pincode VARCHAR(45))
 BEGIN
 
 
-    SET @res = (SELECT COUNT(*) FROM webtech.users u WHERE u.loginname = loginname);
+    SET @res = (SELECT COUNT(*) FROM webtechtest.users u WHERE u.loginname = loginname);
 
     IF @res = 0 THEN
-      INSERT INTO webtech.users (`loginname`, `firstname`, `lastname`, `registrationDate`, `dateOfBirth`, `statusId`, `permissionId`, `email`, `pincode`)
-        VALUES(loginname, firstname,lastname, now(), dateOfBirth, 1, permissionId, email, pincode);
-      INSERT INTO webtech.wallet (`balance`,`lastupdatedate`,`userid`, `wallettype`)
-        VALUES (0,now(),LAST_INSERT_ID(), 1);
+      INSERT INTO webtechtest.users (`loginname`, `firstname`, `lastname`, `registrationDate`, `dateOfBirth`, `statusId`, `permissionId`, `email`, `pincode`)
+        VALUES(loginname, firstname,lastname, utc_timestamp(), dateOfBirth, 1, permissionId, email, pincode);
+      INSERT INTO webtechtest.wallet (`balance`,`lastupdatedate`,`userid`, `wallettype`)
+        VALUES (0,utc_timestamp(),LAST_INSERT_ID(), 1);
       select 0;
     ELSE
         
@@ -2841,48 +2428,34 @@ BEGIN
     END IF;
 
 
-    END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+    END
+$$
 
 --
--- Definition of procedure `updatePendingGeneratedPayout`
+-- Definition for procedure updatePendingGeneratedPayout
 --
-
-DROP PROCEDURE IF EXISTS `updatePendingGeneratedPayout`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `updatePendingGeneratedPayout`(IN transid INT, IN amount DOUBLE)
+CREATE 
+PROCEDURE updatePendingGeneratedPayout(IN transid INT, IN amount DOUBLE)
 BEGIN
 
 IF (transid > 0 and IsNumeric(amount) AND (SELECT count(*) from transaction t where t.transid = transid > 0)) THEN
 
   SET @wid = (SELECT t.walletId FROM transaction t WHERE t.transId = transid);
-  UPDATE wallet SET balance = balance + amount, lastUpdateDate = now() WHERE walletid = @wid;
+  UPDATE wallet SET balance = balance + amount, lastUpdateDate = utc_timestamp() WHERE walletid = @wid;
   UPDATE transaction t SET t.isCommited = 1, t.amount = amount WHERE t.transid = transid;
   SELECT 0;
 ELSE
   SELECT -1;
 END IF;
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `updateUserLock`
+-- Definition for procedure updateUserLock
 --
-
-DROP PROCEDURE IF EXISTS `updateUserLock`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `updateUserLock`(IN loginname VARCHAR(20), IN lockComment VARCHAR(225))
+CREATE 
+PROCEDURE updateUserLock(IN loginname VARCHAR(20), IN lockComment VARCHAR(225))
 BEGIN
   IF (SELECT count(*) FROM users u WHERE u.loginname= loginname AND u.statusId in (1,2) ) > 0 THEN 
     SET @lock = (SELECT u.statusId FROM users u WHERE u.loginname= loginname AND u.statusId in (1,2));
@@ -2899,21 +2472,14 @@ BEGIN
   END IF;
 
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
+END
+$$
 
 --
--- Definition of procedure `updateWorkingHours`
+-- Definition for procedure updateWorkingHours
 --
-
-DROP PROCEDURE IF EXISTS `updateWorkingHours`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER' */ $$
-CREATE DEFINER=`webtech`@`%` PROCEDURE `updateWorkingHours`(IN recId INT(10), IN startHour DATETIME, IN endHour DATETIME, IN description VARCHAR (100))
+CREATE 
+PROCEDURE updateWorkingHours(IN recId INT(10), IN startHour DATETIME, IN endHour DATETIME, IN description VARCHAR (100))
 BEGIN
 
 SET @wid = (SELECT walletId FROM recurringtransaction WHERE recTrans = recId );
@@ -2931,17 +2497,120 @@ END IF;
 
 
 
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+END
+$$
+
+--
+-- Definition for function calcSalaryHourWage
+--
+CREATE 
+FUNCTION calcSalaryHourWage(startHour DATETIME, endHour DATETIME, wage DOUBLE)
+  RETURNS double
+BEGIN
+  SET @timeDiff = (SELECT TIMESTAMPDIFF(minute,startHour,endHour));
+  SET @minuteWage = wage/60;
+  return @timeDiff * @minuteWage;
+
+END
+$$
+
+--
+-- Definition for function getFutureTrans
+--
+CREATE 
+FUNCTION getFutureTrans(transDate DATE, recurrence INT)
+  RETURNS date
+BEGIN
+    IF (recurrence >= 1 and recurrence < 9 ) then
+      SET @futuredate = null;
+
+      CASE recurrence
+			    WHEN 10 THEN
+				  	SET @futuredate = transDate + INTERVAL 1 day;
+  			  WHEN 1 THEN
+	  				SET @futuredate = transDate + INTERVAL 1 week;
+		  	  WHEN 2 THEN
+			  		SET @futuredate = transDate + INTERVAL 2 week;
+  			  WHEN 4 THEN
+            IF @futuredate = LAST_DAY(transDate) THEN
+	  			  	SET @futuredate = LAST_DAY(transDate + INTERVAL 1 month);
+            ELSE
+            	SET @futuredate = transDate + INTERVAL 1 month;
+            END IF;
+		  	  WHEN 8 THEN
+            IF @futuredate = LAST_DAY(transDate) THEN
+	  			  	SET @futuredate = LAST_DAY(transDate + INTERVAL 2 month);
+            ELSE
+            	SET @futuredate = transDate + INTERVAL 2 month;
+            END IF;
+        END CASE;
+    ELSE
+      RETURN '1000-01-01';
+    END IF;
+RETURN @futuredate;
+END
+$$
+
+--
+-- Definition for function IsNumeric
+--
+CREATE 
+FUNCTION IsNumeric(sIn varchar(1024))
+  RETURNS tinyint(4)
+RETURN sIn REGEXP '^(-|\\+){0,1}([0-9]+\\.[0-9]*|[0-9]*\\.[0-9]+|[0-9]+)$'
+$$
 
 DELIMITER ;
 
 
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+-- 
+-- Dumping data for table permission
+--
+INSERT INTO permission(permissionId, description, name) VALUES 
+  (1, 'Regular user', 'Regular'),
+  (2, 'Premium user', 'Premium'),
+  (3, 'Admin', 'Admin');
+
+-- 
+-- Dumping data for table recurrencetype
+--
+INSERT INTO recurrencetype(recurTypeId, type) VALUES 
+  (1, '1 Week'),
+  (2, '2 Weeks'),
+  (4, '1 Month'),
+  (8, '2 Months'),
+  (9, 'none'),
+  (10, 'Daily');
+
+-- 
+-- Dumping data for table transactiontype
+--
+INSERT INTO transactiontype(typeId, Name, Description) VALUES 
+  (1, 'One time income', 'One time income'),
+  (2, 'Recurring income', 'Recurring income'),
+  (3, 'Recurring Generated income', 'Recurring Generated income'),
+  (5, 'One time payout', 'One time payout'),
+  (6, 'Recurring payout', 'Recurring payout'),
+  (7, 'Recurring Generated payout', 'Recurring Generated payout');
+
+-- 
+-- Dumping data for table userstatus
+--
+INSERT INTO userstatus(statusId, name, description) VALUES 
+  (1, 'Open', 'Any new user holds this status until gets loc'),
+  (2, 'Locked', 'Locked user'),
+  (3, 'Deleted', 'Pending deletion or deleted user');
+
+-- 
+-- Dumping data for table wallettype
+--
+INSERT INTO wallettype(typeId, typeName) VALUES 
+  (1, 'Regular'),
+  (2, 'Investment');
+
+
+-- 
+-- Enable foreign keys
+-- 
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
