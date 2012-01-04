@@ -133,7 +133,7 @@ function verifyInformation()
 			switch(data)
 			{
 			case "1":
-				document.getElementById("ins_error").innerHTML="ok";
+				document.getElementById("ins_error").innerHTML="Ok - <a href='index.php' style='color:lightGreen;'> Go To Site </a> ";
 				break;
 			case "0":
 				document.getElementById("ins_error").innerHTML="Problem with MySQL Information";

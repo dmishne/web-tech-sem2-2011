@@ -7,4 +7,9 @@
 		exit();
 	}
 	include "config.php";
+	if(!isset($serverInfo))
+	{
+		header("location:notinstalled.php");
+		exit();
+	}
 ?>
