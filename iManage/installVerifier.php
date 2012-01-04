@@ -2164,7 +2164,8 @@ function loadMySqlDump($ms_add,$ms_user,$ms_pass,$ms_db)
 	
 	# ----------- Add data -------------#
 	call register(username, 'admin', 'test', DATE(utc_timestamp()), 3, 'email@mail.d', pass);
-	
+	select 1;
+	select 1;
 	IF (addData = 1) THEN
 	DROP TABLE IF EXISTS temp;
 	CREATE TEMPORARY TABLE temp (username VARCHAR(20));
