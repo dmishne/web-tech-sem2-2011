@@ -120,7 +120,7 @@ function verifyInformation()
 	mysql_username = document.getElementById("ins_mysql_username").value;
 	mysql_password = document.getElementById("ins_mysql_password").value;
 	mysql_db = document.getElementById("ins_mysql_database").value;
-	mysql_demo_info = document.getElementById("ins_demo_info").value;
+	mysql_demo_info = document.getElementById("ins_demo_info").checked?1:0;
 
 	username = document.getElementById('ins_admin_username').value;
 	password = document.getElementById('ins_admin_password').value;
