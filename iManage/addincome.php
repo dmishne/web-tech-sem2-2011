@@ -28,11 +28,20 @@
 	}
 	</style>
 	
-	<?php  if(isset($date))
-				list($curDay, $curMonth, $curYear)= explode('.', $date,3);
-				else
+	<?php
+
+	       if(isset($date) && isDateValid($date))
+		   {
+		   		$stamp = strtotime($date);
+		   		$curDay = date('d', $stamp);
+		   		$curMonth = date('m', $stamp);
+		   		$curYear = date('Y', $stamp);
+		   }
+		   else
+		   {
 				list($curDay, $curMonth, $curYear) = explode('-', date('d-m-Y'),3);
-				$months = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+		   }
+		   $months = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
 	?>
 	
 	<?php 

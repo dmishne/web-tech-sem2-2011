@@ -18,5 +18,19 @@ function verifyInput($input)
 	}
 }
 
+function isDateValid($str)
+{
+	$stamp = strtotime($str);
+	if (!is_numeric($stamp))
+	return FALSE;
+
+	//checkdate(month, day, year)
+	if ( checkdate(date('m', $stamp), date('d', $stamp), date('Y', $stamp)))
+	{
+		return TRUE;
+	}
+	return FALSE;
+}
+
 
 ?>
