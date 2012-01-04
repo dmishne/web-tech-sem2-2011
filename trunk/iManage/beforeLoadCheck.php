@@ -12,4 +12,10 @@
 		header("location:notinstalled.php");
 		exit();
 	}
+	$connection = new mysqli($serverInfo["address"], $serverInfo["username"], $serverInfo["password"]);
+	if (mysqli_connect_errno()) {
+		header("location:noconnection.php");
+		exit();
+	}
+	
 ?>
