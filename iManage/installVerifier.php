@@ -2489,12 +2489,13 @@ error_reporting(0);
 			else {
 				$res = $connection->query("CALL installDB('$username','$user_password_md5',0)") or die(mysqli_error());
 			}
-			if($res->num_rows > 1)
+			if($res)
 			{
 				// 4. write config.php
 				$fp = fopen("config.php","w");
-				fprintf($fp, "\$serverInfo = array(\"address\" => \"%s\", \"username\" => \"%s\" , \"password\" => \"%s\", \"db\" => \"%s\");",$ms_add,$ms_user,$ms_pass,$ms_db);
+				fprintf($fp, "<?php \$serverInfo = array(\"address\" => \"%s\", \"username\" => \"%s\" , \"password\" => \"%s\", \"db\" => \"%s\"); ?>",$ms_add,$ms_user,$ms_pass,$ms_db);
 				fclose($fp);
+				echo "1";
 			}
 			else {
 				echo "-2";
