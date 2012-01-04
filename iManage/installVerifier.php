@@ -2445,9 +2445,9 @@ error_reporting(0);
 	$ms_user =  verifyInput($_POST["mysql_username"]);
 	$ms_pass =  verifyInput($_POST["mysql_password"]);
 	$ms_db =  verifyInput($_POST["mysql_db"]);
-	if ( isset($_POST["mysql_demo_info"]))
+	if ( isset($_POST["mysql_demo_info"]) && verifyInput($_POST['mysql_demo_info']) == '1')
 	{
-		$ms_demo = verifyInput($_POST['mysql_demo_info']);
+		$ms_demo = '1';
 	}
 	else {
 		$ms_demo = '0';
