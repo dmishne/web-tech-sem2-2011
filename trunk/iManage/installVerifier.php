@@ -2144,6 +2144,11 @@ function loadMySqlDump($ms_add,$ms_user,$ms_pass,$ms_db)
 	SELECT 'incorrect details';
 	ELSE
 	# ----------- Clear all -------------#
+	-- 
+	-- Disable foreign keys
+	-- 	
+	SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 ;
+	
 	truncate notifications;
 	truncate jobhours;
 	truncate transaction;
@@ -2151,6 +2156,11 @@ function loadMySqlDump($ms_add,$ms_user,$ms_pass,$ms_db)
 	truncate investments;
 	truncate wallet;
 	truncate users;
+	-- 
+	-- Enable foreign keys
+	-- 
+	SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+	
 	
 	# ----------- Add data -------------#
 	call register(username, 'admin', 'test', DATE(utc_timestamp()), 3, 'email@mail.d', pass);
