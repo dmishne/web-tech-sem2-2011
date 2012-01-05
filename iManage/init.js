@@ -42,7 +42,7 @@ function setLogin()
 		  	$("#msgBox").fadeTo(200,0.1,function() //start fading the messagebox
 			{ 
 			  //add message and change the class of the box and start fading
-			  $(this).html('Your login information incorrect...').addClass('messageboxerror').fadeTo(900,1);
+			  $(this).html('Your login information is incorrect...').addClass('messageboxerror').fadeTo(900,1);
 			});		
           }
 				
