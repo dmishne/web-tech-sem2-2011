@@ -243,7 +243,7 @@
 			           if(isset($result) && $result->num_rows > 0 && $cnt > 0){
 			               echo "
 						          <p style=\"color:red; border:solid 1px red; position:relative; padding-left:70px;\"><b>Warning!</b></p>
-						          <p  style=\"font-size:12px\">Deletion of the entire income label, will also delete all occurrences of this label </p>
+						          <p  style=\"font-size:12px\">Deletion of the entire payout label, will also delete all occurrences of this label </p>
 				                ";}			          
 			      ?>
 		      </div>
