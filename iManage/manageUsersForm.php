@@ -60,6 +60,7 @@ else {
 			$username = verifyInput($_POST['Username']);		
 			$userStatus = verifyInput($_POST['userStatus']);
 			$currentDate = date("d.m.Y H:i");
+			$newComment = "error - Can't save date";
 			if($userStatus == "block")  // was locked
 			{
 			    $newComment = "User Unlocked - $currentDate\n";
