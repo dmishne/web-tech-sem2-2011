@@ -17,6 +17,7 @@ if (mysqli_connect_errno()) {
 $connection->select_db($serverInfo["db"]);
 $isAdmin = $_SESSION['permissionid'];
 $flag = verifyInput($_POST['flag']);
+$myUsername = $_SESSION['username'];
 
 if($isAdmin != 3)
 {
@@ -57,40 +58,52 @@ else {
 		}
 		else if($flag == 3)   // lock\unlock button
 		{
-			$username = verifyInput($_POST['Username']);		
-			$userStatus = verifyInput($_POST['userStatus']);
-			$currentDate = date("d.m.Y H:i");
+			$username = verifyInput($_POST['Username']);	
 			$newComment = "error - Can't save date";
-			if($userStatus == "block")  // was locked
+			if($myUsername == $username)
 			{
-			    $newComment = "User Unlocked - $currentDate\n";
-			}
-			else if($userStatus == "none")  // was unlocked
-			{
-				$newComment = "User Locked - $currentDate\n";
-			}
-			$res3 = $connection->query("CALL updateUserLock('$username','$newComment')") or die(mysqli_error());
-			if($res3->num_rows > 0)
-			{
-				$row3 = $res3->fetch_array(MYSQLI_NUM);
-				if($row3[0] == 0) {
-					echo "succ";
+				echo "cantUpdate";
+			}	
+			else {
+				$userStatus = verifyInput($_POST['userStatus']);
+				$currentDate = date("d.m.Y H:i");
+				if($userStatus == "block")  // was locked
+				{
+				    $newComment = "User Unlocked - $currentDate\n";
 				}
-				else if($row3[0] == -1) {
-					echo "fail";
+				else if($userStatus == "none")  // was unlocked
+				{
+					$newComment = "User Locked - $currentDate\n";
 				}
+				$res3 = $connection->query("CALL updateUserLock('$username','$newComment')") or die(mysqli_error());
+				if($res3->num_rows > 0)
+				{
+					$row3 = $res3->fetch_array(MYSQLI_NUM);
+					if($row3[0] == 0) {
+						echo "succ";
+					}
+					else if($row3[0] == -1) {
+						echo "fail";
+					}
+				}
+				echo $res3;
 			}
-			echo $res3;
 		}
 		else if($flag == 4)   // delete button
 		{
 			$username = verifyInput($_POST['Username']);
-			$res4 = $connection->query("CALL deleteUser('$username')") or die(mysqli_error());
-			if($res4->num_rows > 0)
+			if($myUsername == $username)
 			{
-			   $row4 = $res4->fetch_array(MYSQLI_NUM);
-			   if($row4[0] == 0) {	echo "deleted"; }
-			   else if($row4[0] == -1) { echo "fail"; }
+				echo "cantDelete";
+			}
+			else {
+				$res4 = $connection->query("CALL deleteUser('$username')") or die(mysqli_error());
+				if($res4->num_rows > 0)
+				{
+				   $row4 = $res4->fetch_array(MYSQLI_NUM);
+				   if($row4[0] == 0) {	echo "deleted"; }
+				   else if($row4[0] == -1) { echo "fail"; }
+				}
 			}
 		}
 		
