@@ -8,21 +8,21 @@ $errors = array();
 $REG = 1;
 
 $firstname=verifyInput($_POST['firstname']);
-if(strlen($firstname) < 3 || $firstname != $_POST['firstname'])
+if(strlen($firstname) < 3 || $firstname != $_POST['firstname'] || strlen($firstname) > 10)
 {
 	$error['firstname'] = 1;
 	$REG = 0;
 }
 
 $lastname=verifyInput($_POST['lastname']);
-if(strlen($lastname) < 3 || $lastname != $_POST['lastname'])
+if(strlen($lastname) < 3 || $lastname != $_POST['lastname'] || strlen($lastname) > 10)
 {
 	$error['lastname'] = 1;
 	$REG = 0;
 }
 
 $username=verifyInput($_POST['username']);
-if(strlen($username) < 3 || $username != $_POST['username'])
+if(strlen($username) < 3 || $username != $_POST['username'] || strlen($username) > 10)
 {
 	$error['username'] = 1;
 	$REG = 0;
