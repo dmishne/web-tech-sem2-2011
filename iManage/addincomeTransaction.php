@@ -76,6 +76,7 @@ if($formN == 1)  // Update working hours
 			$startHour = sprintf('%4d-%02d-%02d %02d:%02d:%02d',$cYear, $cMonth, $cDay, $sH, $sM, 0);
 			$endHour = sprintf('%4d-%02d-%02d %02d:%02d:%02d',$cYear2, $cMonth2, $cDay2, $eH, $eM, 0);
 			$inptDate = sprintf('%4d-%02d-%02d',$cYear,$cMonth,$cDay);
+			$jumpdate = sprintf('%02d.%02d.%4d',$cDay,$cMonth,$cYear);
 			if(isset($_SESSION['jobhours']))
 			{
 				foreach ($_SESSION['jobhours'] as $valH)
@@ -119,7 +120,6 @@ if($formN == 1)  // Update working hours
 					$res2 = $connection->query("CALL updateWorkingHours('$jobId','$startHour','$endHour',null)") or die(mysqli_error());
 		        }
 				$_SESSION['update'] = 1;
-				$jumpdate = sprintf('%02d.%02d.%4d',$cDay,$cMonth,$cYear);
 				header("location:addincome.php?date=$jumpdate&month=$cMonth&year=$cYear");
 			}
 			else {
