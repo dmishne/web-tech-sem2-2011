@@ -5,9 +5,9 @@
 		<div id="loginBox">
 		<?php 
 			if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
-				echo "<a style=\"float:left; margin:5px auto 5px 5px;\" class=\"blue buttonStyle medium\" href=\"login.php\"> Login </a>
+				echo "<a style=\"float:left; margin:5px auto 5px 15px;\" class=\"blue buttonStyle medium\" href=\"login.php\"> Login </a>
 				      <br />
-					  <a style=\"float:left; margin:5px auto 5px 5px; margin-top:5px;\" class=\"blue buttonStyle medium\" href=\"signuppage.php\"> Sign Up </a>";
+					  <a style=\"float:left; margin:5px auto 5px 15px; margin-top:5px;\" class=\"blue buttonStyle medium\" href=\"signuppage.php\"> Sign Up </a>";
 			}
 			else {
 				if (isset($_SESSION['update']) && $_SESSION['update'])
@@ -32,7 +32,7 @@
 				else {
 					$div = "<div style=\"white-space: nowrap; \" class=\"greenh roundedh meduim\" {$title}>";
 				}
-				echo "Hello {$_SESSION['firstname']},
+				echo "<span style=\"white-space: nowrap;  width:100%; \"> Hello {$_SESSION['firstname']}, </span>
 					  <br />
 					  {$div} {$_SESSION['balance']}$ </div>
 					  <a class=\"blue buttonStyle medium\" href=\"index.php?logout=1\"> Logout </a>";
