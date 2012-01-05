@@ -17,5 +17,5 @@
 		header("location:noconnection.php");
 		exit();
 	}
-	
+	$connection->close();
 ?>
