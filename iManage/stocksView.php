@@ -292,7 +292,7 @@ $(function() {
 				
 		<div id="content">
 			<div id="content-head">
-		           Virtual Portfolio
+		           View Virtual Portfolio
 			</div>
 			<div id="content-middle">
 	                 

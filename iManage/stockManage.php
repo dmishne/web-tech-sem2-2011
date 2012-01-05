@@ -297,7 +297,7 @@ include_once "ini.php";
 				
 		<div id="content">
 			<div id="content-head">
-		           Content Head
+		           Manage Virtual Portfolio
 			</div>
 			<div id="content-middle">
 				<div id="userStock">
