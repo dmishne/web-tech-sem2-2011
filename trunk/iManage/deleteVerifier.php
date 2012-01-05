@@ -21,11 +21,19 @@ if($which == "income")
     foreach ($checkedArr as $value)
     {
     	list($idtypeid, $deltypeS, $deldate) = explode(',', $value);
-    	    list($idtypeS, $idS) = explode('-', $idtypeid); 
-    	    $id = (int)$idS;
-    	    $deltype = (int)$deltypeS;
-    	    $idtype = (int)$idtypeS;
-    	$res = $connection->query("CALL deleteTransaction('$username','$id','$idtype','$deltype','$deldate')") or die(mysqli_error());
+    	list($idtypeS, $idS) = explode('-', $idtypeid); 
+    	$id = (int)$idS;
+    	$deltype = (int)$deltypeS;
+    	$idtype = (int)$idtypeS;
+    	if($deldate == "")
+    	{
+    		$deldate = "'1970-01-01'";
+    	}
+    	else
+    	{
+    		$deldate = "'$deldate'";
+    	}
+    	$res = $connection->query("CALL deleteTransaction('$username',$id,$idtype,$deltype,$deldate)") or die("CALL deleteTransaction('$username',$id,$idtype,$deltype,'$deldate')");
     	while ($connection->more_results() && $connection->next_result()) {
     		//free each result.
     		$result = $connection->use_result();
@@ -42,12 +50,20 @@ else if($which == "payout")
 	$checkedArr = verifyInput($_POST['formDelPay']);   // arrey of checked checkboxes values
     foreach ($checkedArr as $value)
     {
-    	list($idtypeid, $deltype, $deldate) = explode(',', $value);
-    	    list($idtype, $id) = explode('-', $idtypeid);
-    	    (int)$id;
-    	    (int)$deltype;
-    	    (int)$idtype;
-    	$res = $connection->query("CALL deleteTransaction('$username','$id','$idtype','$deltype','$deldate')") or die(mysqli_error());
+    	list($idtypeid, $deltypeS, $deldate) = explode(',', $value);
+    	list($idtypeS, $idS) = explode('-', $idtypeid); 
+    	$id = (int)$idS;
+    	$deltype = (int)$deltypeS;
+    	$idtype = (int)$idtypeS;
+    if($deldate == "")
+    	{
+    		$deldate = "'1970-01-01'";
+    	}
+    	else
+    	{
+    		$deldate = "'$deldate'";
+    	}
+    	$res = $connection->query("CALL deleteTransaction('$username',$id,$idtype,$deltype,$deldate)") or die(mysqli_error());
     	while ($connection->more_results() && $connection->next_result()) {
     		//free each result.
     		$result = $connection->use_result();
