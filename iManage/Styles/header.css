@@ -18,14 +18,12 @@
 }	
 
 #logoHeading{
-	text-align:center;
-	font:Arial, Helvetica, sans-serif;
-	font-size:50px;
+	background-image: url(../images/headerMoto.png);
+	background-repeat:no-repeat;
+	background-position:center;
 	height: 165px;
-	width:650px;
-	color:white; 
+	width:650px; 
 	float:left;
-	padding: 35px 5px 5px 5px;
 }
 	
 #loginBox{
