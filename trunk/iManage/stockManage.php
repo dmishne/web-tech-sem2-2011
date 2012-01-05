@@ -101,6 +101,7 @@ include_once "ini.php";
 						document.getElementById("container-stock").innerHTML="";
 						document.getElementById("new_stock_symbol").value = "";
 						document.getElementById("new_stock_amount").value = "";
+						document.getElementById("curr_amount").value = "";
 					});
 				}
 				else
