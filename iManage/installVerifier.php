@@ -2210,8 +2210,8 @@ function loadMySqlDump($ms_add,$ms_user,$ms_pass,$ms_db)
 	            SET @count = @count - 1;
 	          END WHILE;
 	          
-	          #Insert recurring payouts
-	          SET @count = 2;
+	#Insert recurring payouts
+	SET @count = 2;
 	SET @tempdate = utc_timestamp() - interval 10 month;
 	WHILE (@count > 0 ) DO
 	call insertTransaction(-(@count*110), @username, @tempDate, 'recurring payouts - auto', 2,6,null,'auto - recurring payouts description');
@@ -2219,6 +2219,12 @@ function loadMySqlDump($ms_add,$ms_user,$ms_pass,$ms_db)
 	set @tempDate = @tempdate + interval @count week;
 	SET @count = @count - 1;
 	END WHILE;
+	
+	
+	#Insert Investments
+    call createInvestment(@username, 'DNDN', 95 , date(utc_timestamp() - interval @rows week), 1.2);
+    call createInvestment(@username, 'PNTR', 30 , date(utc_timestamp() - interval @rows+1 week), 5.4);
+    call createInvestment(@username, 'WEBM', 15 , date(utc_timestamp() - interval @rows week - interval @rows day), 12);
 	
 	#Insert jobs
 	SET @count = 2;
@@ -2243,9 +2249,9 @@ function loadMySqlDump($ms_add,$ms_user,$ms_pass,$ms_db)
 	WHILE (@rows > 0) DO
 	SELECT tw.walletId INTO @wid FROM tempWallets tw LIMIT 1;
 	SET @recid = (select rt.recTrans from recurringtransaction rt where rt.incomeDate IS NOT NULL and rt.wage > 0 and rt.walletId = @wid limit 1);
-	SET @month = 2;
+	SET @month = 1;
 	#2 months count
-	WHILE (@month > 0) DO
+	WHILE (@month >= 0) DO
 	SET @days = 14;
 	#14 days of work a month
 	WHILE (@days > 0 ) DO
