@@ -1,5 +1,5 @@
 <?php
-function loadMySqlDump($ms_add,$ms_user,$ms_pass,$ms_db)
+function loadMySqlDump($ms_add,$ms_user,$ms_pass,$ms_db,$connection)
 {
 	$queries = array(
 	"/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;",
@@ -2439,10 +2439,6 @@ function loadMySqlDump($ms_add,$ms_user,$ms_pass,$ms_db)
 	"/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;");
 
 	$length = count($queries);
-	$connection = new mysqli($ms_add, $ms_user, $ms_pass);
-	if (mysqli_connect_errno()) {
-		die('Could not connect: ' . mysqli_connect_error());
-	}
 	for ($i=0; $i < $length; $i++)
 	{
 		$sql = str_replace("webtechtest",$ms_db,$queries[$i]);
@@ -2455,6 +2451,5 @@ function loadMySqlDump($ms_add,$ms_user,$ms_pass,$ms_db)
 			}
 		}
 	}
-	$connection->close();
 }
 ?>

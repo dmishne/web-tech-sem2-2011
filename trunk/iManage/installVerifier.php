@@ -29,14 +29,9 @@ error_reporting(0);
 		$user_password_md5 = md5($password); 
 		$connection = new mysqli($ms_add,$ms_user, $ms_pass);
 		if (!mysqli_connect_errno()) {
-			$connection->close();
 			// 1. install db
-			loadMySqlDump($ms_add,$ms_user,$ms_pass,$ms_db);
+			loadMySqlDump($ms_add,$ms_user,$ms_pass,$ms_db,$connection);
 			// 2. update admin user information
-			$connection = new mysqli($ms_add,$ms_user, $ms_pass);
-			if (mysqli_connect_errno()) {
-				die('Could not connect: ' . mysqli_connect_error());
-			}
 			$connection->select_db($ms_db);			
 			if (intval($ms_demo) == 1) {
 				$res = $connection->multi_query("CALL installDB('$username','$user_password_md5',1)") or die(mysqli_error());
@@ -50,7 +45,8 @@ error_reporting(0);
 				$fp = fopen("config.php","w");
 				fprintf($fp, "<?php \$serverInfo = array(\"address\" => \"%s\", \"username\" => \"%s\" , \"password\" => \"%s\", \"db\" => \"%s\"); ?>",$ms_add,$ms_user,$ms_pass,$ms_db);
 				fclose($fp);
-				sleep(3);
+				session_unset();
+				sleep(10);
 				echo "1";
 			}
 			else {
