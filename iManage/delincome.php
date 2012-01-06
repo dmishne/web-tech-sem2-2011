@@ -33,10 +33,10 @@ include_once "ini.php";
 				echo 'Could not run query: ' . mysql_error();
 				exit;}
 		
+				
 		}
 	?>
-	
-	
+		
 </head>
 
 <body>

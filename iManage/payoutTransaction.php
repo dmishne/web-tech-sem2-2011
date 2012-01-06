@@ -13,9 +13,14 @@ if (mysqli_connect_errno()) {
 $connection->select_db($serverInfo["db"]);
 $username= $_SESSION['username'];  // from current user session submited on login
 $formN = verifyInput($_POST['panel']);
-$description = verifyInput($_POST['desc']);
-
-
+if (isset($_POST['desc']))
+{
+	$description = verifyInput($_POST['desc']);
+	if(strlen($description) > 100)
+	{
+		$description = substr($description,0,99);
+	}
+}
 
 if($formN == 4) //  add recuring payout
 {

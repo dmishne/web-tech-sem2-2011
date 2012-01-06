@@ -17,6 +17,10 @@ $formN = verifyInput($_POST['panel']);
 if (isset($_POST['desc']))
 {
 	$description = verifyInput($_POST['desc']);
+	if(strlen($description) > 100)
+	{
+		$description = substr($description,0,99);
+	}
 }
 
 if($formN == 1)  // Update working hours
