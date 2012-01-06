@@ -45,6 +45,7 @@ error_reporting(0);
 				$fp = fopen("config.php","w");
 				fprintf($fp, "<?php \$serverInfo = array(\"address\" => \"%s\", \"username\" => \"%s\" , \"password\" => \"%s\", \"db\" => \"%s\"); ?>",$ms_add,$ms_user,$ms_pass,$ms_db);
 				fclose($fp);
+				session_start();
 				session_unset();
 				sleep(10);
 				echo "1";
