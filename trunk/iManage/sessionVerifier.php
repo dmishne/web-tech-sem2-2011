@@ -1,7 +1,12 @@
 <?php
 session_start();
-if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0' && ($_SESSION['last_usage'] - time() < 1800 ) )) {
+if (!(isset($_SESSION['login']) && $_SESSION['login'] != '0')) {
 	header("Location: login.php");
+	exit();
+}
+if (time() - $_SESSION['last_usage'] < 1800 )
+{
+	header("Location: index.php?logout=1");
 	exit();
 }
 $_SESSION["last_usage"] = time();
