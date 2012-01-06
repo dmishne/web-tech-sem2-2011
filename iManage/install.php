@@ -8,6 +8,16 @@
 	<link rel="icon" href="images/logo.ico" />
 	<link rel="apple-touch-icon" href="images/icon_apple.png" />
 	<?php include "include.php"; ?>
+	<script type="text/javascript" src="JQueryUI/jquery-ui-1.8.16.custom.min.js"> </script>
+	<link rel="stylesheet" href="JQueryUI/jquery-ui-1.8.16.custom.css" type="text/css"/>
+	<style type="text/css">
+	
+	.ui-widget {
+		font-size: 0.8em;
+	}	
+	
+	</style>
+	
 	<style type="text/css">
 	html,body{
 		height:100%;
@@ -25,7 +35,7 @@
 	#vertical{
 		float:left;
 		height:50%;
-		margin-top:-365px;
+		margin-top:-375px;
 		width:100%;
 	}
 	#hoz {
@@ -33,7 +43,7 @@
 		width:100%;
 		margin-left:auto;
 		margin-right:auto;
-		height:730px;
+		height:750px;
 		border:1px solid silver;
 		overflow:auto;/* allow content to scroll inside element */
 		text-align:left;
@@ -112,6 +122,7 @@
 	}
 </style>
 <script type="text/javascript">
+var progress = 0;
 function verifyInformation()
 {
 	 $("#ins_bu").attr('disabled', true);
@@ -129,6 +140,7 @@ function verifyInformation()
 	// validate user information
 	if(password == passwordr && username != "")
 	{
+		progress = 0;
 		$.post("installVerifier.php",{mysql_address:mysql_address,mysql_username:mysql_username ,mysql_password:mysql_password,mysql_db:mysql_db,mysql_demo_info:mysql_demo_info,username:username,password:password,passwordr:passwordr},function(data) {
 			switch(data)
 			{
@@ -145,14 +157,30 @@ function verifyInformation()
 				document.getElementById("ins_error").innerHTML="Problem, Can't install at the moment";
 				break;
 			}
+			$( "#progress" ).toggle();
 		})
 		.error(function() {document.getElementById("ins_error").innerHTML="Problem, Can't install at the moment";});
+		$( "#progress" ).toggle();
+		$( "#progress" ).progressbar({
+			value: 0
+		});
+		setTimeout("progressbar()", 1100);
 	}
 	else
 	{
 		document.getElementById("ins_error").innerHTML="Problem with User information";
 	}
 	 $("#ins_bu").attr('disabled', false);
+}
+
+function progressbar()
+{
+	progress++;
+	$( "#progress" ).progressbar( "option", "value", progress*10 );
+	if(progress < 10)
+	{
+		setTimeout("progressbar()", 1100);
+	}
 }
 
 </script>
@@ -205,6 +233,7 @@ function verifyInformation()
 				</p>
 				<p><input id="ins_bu" class="blue buttom medium" type="button" value="Install" onclick="verifyInformation()"></input></p>
 			<div id="ins_error" class="error"></div>
+			<div id="progress" style="display:none;"></div>
 			</fieldset>
 		</form>
 	</div>	
