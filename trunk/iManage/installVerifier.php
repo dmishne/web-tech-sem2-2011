@@ -2242,7 +2242,7 @@ function loadMySqlDump($ms_add,$ms_user,$ms_pass,$ms_db)
 	DROP TABLE IF EXISTS tempWallets;
 	CREATE TEMPORARY TABLE tempWallets (walletId INT(11));
 	
-	INSERT INTO tempWallets(`walletId`) SELECT walletId FROM wallet;
+	INSERT INTO tempWallets(`walletId`) SELECT walletId FROM wallet WHERE wallettype = 1;
 	
 	SET @rows = (select count(*) from tempWallets);
 	#while users > 0
