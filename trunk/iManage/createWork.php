@@ -180,7 +180,7 @@
 				           		</tr>
 				           		<?php 
 				            		if(isset($error['creatework_desc']) && $error['creatework_desc'] = 1){
-				            			echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Error! Don't use special characters. </div> </td> </tr>";
+				            			echo "<tr> <td colspan=\"2\"> <div class=\"error\"> Error! Description too long or you are trying to use special characters. </div> </td> </tr>";
 				            		}
 		            			?>
 				           </table>

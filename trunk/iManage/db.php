@@ -259,8 +259,8 @@ function loadMySqlDump($ms_add,$ms_user,$ms_pass,$ms_db,$connection)
 	SELECT 'Incorrect details';
 	ELSE
 	DROP TABLE IF EXISTS `webtechtest`.`result`,  `webtechtest`.`tempres` ;
-	CREATE TEMPORARY TABLE `webtechtest`.`result` (transname VARCHAR(40), amount DOUBLE, month_name VARCHAR(30));
-	CREATE TEMPORARY TABLE `webtechtest`.`tempres` (transname VARCHAR(40), amount DOUBLE, month_name VARCHAR(30));
+	CREATE TEMPORARY TABLE `webtechtest`.`result` (transname VARCHAR(45), amount DOUBLE, month_name VARCHAR(30));
+	CREATE TEMPORARY TABLE `webtechtest`.`tempres` (transname VARCHAR(45), amount DOUBLE, month_name VARCHAR(30));
 	
 	SET @yearStart = date_format(DATE(utc_timestamp() - interval 11 month), '%Y-%m-01');
 	SET @monthStart = date_format(DATE(utc_timestamp()), '%Y-%m-01');
@@ -427,7 +427,7 @@ function loadMySqlDump($ms_add,$ms_user,$ms_pass,$ms_db,$connection)
 	SELECT 'Incorrect details';
 	ELSE
 	DROP TABLE IF EXISTS `webtechtest`.`result` ;
-	CREATE TEMPORARY TABLE `webtechtest`.`result` (transname VARCHAR(40), amount DOUBLE, month_name VARCHAR(30));
+	CREATE TEMPORARY TABLE `webtechtest`.`result` (transname VARCHAR(45), amount DOUBLE, month_name VARCHAR(30));
 	
 	SET @yearStart = date_format(DATE(utc_timestamp() - interval 11 month), '%Y-%m-01');
 	SET @yearEnd = last_day(DATE(utc_timestamp()));
@@ -1752,9 +1752,9 @@ function loadMySqlDump($ms_add,$ms_user,$ms_pass,$ms_db,$connection)
 	
 	DROP TABLE IF EXISTS `webtechtest`.`result` , `webtechtest`.`rectemp`, `webtechtest`.`jobtemp`;
 	
-	CREATE TEMPORARY TABLE `webtechtest`.`result` (`recid` INT, jobhourid INT, transid INT, transname VARCHAR(40), amount DOUBLE, transdate DATE, iscommited INT);
+	CREATE TEMPORARY TABLE `webtechtest`.`result` (`recid` INT, jobhourid INT, transid INT, transname VARCHAR(45), amount DOUBLE, transdate DATE, iscommited INT);
 	CREATE TEMPORARY TABLE `webtechtest`.`jobtemp` (`recid` INT, jobhourid INT, starthour DATETIME, endHour DATETIME);
-	CREATE TEMPORARY TABLE `webtechtest`.`rectemp` (`recid` INT, `recname` VARCHAR(40));
+	CREATE TEMPORARY TABLE `webtechtest`.`rectemp` (`recid` INT, `recname` VARCHAR(45));
 	
 	#--------------------   Insert all ONE TIME transactions   ----------------------------------#
 	INSERT INTO `webtechtest`.`result` (recid, jobhourid, transid, transname , amount , transdate, iscommited )
@@ -2216,9 +2216,9 @@ function loadMySqlDump($ms_add,$ms_user,$ms_pass,$ms_db,$connection)
 	
 	
 	#Insert Investments
-    call createInvestment(@username, 'DNDN', 95 , date(utc_timestamp() - interval @rows week), 1.2);
-    call createInvestment(@username, 'PNTR', 30 , date(utc_timestamp() - interval @rows+1 week), 5.4);
-    call createInvestment(@username, 'WEBM', 15 , date(utc_timestamp() - interval @rows week - interval @rows day), 12);
+    call createInvestment(@username, 'DNDN', 95 , '2011-12-23', 7.57);
+    call createInvestment(@username, 'PNTR', 30 , '2011-12-27', 3.53);
+    call createInvestment(@username, 'WEBM', 15 , '2012-01-04', 0.43);
 	
 	#Insert jobs
 	SET @count = 2;

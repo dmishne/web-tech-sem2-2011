@@ -160,7 +160,7 @@
 						         <td>
 						           <fieldset>
 				           		     <legend > Comments</legend>
-				           		        <textarea id="manageUser_log" rows="9" cols="60" class="inpt"></textarea> 
+				           		        <textarea id="manageUser_log" rows="9" cols="60" class="inpt" readonly="readonly"></textarea> 
 				           		   </fieldset>
 				           		 </td>
 				           	   </tr>	

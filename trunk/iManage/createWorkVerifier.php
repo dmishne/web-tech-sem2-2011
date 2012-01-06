@@ -32,7 +32,7 @@ if (!isset($_POST["job_to_del"]))
 	}
 	
 	$desc=verifyInput($_POST['creatework_desc']);
-	if($desc != $_POST['creatework_desc'])
+	if($desc != $_POST['creatework_desc'] || strlen($desc) > 100 )
 	{
 		$error['creatework_desc'] = 1;
 		$REG = 0;
